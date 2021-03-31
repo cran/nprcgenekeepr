@@ -1,9 +1,9 @@
 README
 ================
 R. Mark Sharp
-05/17/2020
+03/28/2021
 
-[![Rdoc](http://www.rdocumentation.org/badges/version/nprcgenekeepr)](http://www.rdocumentation.org/packages/nprcgenekeepr)
+[![Rdoc](https://www.rdocumentation.org/badges/version/nprcgenekeepr)](https://www.rdocumentation.org/packages/nprcgenekeepr)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -13,12 +13,12 @@ Status](https://travis-ci.org/rmsharp/nprcgenekeepr.svg?branch=master)](https://
 coverage](https://codecov.io/gh/rmsharp/nprcgenekeepr/branch/master/graph/badge.svg)](https://codecov.io/gh/rmsharp/nprcgenekeepr?branch=master)
 <!--[![](https://www.r-pkg.org/badges/version/nprcgenekeepr)](https://cran.r-project.org/package=nprcgenekeepr)
 
-<!--[![Rdoc](http://www.rdocumentation.org/badges/version/RDocumentation)](http://www.rdocumentation.org/packages/RDocumentation)
-<!--[![Rdoc](http://www.rdocumentation.org/badges/version/nprcgenekeepr)](http://www.rdocumentation.org/packages/gh/rmsharp/nprcgenekeepr)
+<!--[![Rdoc](https://www.rdocumentation.org/badges/version/RDocumentation)](https://www.rdocumentation.org/packages/RDocumentation)
+<!--[![Rdoc](https://www.rdocumentation.org/badges/version/nprcgenekeepr)](https://www.rdocumentation.org/packages/gh/rmsharp/nprcgenekeepr)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nprcgenekeepr – Version 1.0.3 (20200526)
+# nprcgenekeepr – Version 1.0.5 (20210322)
 
 ## Introduction
 
@@ -34,9 +34,7 @@ Southwest National Primate Research Center and P51 OD011092 to the
 Oregon National Primate Research Center.
 
 <!--It is now managed and maintained as a joint effort between ONPRC-->
-
 <!--and Southwest National Primate Research Center (SNPRC) with the -->
-
 <!--coding being done by R. Mark Sharp, Ph.D.-->
 
 At present, the application supports 5 functions:
@@ -155,7 +153,7 @@ View(exampleNprcgenekeeprConfig)
 
 ### Display of an age by sex pyramid plot
 
-Adapted from  on 20190603. Written by Matt Rosenberg. Updated May 07,
+Adapted from on 20190603. Written by Matt Rosenberg. Updated May 07,
 2019
 
 The most important demographic characteristic of a population is its

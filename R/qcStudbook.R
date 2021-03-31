@@ -156,6 +156,7 @@
 #' Finally the columns \code{id} \code{sire}, and \code{dam} are coerce to
 #' character.
 #'
+#' @importFrom lubridate is.Date
 #' @importFrom utils write.csv
 ## ##  rmsutilityr str_detect_fixed_all
 #' @export
@@ -202,7 +203,9 @@ qcStudbook <- function(sb, minParentAge = 2, reportChanges = FALSE,
   if (any("ancestry" %in% cols)) {
     sb$ancestry <- convertAncestry(sb$ancestry)
   }
-
+  if (any("fromCenter" %in% cols)) {
+    sb$fromCenter <- convertFromCenter(sb$fromCenter)
+  }
   # converting date column entries from strings and integers to date
   if (reportErrors) {
     sbAndErrors <- getDateErrorsAndConvertDatesInPed(sb, errorLst)

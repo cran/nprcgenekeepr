@@ -1,7 +1,7 @@
 Package: nprcgenekeepr
 Type: Package
 Title: Genetic Tools for Colony Management
-Version: 1.0.3
+Version: 1.0.5
 Authors@R: c(
     person("Michael", "Raboin", role = c("aut")),
     person("Terry", "Therneau", role = c("aut")),
@@ -35,17 +35,18 @@ URL: https://rmsharp.github.io/nprcgenekeepr/,
 BugReports: https://github.com/rmsharp/nprcgenekeepr/issues
 Depends: R (>= 3.6.0)
 Imports: anytime, futile.logger, htmlTable, lubridate, Matrix, plotrix,
-        readxl, Rlabkey, shiny, shinyBS, stringi, utils, WriteXLS
-Suggests: covr, dplyr, ggplot2, grid, kableExtra, knitr, pkgdown, png,
-        rmarkdown, roxygen2 (>= 7.0.0), testthat
+        readxl, Rlabkey, rlang, shiny, stringi, utils, WriteXLS
+Suggests: covr, dplyr, ggplot2, grid, kableExtra, knitr, markdown,
+        pkgdown, png, rmarkdown, roxygen2 (>= 7.0.0), shinyBS,
+        shinyWidgets, testthat
 Language: en-US
 Encoding: UTF-8
 License: MIT + file LICENSE
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 LazyData: TRUE
 VignetteBuilder: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2020-05-27 02:15:14 UTC; msharp
+Packaged: 2021-03-30 02:30:25 UTC; msharp
 Author: Michael Raboin [aut],
   Terry Therneau [aut],
   Amanda Vinson [aut, dtc],
@@ -55,4 +56,4 @@ Author: Michael Raboin [aut],
   Oregon National Primate Research Center grant P51 OD011092 [fnd]
 Maintainer: R. Mark Sharp <rmsharp@me.com>
 Repository: CRAN
-Date/Publication: 2020-06-02 12:40:03 UTC
+Date/Publication: 2021-03-31 05:10:22 UTC
