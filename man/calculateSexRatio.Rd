@@ -5,12 +5,12 @@
 \title{Calculates the sex ratio (number of non-males / number of males) given
 animal Ids and their pedigree}
 \usage{
-calculateSexRatio(ids, ped, additionalMales = 0, additionalFemales = 0)
+calculateSexRatio(ids, ped, additionalMales = 0L, additionalFemales = 0L)
 }
 \arguments{
 \item{ids}{character vector of animal Ids}
 
-\item{ped}{datatable that is the `Pedigree`. It contains pedigree
+\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
 information including the IDs listed in \code{candidates}.}
 
 \item{additionalMales}{Integer value of males to add to those within the
@@ -27,35 +27,46 @@ Numeric value of sex ratio of the animals provided.
 \description{
 The Males are counted when the \code{ped$sex} value is
 \code{"M"}.
-When females are counted when the \code{ped$sex} value is not
+Females are counted when the \code{ped$sex} value is not
 \code{"M"}. This means animals with ambiguous sex are counted with the
 females.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 data("qcBreeders")
 data("pedWithGenotype")
-available <- c("JGPN6K", "8KM1MP", "I9TQ0T", "Q0RGP7", "VFS0XB", "CQC133",
-               "2KULR3", "HOYW0S", "FHV13N", "OUM6QF", "6Z7MD9", "CFPEEU",
-               "HLI95R", "RI0O7F", "7M51X5", "DR5GXB", "170ZTZ", "C1ICXL")
-nonMales <- c("JGPN6K", "8KM1MP", "I9TQ0T", "Q0RGP7", "CQC133",
-              "2KULR3", "HOYW0S", "FHV13N", "OUM6QF", "6Z7MD9", "CFPEEU",
-              "HLI95R", "RI0O7F", "7M51X5", "DR5GXB", "170ZTZ", "C1ICXL")
+available <- c(
+  "JGPN6K", "8KM1MP", "I9TQ0T", "Q0RGP7", "VFS0XB", "CQC133",
+  "2KULR3", "HOYW0S", "FHV13N", "OUM6QF", "6Z7MD9", "CFPEEU",
+  "HLI95R", "RI0O7F", "7M51X5", "DR5GXB", "170ZTZ", "C1ICXL"
+)
+nonMales <- c(
+  "JGPN6K", "8KM1MP", "I9TQ0T", "Q0RGP7", "CQC133",
+  "2KULR3", "HOYW0S", "FHV13N", "OUM6QF", "6Z7MD9", "CFPEEU",
+  "HLI95R", "RI0O7F", "7M51X5", "DR5GXB", "170ZTZ", "C1ICXL"
+)
 male <- "VFS0XB"
 calculateSexRatio(ids = male, ped = pedWithGenotype)
 calculateSexRatio(ids = nonMales, ped = pedWithGenotype)
 calculateSexRatio(ids = available, ped = pedWithGenotype)
-calculateSexRatio(ids = available, ped = pedWithGenotype,
-                        additionalMales = 1)
-calculateSexRatio(ids = available, ped = pedWithGenotype,
-                  additionalFemales = 1)
-calculateSexRatio(ids = available, ped = pedWithGenotype,
-                  additionalMales = 1, additionalFemales = 1)
-calculateSexRatio(ids = nonMales, ped = pedWithGenotype,
-                  additionalMales = 1, additionalFemales = 0)
-calculateSexRatio(ids = character(0), ped = pedWithGenotype,
-                additionalMales = 1, additionalFemales = 0)
-}
-
+calculateSexRatio(
+  ids = available, ped = pedWithGenotype,
+  additionalMales = 1L
+)
+calculateSexRatio(
+  ids = available, ped = pedWithGenotype,
+  additionalFemales = 1L
+)
+calculateSexRatio(
+  ids = available, ped = pedWithGenotype,
+  additionalMales = 1, additionalFemales = 1L
+)
+calculateSexRatio(
+  ids = nonMales, ped = pedWithGenotype,
+  additionalMales = 1, additionalFemales = 0L
+)
+calculateSexRatio(
+  ids = character(0), ped = pedWithGenotype,
+  additionalMales = 1, additionalFemales = 0L
+)
 }

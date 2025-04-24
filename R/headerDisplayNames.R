@@ -1,20 +1,17 @@
 #' Convert internal column names to display or header names.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Converts the column names of a Pedigree or Genetic value Report to
 #' something more descriptive.
 #'
 #' @return Updated list of column names
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' headerDisplayNames(headers = c("id", "sire", "dam", "sex", "birth", "age"))
-#' }
-#'
 #' @param headers a character vector of column (header) names
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' headerDisplayNames(headers = c("id", "sire", "dam", "sex", "birth", "age"))
 headerDisplayNames <- function(headers) {
   nameConversion <- c(
     id = "Ego ID",
@@ -40,7 +37,6 @@ headerDisplayNames <- function(headers) {
     value = "Value Designation",
     status = "Status",
     vasxOvx = "Vasectomy or Ovariectomy Status",
-    ancestry = "Ancestry",
     gu = "Genome Uniqueness (%)",
     pedNum = "Pedigree #",
     spf = "SPF",
@@ -56,5 +52,5 @@ headerDisplayNames <- function(headers) {
     second_name = "Second Allele",
     recordStatus = "Original/ Added"
   )
-  return(as.character(nameConversion[headers]))
+  as.character(nameConversion[headers])
 }

@@ -1,12 +1,15 @@
 ## ----include = TRUE, eval = FALSE---------------------------------------------
-#  NA
+# NA
+
+## ----cran-installation, eval = FALSE, echo=TRUE-------------------------------
+# install.packages("devtools")
+# devtools::install_github(file.path("rmsharp", "nprcgenekeepr"))
 
 ## ----gh-installation, eval = FALSE, echo=TRUE---------------------------------
-#  install.packages("devtools")
-#  devtools::install_github("rmsharp/nprcgenekeepr")
-#  
+# install.packages("devtools")
+# devtools::install_github(file.path("rmsharp", "nprcgenekeepr"))
 
 ## ----running-shiny-application, echo = TRUE, eval = FALSE---------------------
-#  library(nprcgenekeepr)
-#  runGeneKeepR()
+# library(nprcgenekeepr)
+# runGeneKeepR()
 

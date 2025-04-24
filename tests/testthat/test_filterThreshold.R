@@ -1,4 +1,4 @@
-#' Copyright(c) 2017-2020 R. Mark Sharp
+#' Copyright(c) 2017-2024 R. Mark Sharp
 #' This file is part of nprcgenekeepr
 context("filterThreshold")
 library(testthat)
@@ -7,20 +7,20 @@ ped <- lacy1989Ped
 
 ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
-kin <- kinMatrix2LongForm(kmat, rm.dups = FALSE)
+kin <- kinMatrix2LongForm(kmat, removeDups = FALSE)
 threshold <- 0.1
 kinFiltered <- filterThreshold(kin, threshold = threshold)
 
 test_that("filterThreshold makes correct transformation", {
-  expect_equal(nrow(kinFiltered), 39)
-  expect_equal(kinFiltered[1, 3], kin[1, 3])
-  expect_equal(kinFiltered[2, 3], kin[3, 3])
-  expect_equal(kinFiltered[4, 3], kin[6, 3])
-  expect_equal(kinFiltered[11, 3], kin[15, 3])
-  expect_equal(kinFiltered[24, 3], kin[34, 3])
-  expect_equal(kinFiltered[1, 2], kin[1, 2])
-  expect_equal(kinFiltered[2, 2], kin[3, 2])
-  expect_equal(kinFiltered[4, 2], kin[6, 2])
-  expect_equal(kinFiltered[11, 2], kin[15, 2])
-  expect_equal(kinFiltered[24, 2], kin[34, 2])
+  expect_identical(nrow(kinFiltered), 39L)
+  expect_identical(kinFiltered[1L, 3L], kin[1L, 3L])
+  expect_identical(kinFiltered[2L, 3L], kin[3L, 3L])
+  expect_identical(kinFiltered[4L, 3L], kin[6L, 3L])
+  expect_identical(kinFiltered[11L, 3L], kin[15L, 3L])
+  expect_identical(kinFiltered[24L, 3L], kin[34L, 3L])
+  expect_identical(kinFiltered[1L, 2L], kin[1L, 2L])
+  expect_identical(kinFiltered[2L, 2L], kin[3L, 2L])
+  expect_identical(kinFiltered[4L, 2L], kin[6L, 2L])
+  expect_identical(kinFiltered[11L, 2L], kin[15L, 2L])
+  expect_identical(kinFiltered[24L, 2L], kin[34L, 2L])
 })

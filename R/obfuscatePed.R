@@ -1,6 +1,6 @@
 #' obfuscatePed takes a pedigree object and creates aliases for all IDs and
 #' adjusts all date within a specified amount.
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' User provides a pedigree object (\code{ped}), the number of characters to be
@@ -8,15 +8,6 @@
 #' birthdate can be shifted (\code{maxDelta}).
 #'
 #' @return An obfuscated pedigree
-#'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped <- qcStudbook(nprcgenekeepr::pedGood)
-#' obfuscatedPed <- obfuscatePed(ped)
-#' ped
-#' obfuscatedPed
-#' }
 #'
 #' @param ped pedigree object
 #' @param size integer value indicating number of characters in alias IDs
@@ -28,21 +19,26 @@
 #' and the values being the new alias values. Defaults to \code{FALSE}.
 #' @importFrom lubridate is.Date
 #' @export
-obfuscatePed <- function(ped, size = 6, maxDelta = 30,
-                         existingIds = character(0), map = FALSE ) {
+#' @examples
+#' library(nprcgenekeepr)
+#' ped <- qcStudbook(nprcgenekeepr::pedGood)
+#' obfuscatedPed <- obfuscatePed(ped)
+#' ped
+#' obfuscatedPed
+obfuscatePed <- function(ped, size = 6L, maxDelta = 30L,
+                         existingIds = character(0L), map = FALSE) {
   alias <- obfuscateId(ped$id, size = size, existingIds = existingIds)
   ped$sire <- alias[ped$sire]
   ped$dam <- alias[ped$dam]
   ped$id <- alias
   for (col in names(ped)) {
-    if (any("Date" %in% class(ped[[col]]))) {
+    if (any(inherits(ped[[col]], "Date"))) {
       ped[[col]] <- obfuscateDate(ped[[col]], maxDelta = maxDelta)
     }
   }
-  if (any("age" %in% names(ped)) & any("birth" %in% names(ped)) &
-      any("exit" %in% names(ped))) {
-    if (all(is.Date(ped$birth)))
-      ped["age"] <- calcAge(ped$birth, ped$exit)
+  if (any("age" %in% names(ped)) && any("birth" %in% names(ped)) &&
+      any("exit" %in% names(ped)) && all(is.Date(ped$birth))) {
+    ped["age"] <- calcAge(ped$birth, ped$exit)
   }
   if (map) {
     list(ped = ped, map = alias)

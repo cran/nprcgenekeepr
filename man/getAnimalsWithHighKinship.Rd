@@ -10,7 +10,7 @@ getAnimalsWithHighKinship(kmat, ped, threshold, currentGroups, ignore, minAge)
 \item{kmat}{numeric matrix of pairwise kinship values. Rows and columns
 are named with animal IDs.}
 
-\item{ped}{dataframe that is the `Pedigree`. It contains pedigree
+\item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
 information including the IDs listed in \code{candidates}.}
 
 \item{threshold}{numeric value indicating the minimum kinship level to be
@@ -28,7 +28,7 @@ Default is to ignore all pairwise kinship between females.}
 
 \item{minAge}{integer value indicating the minimum age to consider in group
 formation. Pairwise kinships involving an animal of this age or younger will
- be ignored. Default is 1 year.}
+be ignored. Default is 1 year.}
 }
 \value{
 A list of named character vectors where each name is an animal Id
@@ -39,18 +39,19 @@ greater than our equal to the \code{threshold} value.
 Forms a list of animal Ids and animals related to them
 }
 \examples{
-\donttest{
-examplePedigree <- nprcgenekeepr::examplePedigree
-ped <- qcStudbook(examplePedigree, minParentAge = 2, reportChanges = FALSE,
-                  reportErrors = FALSE)
+qcPed <- nprcgenekeepr::qcPed
+ped <- qcStudbook(qcPed,
+  minParentAge = 2L, reportChanges = FALSE,
+  reportErrors = FALSE
+)
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen, sparse = FALSE)
-currentGroups <- list(1)
-currentGroups[[1]] <- examplePedigree$id[1:3]
+currentGroups <- list(1L)
+currentGroups[[1L]] <- examplePedigree$id[1L:3L]
 candidates <- examplePedigree$id[examplePedigree$status == "ALIVE"]
 threshold <- 0.015625
 kin <- getAnimalsWithHighKinship(kmat, ped, threshold, currentGroups,
-                                 ignore = list(c("F", "F")), minAge = 1)
-length(kin) # should be 2412
-kin[["1SPLS8"]] # should have 14 IDs
-}
+  ignore = list(c("F", "F")), minAge = 1.0
+)
+length(kin) # should be 259
+kin[["0DAV0I"]] # should have 34 IDs
 }

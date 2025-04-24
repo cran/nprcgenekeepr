@@ -1,24 +1,24 @@
 README
 ================
-R. Mark Sharp
-03/28/2021
+R. Mark Sharp, Ph.D.
+2024-12-17
+
+# nprcgenekeepr <a href="https://github.com/rmsharp/nprcgenekeepr"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
+
+Version1.0.6 (2024-12-20)
+
+<!-- badges: start -->
 
 [![Rdoc](https://www.rdocumentation.org/badges/version/nprcgenekeepr)](https://www.rdocumentation.org/packages/nprcgenekeepr)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Build
-Status](https://travis-ci.org/rmsharp/nprcgenekeepr.svg?branch=master)](https://travis-ci.org/rmsharp/nprcgenekeepr)
+[![R-CMD-check](https://github.com/rmsharp/nprcgenekeepr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rmsharp/nprcgenekeepr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/rmsharp/nprcgenekeepr/branch/master/graph/badge.svg)](https://codecov.io/gh/rmsharp/nprcgenekeepr?branch=master)
-<!--[![](https://www.r-pkg.org/badges/version/nprcgenekeepr)](https://cran.r-project.org/package=nprcgenekeepr)
-
-<!--[![Rdoc](https://www.rdocumentation.org/badges/version/RDocumentation)](https://www.rdocumentation.org/packages/RDocumentation)
-<!--[![Rdoc](https://www.rdocumentation.org/badges/version/nprcgenekeepr)](https://www.rdocumentation.org/packages/gh/rmsharp/nprcgenekeepr)
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# nprcgenekeepr – Version 1.0.5 (20210322)
+coverage](https://codecov.io/gh/rmsharp/nprcgenekeepr/graph/badge.svg)](https://app.codecov.io/gh/rmsharp/nprcgenekeepr)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nprcgenekeepr)](https://CRAN.R-project.org/package=nprcgenekeepr)
+<!-- badges: end -->
 
 ## Introduction
 
@@ -58,6 +58,13 @@ For Laboratory Animal Science*, 2015 Nov, Vol.54(6), pp.700-707 \[Peer
 Reviewed Journal\]
 
 ## Installation
+
+You can install the CRAN version of **nprcgenekeepr** from the R console
+prompt with:
+
+``` r
+install.packages("nprcgenekeepr")
+```
 
 You can install the development version of **nprcgenekeepr** from GitHub
 from the R console prompt with:
@@ -112,8 +119,9 @@ dates are added if possible and are consistent with other information
 such as departure dates and death dates. Current ages of animals that
 are still alive are added if a database connection is provided via a
 configuration file and the user has read permission on a LabKey server
-with the demographic data in an **EHR** (Electronic Health Record)
-module. See
+with the demographic data in an *EHR* (Electronic Health Record) module.
+See [LabKey
+documentation](https://www.labkey.org/Documentation/wiki-page.view?name=netrc).
 
 Parents with ages below a user selected threshold are identified. A
 minimum parent age in years is set by the user and is used to ensure
@@ -121,7 +129,7 @@ each parent is at least that age on the birth date of an offspring. The
 minimum parent age defaults to 2 years. This check is not performed for
 animals with missing birth dates.
 
-### Creation of Pedigree From a List of Potential Breeders and LabKey Integration
+### Creation of Pedigree From a List of Potential Breeders and LabKey 
 
 The user can enter a list of focal animals in a CSV file that will be
 used to create a pedigree containing all direct relative (ancestors and
@@ -138,9 +146,9 @@ user to authenticate with LabKey through the LabKey API and is fully
 described by [LabKey
 documentation](https://www.labkey.org/Documentation/wiki-page.view?name=netrc)
 
-The second file is named **\_nprcgenekeepr\_config** on Microsoft
-Windows operating systems and **.nprcgenekeepr\_config** otherwise and
-is the `nprcgenekeepr` [configuration
+The second file is named **\_nprcgenekeepr_config** on Microsoft Windows
+operating systems and **.nprcgenekeepr_config** otherwise and is the
+`nprcgenekeepr` [configuration
 file](https://github.com/rmsharp/nprcgenekeepr/blob/master/inst/extdata/example_nprcgenekeepr_config)
 An image of this example configuration file is included as a data object
 and can be loaded and viewed with the following lines of R code in the R
@@ -153,8 +161,9 @@ View(exampleNprcgenekeeprConfig)
 
 ### Display of an age by sex pyramid plot
 
-Adapted from on 20190603. Written by Matt Rosenberg. Updated May 07,
-2019
+Adapted from
+<https://www.thoughtco.com/age-sex-pyramids-and-population-pyramids-1435272>
+on 20190603. Written by Matt Rosenberg. Updated May 07, 2019.
 
 The most important demographic characteristic of a population is its
 age-sex structure. Age-sex pyramids (also known as population pyramids)

@@ -7,7 +7,7 @@
 setPopulation(ped, ids)
 }
 \arguments{
-\item{ped}{datatable that is the `Pedigree`. It contains pedigree
+\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
 information. The \code{id} column is required.}
 
 \item{ids}{character vector of IDs to be flagged as part of the population
@@ -22,16 +22,15 @@ updated by being set to \code{TRUE} for the animal IDs in \code{ped$id} and
 Part of the pedigree filtering toolset.
 }
 \examples{
-\donttest{
 examplePedigree <- nprcgenekeepr::examplePedigree
-breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-                         reportChanges = FALSE,
-                         reportErrors = FALSE)
+breederPed <- qcStudbook(examplePedigree,
+  minParentAge = 2,
+  reportChanges = FALSE,
+  reportErrors = FALSE
+)
 focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
-                                  is.na(breederPed$dam)) &
-                                is.na(breederPed$exit)]
+  is.na(breederPed$dam)) &
+  is.na(breederPed$exit)]
 breederPed <- setPopulation(ped = breederPed, ids = focalAnimals)
 nrow(breederPed[breederPed$population, ])
-}
-
 }

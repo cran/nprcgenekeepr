@@ -1,6 +1,6 @@
 #' Create a pedigree tree (PedTree).
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' The PedTree is a list containing sire and dam information for an individual.
 #'
@@ -23,18 +23,15 @@
 #' Each sublist represents an ID in the pedigree and contains the sire ID and
 #' the dam ID as named elements.
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' exampleTree <- createPedTree(nprcgenekeepr::examplePedigree)
-#' exampleLoops <- findLoops(exampleTree)
-#' }
-#'
 #' @param ped dataframe of pedigree and demographic information potentially
 #' containing columns indicating the birth and death dates of an individual.
 #' The table may also contain dates of sale (departure). Optional columns
 #' are \code{birth}, \code{death}, \code{departure}.
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' exampleTree <- createPedTree(nprcgenekeepr::examplePedigree)
+#' exampleLoops <- findLoops(exampleTree)
 createPedTree <- function(ped) {
   pedTree <- rep(list(list(sire = NA, dam = NA)), nrow(ped))
   names(pedTree) <- ped$id
@@ -43,5 +40,5 @@ createPedTree <- function(ped) {
     pedTree[[ped$id[i]]]$sire <- ped$sire[i]
     pedTree[[ped$id[i]]]$dam <- ped$dam[i]
   }
-  return(pedTree)
+  pedTree
 }

@@ -1,18 +1,19 @@
 `%then%` <- rlang::`%||%`
-library(nprcgenekeepr)
+# nolint start: undesirable_function_linter
+library(nprcgenekeepr) #
 library(futile.logger)
 library(ggplot2)
 library(stringi)
 suppressMessages(library(DT))
+# nolint end: undesirable_function_linter
 shinyServer(function(input, output, session) {
   errorLst <- getEmptyErrorLst()
   nprcgenekeeprLog <- paste0(getSiteInfo()$homeDir, "nprcgenekeepr.log")
   flog.logger("nprcgenekeepr", INFO,
               appender = appender.file(nprcgenekeeprLog))
 
-#############################################################################
-# Functions for handling initial pedigree upload and QC
-#  source("../application/sreactiveGetSelectedBreeders.R")
+  #############################################################################
+  # Functions for handling initial pedigree upload and QC
   getSelectedBreeders <- reactive({
     input$getData # This button starts it all
     if (input$debugger) {
@@ -60,13 +61,14 @@ shinyServer(function(input, output, session) {
       # an animal to have an offspring. Defaults to 2 years. The check is not
       # performed for animals with missing birth dates. See qcStudbook().
       flog.debug("sep: %s", sep, name = "nprcgenekeepr")
-      minParentAge <- tryCatch(as.numeric(input$minParentAge),
-                               warning = function(cond) {
-                                 return(NULL)
-                               },
-                               error = function(cond) {
-                                 return(NULL)
-                               }
+      minParentAge <- tryCatch(
+        as.numeric(input$minParentAge),
+        warning = function(cond) {
+          return(NULL)
+        },
+        error = function(cond) {
+          return(NULL)
+        }
       )
       globalMinParentAge <<- minParentAge
       flog.debug(paste0("minParentAge: ", minParentAge),
@@ -86,8 +88,8 @@ shinyServer(function(input, output, session) {
                    name = "nprcgenekeepr")
         breederPed <- getFocalAnimalPed(pedigreeFile$datapath, sep = sep)
         if (is.element("nprckeepErr", class(breederPed))) {
-            errorLst <- breederPed
-            breederPed <- NULL
+          errorLst <- breederPed
+          breederPed <- NULL
         } else if (is.null(breederPed)) {
           flog.debug(paste0("after getFocalAnimalPed: ", pedigreeFile$name,
                             "; NULL was returned by getFocalAnimalPed ",
@@ -97,8 +99,7 @@ shinyServer(function(input, output, session) {
           flog.debug(paste0("after getFocalAnimalPed: ", pedigreeFile$name,
                             "; contents rows: ", nrow(breederPed),
                             ", columns: ", ncol(breederPed), "; col names: '",
-                            paste(names(breederPed), collapse = "', '"), "'",
-                            sep = ""),
+                            paste(names(breederPed), collapse = "', '"), "'"),
                      name = "nprcgenekeepr")
         }
       } else {
@@ -107,8 +108,7 @@ shinyServer(function(input, output, session) {
                           pedigreeFile$name,
                           "; contents rows: ", nrow(breederPed),
                           ", columns: ", ncol(breederPed), "; col names: '",
-                          paste(names(breederPed), collapse = "', '"), "'",
-                          sep = ""),
+                          paste(names(breederPed), collapse = "', '"), "'"),
                    name = "nprcgenekeepr")
       }
 
@@ -120,36 +120,34 @@ shinyServer(function(input, output, session) {
                           genotypeFile$datapath,
                           "; contents rows: ", nrow(breederPed),
                           ", columns: ", ncol(breederPed), "; col names: '",
-                          paste(names(breederPed), collapse = "', '"), "'",
-                          sep = ""),
+                          paste(names(breederPed), collapse = "', '"), "'"),
                    name = "nprcgenekeepr")
         genotype <- getGenotypes(genotypeFile$datapath, sep = sep)
         flog.debug(paste0("genotype$name: ", genotype$name,
                           "; contents rows: ", nrow(genotype),
                           ", columns: ", ncol(genotype), "; col names: '",
-                          paste(names(genotype), collapse = "', '"), "'",
-                          sep = ""),
+                          paste(names(genotype), collapse = "', '"), "'"),
                    name = "nprcgenekeepr")
-        genotype <- tryCatch(checkGenotypeFile(genotype),
-                             warning = function(cond) {
-                               return(NULL)
-                             },
-                             error = function(cond) {
-                               return(NULL)
-                             },
-                             finally = {
-                               flog.debug(paste0("   tryCatch checkGenotype ",
-                                                 "file. ", geterrmessage()),
-                                          name = "nprcgenekeepr")
-                             }
+        genotype <- tryCatch(
+          checkGenotypeFile(genotype),
+          warning = function(cond) {
+            return(NULL)
+          },
+          error = function(cond) {
+            return(NULL)
+          },
+          finally = {
+            flog.debug(paste0("   tryCatch checkGenotype ", "file. ",
+                              geterrmessage()),
+                       name = "nprcgenekeepr")
+          }
         )
         breederPed <- addGenotype(breederPed, genotype)
         flog.debug(paste0("After addGenotype - genotypeFile$name: ",
                           genotypeFile$name,
                           "; contents rows: ", nrow(breederPed),
                           ", columns: ", ncol(breederPed), "; col names: '",
-                          paste(names(breederPed), collapse = "', '"), "'",
-                          sep = ""),
+                          paste(names(breederPed), collapse = "', '"), "'"),
                    name = "nprcgenekeepr")
       } else {
         flog.debug(paste0("Setting genotype to NULL."),
@@ -159,64 +157,90 @@ shinyServer(function(input, output, session) {
       flog.debug(paste0("Data files may have been read.\n",
                         "contents rows: ", nrow(breederPed),
                         ", columns: ", ncol(breederPed), "; col names: '",
-                        paste(names(breederPed), collapse = "', '"), "'",
-                        sep = ""),
+                        paste(names(breederPed), collapse = "', '"), "'"),
                  name = "nprcgenekeepr")
 
       if (!is.null(minParentAge)) {
         flog.debug(paste0("Before qcStudbook.\n",
                           "contents rows: ", nrow(breederPed),
                           ", columns: ", ncol(breederPed), "; col names: '",
-                          paste(names(breederPed), collapse = "', '"), "'",
-                          sep = ""),
+                          paste(names(breederPed), collapse = "', '"), "'"),
                    name = "nprcgenekeepr")
         if (!checkErrorLst(errorLst)) {
           errorLst <- tryCatch(
-            qcStudbook(breederPed, minParentAge, reportChanges = FALSE,
-                       reportErrors = TRUE),
-            warning = function(cond) {return(NULL)},
-            error = function(cond) {return(NULL)})
+            qcStudbook(
+              breederPed,
+              minParentAge,
+              reportChanges = FALSE,
+              reportErrors = TRUE
+            ),
+            warning = function(cond) return(NULL),
+            error = function(cond) return(NULL)
+          )
         }
         removeTab(inputId = "tab_pages", target = "Changed Columns")
         removeTab(inputId = "tab_pages", target = "Error List")
 
         if (checkErrorLst(errorLst)) {
-          insertTab(inputId = "tab_pages",
-                    getErrorTab(errorLst, pedigreeFile$name), target = "Input",
-                    position = "before", select = TRUE)
+          insertTab(
+            inputId = "tab_pages",
+            getErrorTab(errorLst, pedigreeFile$name),
+            target = "Input",
+            position = "before",
+            select = TRUE
+          )
           breederPed <- NULL
         } else {
           if (checkChangedColsLst(errorLst$changedCols)) {
-            insertTab(inputId = "tab_pages",
-                      getChangedColsTab(errorLst, pedigreeFile$name),
-                      target = "Input",
-                      position = "before", select = FALSE)
+            insertTab(
+              inputId = "tab_pages",
+              getChangedColsTab(errorLst, pedigreeFile$name),
+              target = "Input",
+              position = "before",
+              select = FALSE
+            )
           }
-          breederPed <- tryCatch(qcStudbook(breederPed, minParentAge),
-                                 warning = function(cond) {return(NULL)},
-                                 error = function(cond) {return(NULL)})
-          flog.debug(paste0("After qcStudbook.\n",
-                            "contents rows: ", nrow(breederPed),
-                            ", columns: ", ncol(breederPed), "; col names: '",
-                            paste(names(breederPed), collapse = "', '"), "'",
-                            sep = ""),
-                     name = "nprcgenekeepr")
+          breederPed <- tryCatch(
+            qcStudbook(breederPed, minParentAge),
+            warning = function(cond) return(NULL),
+            error = function(cond) return(NULL)
+          )
+          flog.debug(
+            paste0(
+              "After qcStudbook.\n",
+              "contents rows: ",
+              nrow(breederPed),
+              ", columns: ",
+              ncol(breederPed),
+              "; col names: '",
+              paste(names(breederPed), collapse = "', '"),
+              "'"
+            ),
+            name = "nprcgenekeepr"
+          )
         }
       }
-      flog.debug(paste0("before validate()."),
-                 name = "nprcgenekeepr")
-      validate(need(!is.null(minParentAge),
-                    paste0("   Error uploading data. ",
-                           geterrmessage())) %then%
-                 need(!is.null(breederPed), paste0("   Error uploading data. ",
-                                          geterrmessage()))
-      )
+      flog.debug(paste0("before validate()."), name = "nprcgenekeepr")
+      validate(need(
+        !is.null(minParentAge),
+        paste0("   Error uploading data. ", geterrmessage())
+      ) %then%
+        need(
+          !is.null(breederPed),
+          paste0("   Error uploading data. ", geterrmessage())
+        ))
       if (!is.null(breederPed)) {
         updateTabsetPanel(session, "tab_pages", selected = "Pedigree Browser")
       }
-      flog.debug(paste0("After validate(); nrow(breederPed) = ",
-                        nrow(breederPed), "; ncol(breederPed): ",
-                        ncol(breederPed)), name = "nprcgenekeepr")
+      flog.debug(
+        paste0(
+          "After validate(); nrow(breederPed) = ",
+          nrow(breederPed),
+          "; ncol(breederPed): ",
+          ncol(breederPed)
+        ),
+        name = "nprcgenekeepr"
+      )
       breederPed
     })
   })
@@ -228,56 +252,57 @@ shinyServer(function(input, output, session) {
     if (is.null(getSelectedBreeders())) {
       return(NULL)
     }
-    flog.debug(paste0("In ped <- reactive() and ",
-                      "!is.null(getSelectedBreeders()) == TRUE\n"),
-        name = "nprcgenekeepr")
+    flog.debug(
+      paste0(
+        "In ped <- reactive() and ",
+        "!is.null(getSelectedBreeders()) == TRUE\n"
+      ),
+      name = "nprcgenekeepr"
+    )
 
     ped <- getSelectedBreeders()
     flog.debug(paste0("column names: '", paste(names(ped), collapse = "', '"),
                       "'"), name = "nprcgenekeepr")
     flog.debug(" - after ped <- getSelectedBreeders() before tryCatch with ",
-               "setPopulation.", name = "nprcgenekeepr")
+               "setPopulation.",
+               name = "nprcgenekeepr")
     ped <- tryCatch({
-        ped <- getSelectedBreeders()
-        flog.debug(paste0("column names: '", paste(names(ped),
-                                                   collapse = "', '"),
-                          "'"), name = "nprcgenekeepr")
-        flog.debug(" - in tryCatch before setPopulation.",
-            name = "nprcgenekeepr")
-        ## setPopulation adds the population column if not already present
-        ## setPopulation indicates all id to be in the population if
-        ##  specifyFocalAnimals() is NULL
-        ## otherwise ids returned by specifyFocalAnimals() are set to TRUE and
-        ##  others become FALSE
-        ped <- setPopulation(ped, specifyFocalAnimals())
-        flog.debug(paste0("column names: '", paste0(names(ped),
-                                                    collapse = "', '"),
-                          "'"), name = "nprcgenekeepr")
-        flog.debug(paste0("setPopulation() called\n"),
-            name = "nprcgenekeepr")
+      ped <- getSelectedBreeders()
+      flog.debug(paste0("column names: '", paste(names(ped),
+                                                 collapse = "', '"),
+                        "'"), name = "nprcgenekeepr")
+      flog.debug(" - in tryCatch before setPopulation.", name = "nprcgenekeepr")
+      ## setPopulation adds the population column if not already present
+      ## setPopulation indicates all id to be in the population if
+      ##  specifyFocalAnimals() is NULL
+      ## otherwise ids returned by specifyFocalAnimals() are set to TRUE and
+      ##  others become FALSE
+      ped <- setPopulation(ped, specifyFocalAnimals())
+      flog.debug(paste0("column names: '", paste0(names(ped),
+                                                  collapse = "', '"), "'"),
+                 name = "nprcgenekeepr")
+      flog.debug(paste0("setPopulation() called\n"), name = "nprcgenekeepr")
 
-        if (input$trim) {
-          probands <- ped$id[ped$population]
-          ped <- trimPedigree(probands, ped, removeUninformative = FALSE,
+      if (input$trim) {
+        probands <- ped$id[ped$population]
+        ped <- trimPedigree(probands,
+                            ped,
+                            removeUninformative = FALSE,
                             addBackParents = FALSE)
-          #ped <- trimPedigree(probands, ped, removeUninformative = TRUE,
-          #                  addBackParents = TRUE)
-          flog.debug(paste0("trimPedigree() called\n"),
-              name = "nprcgenekeepr")
-        }
+        #ped <- trimPedigree(probands, ped, removeUninformative = TRUE,
+        #                  addBackParents = TRUE)
+        flog.debug(paste0("trimPedigree() called\n"), name = "nprcgenekeepr")
+      }
 
-        ped["pedNum"] <- findPedigreeNumber(ped$id, ped$sire, ped$dam)
-        ped["gen"] <- findGeneration(ped$id, ped$sire, ped$dam)
+      ped["pedNum"] <- findPedigreeNumber(ped$id, ped$sire, ped$dam)
+      ped["gen"] <- findGeneration(ped$id, ped$sire, ped$dam)
 
-        ped
-      },
-      error = function(cond) {
-        return(FALSE)
-      })
+      ped
+    }, error = function(cond) {
+      return(FALSE)
+    })
 
-    validate(
-      need(ped, geterrmessage())
-    )
+    validate(need(ped, geterrmessage()))
 
     return(ped)
   })
@@ -307,58 +332,76 @@ shinyServer(function(input, output, session) {
     names(ped) <- headerDisplayNames(names(ped))
 
     ped
-  }
-  )
-  )
+  }))
 
   specifyFocalAnimals <- eventReactive(input$specifyFocalAnimal, {
     ped <- unlist(strsplit(input$focalAnimalIds, "[ ,;\t\n]"))
     if (!is.null(input$focalAnimalUpdate)) {
       if (!input$clearFocalAnimals) {
         focalAnimalUpdate <- input$focalAnimalUpdate
-        flog.debug(paste0("focalAnimalUpdate - focalAnimalUpdate$name: ",
-                          focalAnimalUpdate$name, "; ",
-                          "focalAnimalUpdate$datapath: ",
-                          focalAnimalUpdate$datapath),
-                   name = "nprcgenekeepr")
+        flog.debug(
+          paste0(
+            "focalAnimalUpdate - focalAnimalUpdate$name: ",
+            focalAnimalUpdate$name,
+            "; ",
+            "focalAnimalUpdate$datapath: ",
+            focalAnimalUpdate$datapath
+          ),
+          name = "nprcgenekeepr"
+        )
       } else {
         focalAnimalUpdate <-
-          list(name = "emptyFocalAnimals.csv",
-               datapath = system.file("extdata", "emptyFocalAnimals.csv",
-                                      package  = "nprcgenekeepr"))
+          list(
+            name = "emptyFocalAnimals.csv",
+            datapath = system.file("extdata", "emptyFocalAnimals.csv",
+                                   package  = "nprcgenekeepr")
+          )
 
-        flog.debug(paste0("focalAnimalUpdate - focalAnimalUpdate$name: ",
-                          focalAnimalUpdate$name, "; ",
-                          "focalAnimalUpdate$datapath: ",
-                          focalAnimalUpdate$datapath),
-                   name = "nprcgenekeepr")
+        flog.debug(
+          paste0(
+            "focalAnimalUpdate - focalAnimalUpdate$name: ",
+            focalAnimalUpdate$name,
+            "; ",
+            "focalAnimalUpdate$datapath: ",
+            focalAnimalUpdate$datapath
+          ),
+          name = "nprcgenekeepr"
+        )
       }
-      focalAnimalUpdateDf <- unlist(read.table(focalAnimalUpdate$datapath,
-                                               header = TRUE,
-                                               sep = ",",
-                                               stringsAsFactors = FALSE,
-                                               na.strings = c("", "NA"),
-                                               check.names = FALSE))
-      flog.debug(paste0("focalAnimalUpdate - focalAnimalUpdateDf: ",
-                        focalAnimalUpdateDf),
-                 name = "nprcgenekeepr")
-      updateTextAreaInput(session, "focalAnimalIds",
-                          label = paste0(focalAnimalUpdateDf),
-                          value = paste0(focalAnimalUpdateDf))
+      focalAnimalUpdateDf <- unlist(
+        read.table(
+          focalAnimalUpdate$datapath,
+          header = TRUE,
+          sep = ",",
+          stringsAsFactors = FALSE,
+          na.strings = c("", "NA"),
+          check.names = FALSE
+        )
+      )
+      flog.debug(paste0(
+        "focalAnimalUpdate - focalAnimalUpdateDf: ",
+        focalAnimalUpdateDf
+      ),
+      name = "nprcgenekeepr")
+      updateTextAreaInput(
+        session,
+        "focalAnimalIds",
+        label = paste0(focalAnimalUpdateDf),
+        value = paste0(focalAnimalUpdateDf)
+      )
       ped <- focalAnimalUpdateDf
     }
-    if (length(ped) == 0) {
+    if (length(ped) == 0L) {
       return(NULL)
-    } else{
+    } else {
       return(ped)
     }
-  },
-  ignoreNULL = FALSE)
+  }, ignoreNULL = FALSE)
 
   # Download handler to download the full or trimmed pedigree
   output$downloadPedigree <- downloadHandler(
     filename = function() {
-      paste("Pedigree", ".csv", sep = "")
+      paste0("Pedigree", ".csv")
     },
     content = function(file) {
       write.csv(getPed(), file, na = "", row.names = FALSE)
@@ -375,29 +418,37 @@ shinyServer(function(input, output, session) {
     # (if there are too many animals, the program will crash)
     ped <- getPed()
     probands <- ped$id[ped$population]
-    ped <- trimPedigree(probands, ped, removeUninformative = FALSE,
-                      addBackParents = FALSE)
+    ped <- trimPedigree(probands,
+                        ped,
+                        removeUninformative = FALSE,
+                        addBackParents = FALSE)
 
-    validate(
-      need(length(probands) != 0, "Error: No population specified")
-    )
+    validate(need(length(probands) != 0L, "Error: No population specified"))
 
     # Setting up the progress bar
     progress <- shiny::Progress$new()
     on.exit(progress$close())
 
-    updateProgress <- function(n = 1, detail = NULL, value = 0, reset = FALSE) {
+    updateProgress <- function(n = 1L,
+                               detail = NULL,
+                               value = 0L,
+                               reset = FALSE) {
       if (reset) {
         progress$set(detail = detail, value = value)
-      } else{
-        progress$inc(amount = 1 / n)
+      } else {
+        progress$inc(amount = 1L / n)
       }
     }
     #
-    return(reportGV(ped, guIter = input$iterations,
-                    guThresh = as.integer(input$threshold),
-                    byID = TRUE,
-                    updateProgress = updateProgress))
+    return(
+      reportGV(
+        ped,
+        guIter = input$iterations,
+        guThresh = as.integer(input$threshold),
+        byID = TRUE,
+        updateProgress = updateProgress
+      )
+    )
   })
   # Returns the geneticValue() report
   rpt <- reactive({
@@ -412,14 +463,14 @@ shinyServer(function(input, output, session) {
     if (is.null(rpt())) {
       return(NULL)
     }
-    if (input$view == 0) {
+    if (input$view == 0L) {
       return(rpt())
-    } else{
+    } else {
       ids <- unlist(strsplit(isolate(input$viewIds), "[ ,;\t\n]"))
       ids <- ids[stri_trim(ids) != ""]
-      if (length(ids) == 0) {
+      if (length(ids) == 0L) {
         return(rpt())
-      } else{
+      } else {
         return(filterReport(ids, rpt()))
       }
     }
@@ -431,9 +482,9 @@ shinyServer(function(input, output, session) {
     }
 
     g <- gvaView()
-    g$indivMeanKin <- round(g$indivMeanKin, 5)
-    g$zScores <- round(g$zScores, 2)
-    g$gu <- round(g$gu, 5)
+    g$indivMeanKin <- round(g$indivMeanKin, 5L)
+    g$zScores <- round(g$zScores, 2L)
+    g$gu <- round(g$gu, 5L)
     g <- toCharacter(g)
     names(g) <- headerDisplayNames(names(g))
 
@@ -443,7 +494,7 @@ shinyServer(function(input, output, session) {
   # Download handlers for all or a subset of the Genetic Value Analysis
   output$downloadGVAFull <- downloadHandler(
     filename = function() {
-      paste("GVA_full", ".csv", sep = "")
+      paste0("GVA_full", ".csv")
     },
     content = function(file) {
       write.csv(rpt(), file, na = "", row.names = FALSE)
@@ -452,7 +503,7 @@ shinyServer(function(input, output, session) {
 
   output$downloadGVASubset <- downloadHandler(
     filename = function() {
-      paste("GVA_subset", ".csv", sep = "")
+      paste0("GVA_subset", ".csv")
     },
     content = function(file) {
       write.csv(gvaView(), file, na = "", row.names = FALSE)
@@ -473,7 +524,7 @@ shinyServer(function(input, output, session) {
   # Download handler for the kinship matrix
   output$downloadKinship <- downloadHandler(
     filename = function() {
-      paste("Kinship", ".csv", sep = "")
+      paste0("Kinship", ".csv")
     },
     content = function(file) {
       write.csv(kmat(), file, na = "")
@@ -493,73 +544,114 @@ shinyServer(function(input, output, session) {
 
     mk <- summary(rpt()[, "indivMeanKin"])
     gu <- summary(rpt()[, "gu"])
-    fe_title_txt <- JS(paste("Founder equivalents estimates the expected number
+    fe_title_txt <- JS(
+      paste(
+        "Founder equivalents estimates the expected number
 	of equally contributing founders that would be
 	required to produce the observed genetic diversity
-	in the current population. $f_e = 1 / \\sigma;(p_{i_{2}})$"))
-#  </MATH>Where <MATH>p<sub>i</sub></MATH>is the proportion of the genes of
-# the living,
-#	descendant population contributed by founder <MATH>i</MATH>."))
-    founder <- htmltools::withTags(table(
-      class = "display",
-      thead(
-        tr(
-          th("Known Founders"),
-          th("Known Female Founders"),
-          th("Known Male Founders"),
-          th(JS("Founder Equivalents")),
-          th("Founder Genome Equivalents"))),
-      tbody(td(as.character(f)), td(as.character(nff)), td(as.character(nmf)),
-            td(as.character(round(fe, digits = 2))),
-            td(as.character(round(fg, digits = 2))))))
+	in the current population. $f_e = 1 / \\sigma;(p_{i_{2}})$"
+      )
+    )
+    #  </MATH>Where <MATH>p<sub>i</sub></MATH>is the proportion of the genes of
+    # the living,
+    #	descendant population contributed by founder <MATH>i</MATH>."))
+    founder <- htmltools::withTags(table(class = "display", thead(tr(
+      th("Known Founders"),
+      th("Known Female Founders"),
+      th("Known Male Founders"),
+      th(JS("Founder Equivalents")),
+      th("Founder Genome Equivalents")
+    )), tbody(
+      td(as.character(f)),
+      td(as.character(nff)),
+      td(as.character(nmf)),
+      td(as.character(round(fe, digits = 2L))),
+      td(as.character(round(fg, digits = 2L)))
+    )))
 
-      header <- paste("<tr>",
-                    "<th></th>",
-                    "<th>Min</th>",
-                    "<th>1st Quartile</th>",
-                    "<th>Mean</th>",
-                    "<th>Median</th>",
-                    "<th>3rd Quartile</th>",
-                    "<th>Max</th>",
-                    "</tr>")
+    header <- paste(
+      "<tr>",
+      "<th></th>",
+      "<th>Min</th>",
+      "<th>1st Quartile</th>",
+      "<th>Mean</th>",
+      "<th>Median</th>",
+      "<th>3rd Quartile</th>",
+      "<th>Max</th>",
+      "</tr>"
+    )
 
-    k <- paste("<tr>",
-               "<td>Mean Kinship</td>",
-               "<td>", as.character(round(mk["Min."], 4)), "</td>",
-               "<td>", as.character(round(mk["1st Qu."], 4)), "</td>",
-               "<td>", as.character(round(mk["Mean"], 4)), "</td>",
-               "<td>", as.character(round(mk["Median"], 4)), "</td>",
-               "<td>", as.character(round(mk["3rd Qu."], 4)), "</td>",
-               "<td>", as.character(round(mk["Max."], 4)), "</td>",
-               "</tr>")
+    k <- paste(
+      "<tr>",
+      "<td>Mean Kinship</td>",
+      "<td>",
+      as.character(round(mk["Min."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(mk["1st Qu."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(mk["Mean"], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(mk["Median"], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(mk["3rd Qu."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(mk["Max."], 4L)),
+      "</td>",
+      "</tr>"
+    )
 
-    g <- paste("<tr>",
-               "<td>Genome Uniqueness</td>",
-               "<td>", as.character(round(gu["Min."], 4)), "</td>",
-               "<td>", as.character(round(gu["1st Qu."], 4)), "</td>",
-               "<td>", as.character(round(gu["Mean"], 4)), "</td>",
-               "<td>", as.character(round(gu["Median"], 4)), "</td>",
-               "<td>", as.character(round(gu["3rd Qu."], 4)), "</td>",
-               "<td>", as.character(round(gu["Max."], 4)), "</td>",
-               "</tr>")
+    g <- paste(
+      "<tr>",
+      "<td>Genome Uniqueness</td>",
+      "<td>",
+      as.character(round(gu["Min."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(gu["1st Qu."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(gu["Mean"], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(gu["Median"], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(gu["3rd Qu."], 4L)),
+      "</td>",
+      "<td>",
+      as.character(round(gu["Max."], 4L)),
+      "</td>",
+      "</tr>"
+    )
 
     return(paste(founder, "<br>", "<br>", "<table>", header, k, g, "</table>"))
   })
   mkHistogram <- function() {
     mk <- rpt()[, "indivMeanKin"]
     avg <- mean(mk, na.rm = TRUE)
+    # nolint start: commented_code_linter.
     # std.dev <- sd(mk, na.rm = TRUE)
-    # upper <- avg + (2 * std.dev)
-    # lower <- avg - (2 * std.dev)
-
-    brx <- pretty(range(mk), 25)
-    ggplot(data.frame(mk = mk), aes(x = mk, y=..density..)) +
-      geom_histogram(bins = 25, color="darkblue", fill="lightblue",
-                     breaks = brx) +
+    # upper <- avg + (2L * std.dev)
+    # lower <- avg - (2L * std.dev)
+    # nolint end: commented_code_linter
+    brx <- pretty(range(mk), 25L)
+    ggplot(data.frame(mk = mk), aes(x = mk, y = ..density..)) +
+      geom_histogram(
+        bins = 25L,
+        color = "darkblue",
+        fill = "lightblue",
+        breaks = brx
+      ) +
       theme_classic() +
       xlab("Kinship") + ylab("Frequency") +
       ggtitle("Distribution of Individual Mean Kinship Coefficients") +
-      geom_vline(aes(xintercept = avg, color = "red"), linetype = "dashed",
+      geom_vline(aes(xintercept = avg, color = "red"),
+                 linetype = "dashed",
                  show.legend = FALSE)# +
   }
   output$mkHist <- renderPlot({
@@ -571,18 +663,25 @@ shinyServer(function(input, output, session) {
   zscoreHistogram <- function() {
     z <- rpt()[, "zScores"]
     avg <- mean(z, na.rm = TRUE)
+    # nolint start: commented_code_linter.
     # std.dev <- sd(z, na.rm = TRUE)
-    # upper <- avg + (2 * std.dev)
-    # lower <- avg - (2 * std.dev)
+    # upper <- avg + (2L * std.dev)
+    # lower <- avg - (2L * std.dev)
+    # nolint end: commented_code_linter
 
-    brx <- pretty(range(z), 25)
-    ggplot(data.frame(z = z), aes(x = z, y=..density..)) +
-      geom_histogram(bins = 25, color="darkblue", fill="lightblue",
-                     breaks = brx) +
+    brx <- pretty(range(z), 25L)
+    ggplot(data.frame(z = z), aes(x = z, y = ..density..)) +
+      geom_histogram(
+        bins = 25L,
+        color = "darkblue",
+        fill = "lightblue",
+        breaks = brx
+      ) +
       theme_classic() +
       xlab("Z-Score") + ylab("Frequency") +
       ggtitle("Distribution of Mean Kinship Coefficients Z-scores") +
-      geom_vline(aes(xintercept = avg, color = "red"), linetype = "dashed",
+      geom_vline(aes(xintercept = avg, color = "red"),
+                 linetype = "dashed",
                  show.legend = FALSE)# +
   }
   output$zscoreHist <- renderPlot({
@@ -595,17 +694,24 @@ shinyServer(function(input, output, session) {
   guHistogram <- function() {
     gu <- rpt()[, "gu"]
     avg <- mean(gu, na.rm = TRUE)
+    # nolint start: commented_code_linter.
     # std.dev <- sd(gu, na.rm = TRUE)
     # upper <- avg + (2 * std.dev)
     # lower <- avg - (2 * std.dev)
+    # nolint end: commented_code_linter
 
-    brx <- pretty(range(gu), 25)
-    ggplot(data.frame(gu = gu), aes(x = gu, y=..density..)) +
-      geom_histogram(color="darkblue", fill="lightblue", breaks = brx) +
+    brx <- pretty(range(gu), 25L)
+    ggplot(data.frame(gu = gu), aes(x = gu, y = ..density..)) +
+      geom_histogram(
+        color = "darkblue",
+        fill = "lightblue",
+        breaks = brx
+      ) +
       theme_classic() +
       xlab("Genome Uniqueness Score") + ylab("Frequency") +
       ggtitle("Distribution of Genome Uniqueness") +
-      geom_vline(aes(xintercept = avg, color = "red"), linetype = "dashed",
+      geom_vline(aes(xintercept = avg, color = "red"),
+                 linetype = "dashed",
                  show.legend = FALSE)
   }
   output$guHist <- renderPlot({
@@ -617,9 +723,14 @@ shinyServer(function(input, output, session) {
 
   meanKinshipBoxPlot <- function() {
     gu <- rpt()[, "indivMeanKin"]
-    ggplot(data.frame(gu = gu), aes(x = 0, y = gu)) +
-      geom_boxplot(color="darkblue", fill="lightblue", notch = FALSE,
-                   outlier.color = "red", outlier.shape = 1) +
+    ggplot(data.frame(gu = gu), aes(x = 0L, y = gu)) +
+      geom_boxplot(
+        color = "darkblue",
+        fill = "lightblue",
+        notch = FALSE,
+        outlier.color = "red",
+        outlier.shape = 1L
+      ) +
       theme_classic() + geom_jitter(width = 0.2) + coord_flip() +
       ylab("Kinship")  +
       ggtitle("Boxplot of Individual Mean Kinship Coefficients") +
@@ -634,9 +745,14 @@ shinyServer(function(input, output, session) {
   })
   zscoreBoxPlot <- function() {
     gu <- rpt()[, "zScores"]
-    ggplot(data.frame(gu = gu), aes(x = 0, y = gu)) +
-      geom_boxplot(color="darkblue", fill="lightblue", notch = FALSE,
-                   outlier.color = "red", outlier.shape = 1) +
+    ggplot(data.frame(gu = gu), aes(x = 0L, y = gu)) +
+      geom_boxplot(
+        color = "darkblue",
+        fill = "lightblue",
+        notch = FALSE,
+        outlier.color = "red",
+        outlier.shape = 1L
+      ) +
       theme_classic() + geom_jitter(width = 0.2) + coord_flip() +
       ylab("Z-Score") +
       ggtitle("Boxplot of Mean Kinship Coefficients Z-scores") +
@@ -650,9 +766,14 @@ shinyServer(function(input, output, session) {
   })
   guBoxPlot <- function() {
     gu <- rpt()[, "gu"]
-    ggplot(data.frame(gu = gu), aes(x = 0, y = gu)) +
-      geom_boxplot(color="darkblue", fill="lightblue", notch = FALSE,
-                   outlier.color = "red", outlier.shape = 1) +
+    ggplot(data.frame(gu = gu), aes(x = 0L, y = gu)) +
+      geom_boxplot(
+        color = "darkblue",
+        fill = "lightblue",
+        notch = FALSE,
+        outlier.color = "red",
+        outlier.shape = 1L
+      ) +
       theme_classic() + geom_jitter(width = 0.2) + coord_flip() +
       ylab("Genome Uniquness")  + ggtitle("Boxplot of Genome Uniqueness") +
       xlab("")
@@ -664,7 +785,8 @@ shinyServer(function(input, output, session) {
     }
     guBoxPlot()
   })
-  box_and_whisker_desc <- paste0("The upper whisker extends from the hinge to
+  box_and_whisker_desc <- paste0(
+    "The upper whisker extends from the hinge to
                               the largest value no further than 1.5 * IQR
                               from the hinge (where IQR is the
                               inter-quartile range, or distance between
@@ -673,20 +795,39 @@ shinyServer(function(input, output, session) {
                               smallest value at most 1.5 * IQR of the
                               hinge. Data beyond the end of the whiskers
                               are called \"outlying\" points and are plotted
-                              individually.")
-  addPopover(session, "mkBox", "Mean Kinship Coefficients",
-             content = box_and_whisker_desc,
-             placement = "bottom", trigger = "hover", options = NULL)
-  addPopover(session, "zscoreBox", "Z-scores",
-             content = box_and_whisker_desc,
-             placement = "bottom", trigger = "hover", options = NULL)
-  addPopover(session, "guBox", "Genetic Uniqueness",
-             content = box_and_whisker_desc,
-             placement = "bottom", trigger = "hover", options = NULL)
+                              individually."
+  )
+  addPopover(
+    session,
+    "mkBox",
+    "Mean Kinship Coefficients",
+    content = box_and_whisker_desc,
+    placement = "bottom",
+    trigger = "hover",
+    options = NULL
+  )
+  addPopover(
+    session,
+    "zscoreBox",
+    "Z-scores",
+    content = box_and_whisker_desc,
+    placement = "bottom",
+    trigger = "hover",
+    options = NULL
+  )
+  addPopover(
+    session,
+    "guBox",
+    "Genetic Uniqueness",
+    content = box_and_whisker_desc,
+    placement = "bottom",
+    trigger = "hover",
+    options = NULL
+  )
 
 
 
-  # ##
+  # nolint start: commented_code_linter.
   # output$relations <- eventReactive(input$displayRelations, {
   #   DT::renderDataTable(DT::datatable({
   #     if (is.null(kmat())) {
@@ -710,11 +851,12 @@ shinyServer(function(input, output, session) {
   #     toCharacter(r)
   #   })
   # )})
+  # nolint end: commented_code_linter
 
   # Download handler for the male founders
   output$downloadMaleFounders <- downloadHandler(
     filename = function() {
-      paste("maleFounders", ".csv", sep = "")
+      paste0("maleFounders", ".csv")
     },
     content = function(file) {
       mf <- geneticValue()[["maleFounders"]]
@@ -724,7 +866,7 @@ shinyServer(function(input, output, session) {
   # Download handler for the male founders
   output$downloadFemaleFounders <- downloadHandler(
     filename = function() {
-      paste("femaleFounders", ".csv", sep = "")
+      paste0("femaleFounders", ".csv")
     },
     content = function(file) {
       ff <- geneticValue()[["femaleFounders"]]
@@ -735,7 +877,7 @@ shinyServer(function(input, output, session) {
   # Download handler for the first-order relationships
   output$downloadFirstOrder <- downloadHandler(
     filename = function() {
-      paste("FirstOrder", ".csv", sep = "")
+      paste0("FirstOrder", ".csv")
     },
     content = function(file) {
       ped <- getPed()
@@ -746,7 +888,7 @@ shinyServer(function(input, output, session) {
 
   output$downloadRelations <- downloadHandler(
     filename = function() {
-      paste("Relations", ".csv", sep = "")
+      paste0("Relations", ".csv")
     },
     content = function(file) {
       ped <- getPed()
@@ -760,8 +902,13 @@ shinyServer(function(input, output, session) {
     filename = "meanKinshipCoefficientHistogram.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = mkHistogram(), device = "png")
     }
@@ -770,8 +917,13 @@ shinyServer(function(input, output, session) {
     filename = "meanKinshipCoefficientsZscoreHistogram.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = zscoreHistogram(), device = "png")
     }
@@ -780,8 +932,13 @@ shinyServer(function(input, output, session) {
     filename = "geneticUniquenessHistogram.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = guHistogram(), device = "png")
     }
@@ -790,8 +947,13 @@ shinyServer(function(input, output, session) {
     filename = "meanKinshipCoefficientsBox.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = meanKinshipBoxPlot(), device = "png")
     }
@@ -800,8 +962,13 @@ shinyServer(function(input, output, session) {
     filename = "meanKinshipCoefficientsZscoresBox.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = zscoreBoxPlot(), device = "png")
     }
@@ -810,15 +977,20 @@ shinyServer(function(input, output, session) {
     filename = "geneticUniquenessBox.png",
     content = function(file) {
       device <- function(..., width, height) {
-        grDevices::png(..., width = width, height = height,
-                       res = 300, units = "in")
+        grDevices::png(
+          ...,
+          width = width,
+          height = height,
+          res = 300L,
+          units = "in"
+        )
       }
       ggsave(file, plot = guBoxPlot(), device = "png")
     }
   )
 
 
-
+  # nolint start: commented_code_linter.
   # ### Display Founders
   # # Creating the male founder table for display on the Summary Statistics tab
   # output$maleFounders <- DT::renderDataTable(DT::datatable({
@@ -840,45 +1012,66 @@ shinyServer(function(input, output, session) {
   #   names(ped) <- headerDisplayNames(names(ped))
   #   ped
   # }))
-  #
-  #
+  # nolint end: commented_code_linter.
+
   #############################################################################
   # Functions for handling the breeding group formation process
-  textAreaWidget <- eventReactive(input$seedAnimals,{
-    seedAnimalList <- lapply(1:input$numGp, function(i) {
-        inputName <- paste0("curGrp", i)
-      textInputRow <-function (inputId,value) {
-        textAreaInput(inputId = inputName, paste0("Seed animals ", i),
-                      value = "", rows = 5, cols = 20, resize = "both")
+  textAreaWidget <- eventReactive(input$seedAnimals, {
+    seedAnimalList <- lapply(1L:input$numGp, function(i) {
+      inputName <- paste0("curGrp", i)
+      textInputRow <- function(inputId, value) {
+        textAreaInput(
+          inputId = inputName,
+          paste0("Seed animals ", i),
+          value = "",
+          rows = 5L,
+          cols = 20L,
+          resize = "both"
+        )
       }
-      column(2, offset = 0, textInputRow(inputName, ""))
+      column(2L, offset = 0L, textInputRow(inputName, ""))
     })
-    do.call(tagList, seedAnimalList)}, ignoreInit = FALSE)
+    do.call(tagList, seedAnimalList)
+  }, ignoreInit = FALSE)
 
   getCurrentGroups <- reactive({
-    currentGroups <- vapply(seq_len(input$numGp), function(i){character(0)},
-                            character(0))
-    for (i in 1:(input$numGp)) {
+    currentGroups <- vapply(seq_len(input$numGp),
+                            function(i) character(0L),
+                            character(0L))
+    for (i in seq_along(input$numGp)) {
       inputName <- paste0("curGrp", i)
-      if (is.null(input[[inputName]])) # seed animal option is not selected
+      if (is.null(input[[inputName]]))
+        # seed animal option is not selected
         break
       currentGroups[[i]] <-
         stri_remove_empty(unlist(strsplit(input[[inputName]], "[, \t\n]")))
     }
     currentGroups
   })
-  output$currentGroups <- renderUI({textAreaWidget()})
-  output$getCurrentGroups <- renderText({getCurrentGroups()})
-  textMinParentAge <- eventReactive(input$group_formation_rb,{
+  output$currentGroups <- renderUI({
+    textAreaWidget()
+  })
+  output$getCurrentGroups <- renderText({
+    getCurrentGroups()
+  })
+  textMinParentAge <- eventReactive(input$group_formation_rb, {
     minParentAgeLine <-
-      checkboxInput("useMinParentAge",
-                    label = paste0("Animals will be grouped with the mother ",
-                                   "below the minimum parent age of ",
-                                   globalMinParentAge, "."),
-                    value = FALSE)
-    do.call(tagList, list(minParentAgeLine))}, ignoreInit = FALSE)
+      checkboxInput(
+        "useMinParentAge",
+        label = paste0(
+          "Animals will be grouped with the mother ",
+          "below the minimum parent age of ",
+          globalMinParentAge,
+          "."
+        ),
+        value = FALSE
+      )
+    do.call(tagList, list(minParentAgeLine))
+  }, ignoreInit = FALSE)
 
-  output$minParentAge <- renderUI({textMinParentAge()})
+  output$minParentAge <- renderUI({
+    textMinParentAge()
+  })
 
   bg <- eventReactive(input$grpSim, {
     if (is.null(rpt())) {
@@ -890,19 +1083,19 @@ shinyServer(function(input, output, session) {
     ped <- getPed()
     # Filter out unknown animals added into ped
     ped <- removeUnknownAnimals(ped)
-    ids <- character(0)
+    ids <- character(0L)
     if (input$group_formation_rb == "candidates")
       ids <- unlist(strsplit(input$grpIds, "[, \t\n]"))
 
-    if (length(ids) > 0) {
+    if (length(ids) > 0L) {
       ped <- resetGroup(ped, ids)
       candidates <- ids
-    } else{
+    } else {
       candidates <- getGrpIds()
     }
 
     # Assume an animal that is in the group can't also be a candidate
-    if (length(currentGroupIds) > 0) {
+    if (length(currentGroupIds) > 0L) {
       candidates <- setdiff(candidates, currentGroupIds)
     }
 
@@ -917,23 +1110,38 @@ shinyServer(function(input, output, session) {
 
     harem <- input$group_sex_rb == "harems"
 
-    validate(
-      need(length(candidates == 0), "No candidates defined"),
-      need(!(length(setdiff(candidates, ped$id)) > 0),
-           paste("Group candidates present that are",
+    validate(need(length(candidates == 0L), "No candidates defined"),
+             need(
+               !(length(setdiff(
+                 candidates, ped$id
+               )) > 0L),
+               paste(
+                 "Group candidates present that are",
                  "not in the provided pedigree\n",
-                 paste(setdiff(candidates, ped$id), sep = "\n"))),
-      need(!(length(setdiff(currentGroupIds, ped$id)) > 0),
-           paste("Current group members present that",
+                 paste(setdiff(candidates, ped$id), sep = "\n")
+               )
+             ),
+             need(
+               !(length(setdiff(
+                 currentGroupIds, ped$id
+               )) > 0L),
+               paste(
+                 "Current group members present that",
                  "are not in the provided pedigree\n",
-                 paste(setdiff(currentGroupIds, ped$id), sep = "\n")))
-    )
+                 paste(setdiff(currentGroupIds, ped$id), sep = "\n")
+               )
+             ))
     ignore <- input$ffRel
-    ignore <- if (ignore) list(c("F", "F")) else NULL
+    ignore <- if (ignore)
+      list(c("F", "F"))
+    else
+      NULL
     threshold <- input$kinThresh
     if (input$useMinParentAge) {
       minAge <- globalMinParentAge
-      output$minParentAge <- renderText({paste0(minAge)})
+      output$minParentAge <- renderText({
+        paste0(minAge)
+      })
     } else {
       minAge <- input$minAge
     }
@@ -942,31 +1150,35 @@ shinyServer(function(input, output, session) {
     iter <- input$gpIter
     numGp <- ({
       input$numGp
-      })
+    })
     sexRatio <- input$sexRatio
     # Setting up the progress bar
     progress <- shiny::Progress$new()
     on.exit(progress$close())
-    progress$set(message = "Generating Groups", value = 0)
+    progress$set(message = "Generating Groups", value = 0L)
 
-    n <- 1
+    n <- 1L
     updateProgress <- function() {
-      progress$inc(amount = 1 / iter, detail = paste("Iteration:", n))
-      n <<- n + 1
+      progress$inc(amount = 1L / iter,
+                   detail = paste("Iteration:", n))
+      n <<- n + 1L
     }
 
-    grp <- groupAddAssign(candidates = candidates,
-                         currentGroups = currentGroups,
-                         kmat = kmat(),
-                         ped = ped,
-                         threshold = threshold,
-                         ignore = ignore,
-                         minAge = minAge,
-                         iter = iter,
-                         numGp = numGp,
-                         harem = harem, sexRatio,
-                         withKin = withKin,
-                         updateProgress = updateProgress)
+    grp <- groupAddAssign(
+      candidates = candidates,
+      currentGroups = currentGroups,
+      kmat = kmat(),
+      ped = ped,
+      threshold = threshold,
+      ignore = ignore,
+      minAge = minAge,
+      iter = iter,
+      numGp = numGp,
+      harem = harem,
+      sexRatio,
+      withKin = withKin,
+      updateProgress = updateProgress
+    )
 
     return(grp)
   })
@@ -976,7 +1188,7 @@ shinyServer(function(input, output, session) {
     ped <- ped[is.na(ped$exit) & !is.na(ped$birth), ]
     if ("group" %in% colnames(ped)) {
       return(ped$id[ped$group])
-    } else{
+    } else {
       return(ped$id[ped$population])
     }
   })
@@ -986,24 +1198,36 @@ shinyServer(function(input, output, session) {
     if (!is.null(bg())) {
       x <- length(bg()$group)
 
-      if (x > 1) {
+      if (x > 1L) {
         gp <- list()
-        for (i in 1:(x - 1)) {
+        for (i in 1L:(x - 1L)) {
           gp[paste("Group", as.character(i))] <- i
         }
         gp["Unused"] <- x
 
-        updateSelectInput(session, "viewGrp",
-                          label = "Enter the group to view:",
-                          choices = gp, selected = 1)
-      } else if (x == 1) {
-        updateSelectInput(session, "viewGrp",
-                          label = "Enter the group to view:",
-                          choices = list("Unused" = 1), selected = 1)
-      } else{
-        updateSelectInput(session, "viewGrp",
-                          label = "Enter the group to view:",
-                          choices = list(" " = 1), selected = 1)
+        updateSelectInput(
+          session,
+          "viewGrp",
+          label = "Enter the group to view:",
+          choices = gp,
+          selected = 1L
+        )
+      } else if (x == 1L) {
+        updateSelectInput(
+          session,
+          "viewGrp",
+          label = "Enter the group to view:",
+          choices = list(Unused = 1L),
+          selected = 1L
+        )
+      } else {
+        updateSelectInput(
+          session,
+          "viewGrp",
+          label = "Enter the group to view:",
+          choices = list(" " = 1L),
+          selected = 1L
+        )
       }
     }
   })
@@ -1012,15 +1236,16 @@ shinyServer(function(input, output, session) {
     if (is.null(bg())) {
       return(NULL)
     }
-    i <- withinIntegerRange(input$viewGrp, minimum = 1,
-                            maximum = input$numGp)[1]
+    i <- withinIntegerRange(input$viewGrp,
+                            minimum = 1L,
+                            maximum = input$numGp)[1L]
     gp <- bg()$group[[i]]
     ped <- getPed()
     gp <- addSexAndAgeToGroup(gp, ped)
-    gp$age <- round(gp$age, 1)
+    gp$age <- round(gp$age, 1L)
     colnames(gp) <- c("Ego ID", "Sex", "Age in Years")
 
-    if (nrow(gp) == 0) {
+    if (nrow(gp) == 0L) {
       return(NULL)
     } else {
       return(gp[order(gp$`Ego ID`), , drop = FALSE])
@@ -1032,11 +1257,11 @@ shinyServer(function(input, output, session) {
     }
     i <- as.numeric(input$viewGrp)
     kmat <- bg()$groupKin[[i]]
-    kmat <- as.data.frame(round(kmat, 6))
+    kmat <- as.data.frame(round(kmat, 6L))
 
-    if (nrow(kmat) == 0) {
+    if (nrow(kmat) == 0L) {
       return(NULL)
-    } else{
+    } else {
       return(kmat)
     }
   })

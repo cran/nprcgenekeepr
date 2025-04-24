@@ -26,14 +26,11 @@ Filters kinship values less than the specified threshold from a long-format
 table of kinship values.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 ped <- nprcgenekeepr::lacy1989Ped
 ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
-kin <- kinMatrix2LongForm(kmat, rm.dups = FALSE)
+kin <- kinMatrix2LongForm(kmat, removeDups = FALSE)
 kinFiltered_0.3 <- filterThreshold(kin, threshold = 0.3)
 kinFiltered_0.1 <- filterThreshold(kin, threshold = 0.1)
-}
-
 }

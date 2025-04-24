@@ -14,7 +14,7 @@ in \code{alleles} belongs.}
 }
 \value{
 A data.frame with columns \code{allele} and \code{freq}. This is a
- table of allele counts within the population.
+table of allele counts within the population.
 }
 \description{
 Part of Genetic Value Analysis
@@ -24,13 +24,10 @@ If ids are provided, the function will only count the unique alleles
 for an individual (homozygous alleles will be counted as 1).
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 data("ped1Alleles")
 ids <- ped1Alleles$id
 alleles <- ped1Alleles[, !(names(ped1Alleles) \%in\% c("id", "parent"))]
 aF <- alleleFreq(alleles[[1]], ids = NULL)
 aF[aF$freq >= 10, ]
-}
-
 }

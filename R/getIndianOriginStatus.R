@@ -1,17 +1,19 @@
 #' Get Indian-origin status of group
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' @return \code{ancestry} list of number of Chinese animals (\code{chinese}),
-#' number of hybrid (\code{hybrid}),
-#' number of borderline hybrid animals (\code{borderline}),
-#' number of Indian ancestry animals (\code{indian}),
-#' and the dashboard color (\code{color)} to be assigned based on the
-#' number of animals of each type counted.
+#' @return A list with a list named \code{ancestry} having named integer values
+#'         corresponding to the origin types and the count of each type
+#'         found in the function argument \code{origin}, the \code{color}
+#'         used for the heat map where "red" indicates "Chinese" or "Hybrid"
+#'         origin, "yellow" indicates "Borderline", and "green" otherwise; and
+#'         the \code{color_index) values are \code{1}, \code{2}, or \code{3}
+#'         corresponding to "red", "yellow", and "green".
 #' @param origin character vector of the animal origins. This vector
 #' is to have already been filtered to remove animals that should not be
 #' included in the calculation.
 #' @importFrom stringi stri_startswith_fixed stri_detect_fixed
+#' @noRd
 getIndianOriginStatus <- function(origin) {
   chinese <- length(origin[stri_detect_fixed(origin, "CHINESE")])
   indian <- length(origin[stri_detect_fixed(origin, "INDIAN")])
@@ -30,15 +32,15 @@ getIndianOriginStatus <- function(origin) {
     unknown = unknown,
     other = other
   )
-  if ((chinese + hybrid) >= 1) {
+  if ((chinese + hybrid) >= 1L) {
     color <- "red"
-    colorIndex <- 1
-  } else if (borderline >= 1) {
+    colorIndex <- 1L
+  } else if (borderline >= 1L) {
     color <- "yellow"
-    colorIndex <- 2
-  }else {
+    colorIndex <- 2L
+  } else {
     color <- "green"
-    colorIndex <- 3
+    colorIndex <- 3L
   }
   list(ancestry = ancestry, color = color, colorIndex = colorIndex)
 }

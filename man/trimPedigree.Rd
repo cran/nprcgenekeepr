@@ -16,7 +16,7 @@ trimPedigree(
 \item{probands}{a character vector with the list of animals whose ancestors
 should be included in the final pedigree.}
 
-\item{ped}{datatable that is the `Pedigree`. It contains pedigree
+\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
 information. The fields \code{sire} and \code{dam} are required.}
 
 \item{removeUninformative}{logical defaults to \code{FALSE}. If set to
@@ -45,22 +45,22 @@ the pedigree back in time starting from a group of probands, then moves
 back down the tree trimming off uninformative ancestors.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 examplePedigree <- nprcgenekeepr::examplePedigree
-breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-                         reportChanges = FALSE,
-                         reportErrors = FALSE)
+breederPed <- qcStudbook(examplePedigree,
+  minParentAge = 2,
+  reportChanges = FALSE,
+  reportErrors = FALSE
+)
 focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
-                                  is.na(breederPed$dam)) &
-                                is.na(breederPed$exit)]
+  is.na(breederPed$dam)) &
+  is.na(breederPed$exit)]
 breederPed <- setPopulation(ped = breederPed, ids = focalAnimals)
 trimmedPed <- trimPedigree(focalAnimals, breederPed)
 trimmedPedInformative <- trimPedigree(focalAnimals, breederPed,
-                                      removeUninformative = TRUE)
+  removeUninformative = TRUE
+)
 nrow(breederPed)
 nrow(trimmedPed)
 nrow(trimmedPedInformative)
-}
-
 }

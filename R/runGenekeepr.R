@@ -1,25 +1,28 @@
 #' Allows running \code{shiny} application with
 #' \code{nprcgenekeepr::runGeneKeepR()}
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' @return Returns the error condition of the Shiny application when it
 #' terminates.
 #'
-#' @examples
-#' \dontrun{
-#' library(nprcgenekeepr)
-#' runGeneKeepR()
-#' }
+#' @importFrom shiny runApp
 #' @export
+#' @examples
+#' if (interactive()) {
+#'   library(nprcgenekeepr)
+#'   runGeneKeepR()
+#' }
 runGeneKeepR <- function() {
   appDir <- system.file("application", package = "nprcgenekeepr")
   if (appDir == "") {
-    stop(paste0("Could not find application directory. ",
-                "Try re-installing `nprcgenekeepr`."),
-         call. = FALSE)
+    stop(
+        "Could not find application directory. ",
+        "Try re-installing `nprcgenekeepr`.",
+      call. = FALSE
+    )
   }
 
-  shiny::runApp(appDir, display.mode = "normal", port = 6012)
+  shiny::runApp(appDir, display.mode = "normal", port = 6012L)
 }

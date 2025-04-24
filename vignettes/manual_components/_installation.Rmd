@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-author: "R. Mark Sharp"
+author: "R. Mark Sharp, Ph.D."
 date: "10/2/2017"
 output: 
    - rmarkdown::pdf_document
@@ -14,13 +14,19 @@ vignette: >
 ---
 ## Installation
 
+You can install the CRAN version of **nprcgenekeepr** from
+the R console prompt with:
+
+```{r cran-installation, eval = FALSE, echo=TRUE}
+install.packages("nprcgenekeepr")
+```
+
 You can install the development version of **nprcgenekeepr** from GitHub from
 the R console prompt with:
 
 ```{r gh-installation, eval = FALSE, echo=TRUE}
 install.packages("devtools")
-devtools::install_github("rmsharp/nprcgenekeepr")
-
+devtools::install_github(file.path("rmsharp", "nprcgenekeepr"))
 ```
 
 All missing dependencies should be automatically installed.

@@ -4,7 +4,7 @@
 \alias{obfuscateId}
 \title{obfucateId creates a vector of ID aliases of specified length}
 \usage{
-obfuscateId(id, size = 10, existingIds = character(0))
+obfuscateId(id, size = 10L, existingIds = character(0L))
 }
 \arguments{
 \item{id}{character vector of IDs to be obfuscated (alias creation).}
@@ -24,11 +24,9 @@ User has the option of providing a character vector of aliases to avoid
 using.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
-integerIds <- 1:10
-obfuscateId(integerIds, size = 4)
-characterIds <- paste0(paste0(sample(LETTERS, 1, replace = FALSE)), 1:10)
-obfuscateId(characterIds, size = 4)
-}
+integerIds <- 1L:10L
+obfuscateId(integerIds, size = 4L)
+characterIds <- paste0(paste0(sample(LETTERS, 1L, replace = FALSE)), 1L:10L)
+obfuscateId(characterIds, size = 4L)
 }

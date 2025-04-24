@@ -1,17 +1,9 @@
 #' Provides list of potential sires
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' @return A character vector of potential sire Ids
-#'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped <- nprcgenekeepr::pedWithGenotype
-#' ids <- nprcgenekeepr::qcBreeders
-#' getPotentialSires(ids, minAge = 1, ped)
-#' }
 #'
 #' @param ids character vector of IDs of the animals
 #' @param minAge integer value indicating the minimum age to consider in group
@@ -20,8 +12,13 @@
 #' @param ped dataframe that is the `Pedigree`. It contains pedigree
 #' information including the IDs listed in \code{candidates}.
 #' @export
-getPotentialSires <- function(ids, minAge = 1, ped) {
+#' @examples
+#' library(nprcgenekeepr)
+#' ped <- nprcgenekeepr::pedWithGenotype
+#' ids <- nprcgenekeepr::qcBreeders
+#' getPotentialSires(ids, minAge = 1L, ped)
+getPotentialSires <- function(ids, minAge = 1L, ped) {
   ped <- ped[!is.na(ped$birth), ]
   ped$id[ped$id %in% ids & ped$sex == "M" & getCurrentAge(ped$birth) >= minAge &
-           !is.na(ped$birth)]
+    !is.na(ped$birth)]
 }

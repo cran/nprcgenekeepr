@@ -11,17 +11,15 @@ checkErrorLst(errorLst)
 \code{qcStudbook}.}
 }
 \value{
-Returns \code{NULL} is all fields are empty
+Returns FALSE if all fields are empty or the list is NULL
 else the entire list is returned.
 }
 \description{
 checkErrorLst examines list for non-empty fields
 }
 \examples{
-\donttest{
 errorLst <- qcStudbook(nprcgenekeepr::pedFemaleSireMaleDam,
-                       reportErrors = TRUE)
+  reportErrors = TRUE
+)
 checkErrorLst(errorLst)
-}
-
 }

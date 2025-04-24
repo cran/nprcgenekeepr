@@ -1,21 +1,12 @@
 #' obfucateDate adds a random number of days bounded by plus and minus max delta
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Get the base_date add a random number of days taken from a uniform
 #' distribution bounded by -max_delta and max_delta.
 #' Insure the resulting date is as least as large as the min_date.
 #'
 #' @return A vector of dates that have be obfuscated.
-#'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' someDates <- rep(as.Date(c("2009-2-16", "2016-2-16"), format = "%Y-%m-%d"),
-#'                  10)
-#' minBirthDate <- rep(as.Date("2009-2-16", format = "%Y-%m-%d"), 20)
-#' obfuscateDate(someDates, 30, minBirthDate)
-#' }
 #'
 #' @param baseDate list of Date objects with dates to be obfuscated
 #' @param maxDelta integer vector that is used to create min and max arguments
@@ -25,20 +16,30 @@
 #' @importFrom lubridate ddays
 #' @importFrom stats runif
 #' @export
-obfuscateDate <- function(baseDate, maxDelta = 30, minDate) {
-  if (length(maxDelta) == 1) {
+#' @examples
+#' library(nprcgenekeepr)
+#' someDates <- rep(
+#'   as.Date(c("2009-2-16", "2016-2-16"), format = "%Y-%m-%d"),
+#'   10
+#' )
+#' minBirthDate <- rep(as.Date("2009-2-16", format = "%Y-%m-%d"), 20)
+#' obfuscateDate(someDates, 30, minBirthDate)
+obfuscateDate <- function(baseDate, maxDelta = 30L, minDate) {
+  if (length(maxDelta) == 1L) {
     maxDelta <- rep(maxDelta, length(baseDate))
   }
-  if (length(baseDate) != length(maxDelta))
+  if (length(baseDate) != length(maxDelta)) {
     stop("Length of minDate must be 1 or the same as baseDate.")
+  }
   if (missing(minDate)) {
     minDate <- baseDate
     for (i in seq_along(baseDate)) {
       minDate[[i]] <- as.Date(baseDate[[i]] - ddays(maxDelta[[i]]))
     }
   }
-  if (length(baseDate) != length(minDate))
+  if (length(baseDate) != length(minDate)) {
     stop("Length of baseDate and minDate must be the same.")
+  }
 
   obfuscatedDates <- baseDate
   for (i in seq_along(baseDate)) {
@@ -46,10 +47,13 @@ obfuscateDate <- function(baseDate, maxDelta = 30, minDate) {
       obfuscatedDate <- NA
     } else {
       repeat {
-        obfuscatedDate <- as.Date(baseDate[[i]] + ddays(runif(1, -maxDelta[i],
-                                                              maxDelta[i])))
-        if (obfuscatedDate >= minDate[[i]])
+        obfuscatedDate <- as.Date(baseDate[[i]] + ddays(runif(
+          1L, -maxDelta[i],
+          maxDelta[i]
+        )))
+        if (obfuscatedDate >= minDate[[i]]) {
           break
+        }
       }
     }
     obfuscatedDates[[i]] <- obfuscatedDate

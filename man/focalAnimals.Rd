@@ -3,8 +3,8 @@
 \docType{data}
 \name{focalAnimals}
 \alias{focalAnimals}
-\title{focalAnimals is a dataframe with one column (_id_) containing the of animal
-Ids from the __examplePedigree__ pedigree.}
+\title{focalAnimals is a dataframe with one column (\emph{id}) containing the of animal
+Ids from the \strong{examplePedigree} pedigree.}
 \format{
 An object of class \code{data.frame} with 327 rows and 1 columns.
 }
@@ -16,17 +16,17 @@ They can be used to illustrate the identification of a population of
 interest as is shown in the example below.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 data("focalAnimals")
 data("examplePedigree")
 any(names(examplePedigree) == "population")
 nrow(examplePedigree)
-examplePedigree <- setPopulation(ped = examplePedigree,
-                                 ids = focalAnimals$id)
+examplePedigree <- setPopulation(
+  ped = examplePedigree,
+  ids = focalAnimals$id
+)
 any(names(examplePedigree) == "population")
 nrow(examplePedigree)
 nrow(examplePedigree[examplePedigree$population, ])
-}
 }
 \keyword{datasets}

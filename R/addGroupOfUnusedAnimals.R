@@ -1,6 +1,6 @@
 #' addGroupOfUnusedAnimals adds a group to the saved groups if needed
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 
 #' @return A list of groups, which are each lists of animal Ids that are unused
@@ -18,6 +18,7 @@
 #' @param harem logical variable when set to \code{TRUE}, the formed groups
 #' have a single male at least \code{minAge} old.
 #'
+#' @noRd
 addGroupOfUnusedAnimals <- function(savedGroupMembers, candidates, ped,
                                     minAge, harem) {
   if (harem) { # Sires were added to groupMembers
@@ -25,9 +26,10 @@ addGroupOfUnusedAnimals <- function(savedGroupMembers, candidates, ped,
   }
 
   # Adding a group for the unused animals
-  n <- length(savedGroupMembers) + 1
+  n <- length(savedGroupMembers) + 1L
   savedGroupMembers[[n]] <-
     ifelse(isEmpty(setdiff(candidates, unlist(savedGroupMembers))),
-           c(NA), list(setdiff(candidates, unlist(savedGroupMembers))))[[1]]
+      NA, list(setdiff(candidates, unlist(savedGroupMembers)))
+    )[[1L]]
   savedGroupMembers
 }

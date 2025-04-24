@@ -1,6 +1,6 @@
 #' \code{makesLoop} tests for a common ancestor.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Pedigree Sampling
 #' From PedigreeSampling.R
@@ -23,11 +23,11 @@
 #' @param id character vector of length 1 having the ID of interest
 #' @param ptree a list of lists forming a pedigree tree as constructed by
 #' \code{createPedTree(ped)} where \code{ped} is a standard pedigree dataframe.
+#' @noRd
 makesLoop <- function(id, ptree) {
-
   sAnc <- getAncestors(ptree[[id]]$sire, ptree)
   dAnc <- getAncestors(ptree[[id]]$dam, ptree)
   overlap <- intersect(sAnc, dAnc)
 
-  return(length(overlap) > 0)
+  length(overlap) > 0L
 }

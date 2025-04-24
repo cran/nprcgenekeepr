@@ -1,6 +1,6 @@
 #' Ranks animals based on genetic value.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Genetic Value Analysis
 #' Adds a column to \code{rpt} containing integers from 1 to nrow, and provides
@@ -8,8 +8,13 @@
 #'
 #' @return A list of dataframes with value and ranking information added.
 #'
+#' @param rpt a list of data.frame (req. colnames: value) containing genetic
+#' value data for the population. Dataframes separate out those animals that
+#' are imports, those that have high genome uniqueness (gu > 10%), those that
+#' have low mean kinship (mk < 0.25), and the remainder.
+#'
+#' @export
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' finalRpt <- nprcgenekeepr::finalRpt
 #' rpt <- rankSubjects(nprcgenekeepr::finalRpt)
@@ -19,19 +24,11 @@
 #' rpt[["lowMk"]][1, "rank"]
 #' rpt[["lowVal"]][1, "value"]
 #' rpt[["lowVal"]][1, "rank"]
-#' }
-#'
-#' @param rpt a list of data.frame {req. colnames: value} containing genetic
-#' value data for the population. Dataframes separate out those animals that
-#' are imports, those that have high genome uniqueness (gu > 10%), those that
-#' have low mean kinship (mk < 0.25), and the remainder.
-#'
-#' @export
 rankSubjects <- function(rpt) {
-  rnk <- 1
+  rnk <- 1L
 
   for (i in seq_len(length(rpt))) {
-    if (nrow(rpt[[i]]) == 0) {
+    if (nrow(rpt[[i]]) == 0L) {
       next
     }
 
@@ -46,10 +43,9 @@ rankSubjects <- function(rpt) {
     if (names(rpt[i]) == "noParentage") {
       rpt[[i]][, "rank"] <- NA
     } else {
-      rpt[[i]][, "rank"] <- rnk:(rnk + nrow(rpt[[i]]) - 1)
+      rpt[[i]][, "rank"] <- rnk:(rnk + nrow(rpt[[i]]) - 1L)
       rnk <- rnk + nrow(rpt[[i]])
     }
-
   }
-  return(rpt)
+  rpt
 }

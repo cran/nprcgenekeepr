@@ -1,4 +1,4 @@
-#' Copyright(c) 2017-2020 R. Mark Sharp
+#' Copyright(c) 2017-2024 R. Mark Sharp
 # This file is part of nprcgenekeepr
 context("setPopulation")
 library(testthat)
@@ -9,6 +9,7 @@ test_that("setPopulation sets correct records to TRUE and FALSE", {
   expect_true(all(ped1$population))
   ped1 <- setPopulation(ped = ped, ids = c("A", "B", "I"))
   expect_true(all(ped1$population[ped1$id %in%
-                    c("A", "B", "I")]))
-  expect_true(length(setdiff(ped1$id[ped1$population], c("A", "B", "I"))) == 0)
+    c("A", "B", "I")]))
+  expect_length(setdiff(ped1$id[ped1$population], c("A", "B", "I")),
+                   0L)
 })

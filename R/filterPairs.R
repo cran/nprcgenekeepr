@@ -1,28 +1,11 @@
 #' Filters kinship values from a long-format kinship table based on the sexes
 #'  of the two animals involved.
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' Part of Group Formation
 #'
 #' @return A dataframe representing a filtered long-format kinship table.
-#'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped <- nprcgenekeepr::lacy1989Ped
-#' ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
-#' kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
-#' kin <- kinMatrix2LongForm(kmat, rm.dups = FALSE)
-#' threshold <- 0.1
-#' kin <- filterThreshold(kin, threshold = threshold)
-#' ped$sex <- c("M", "F", "M", "M", "F", "F", "M")
-#' kinNull <- filterPairs(kin, ped, ignore = NULL)
-#' kinMM <- filterPairs(kin, ped, ignore = list(c("M", "M")))
-#' ped
-#' kin[kin$id1 == "C", ]
-#' kinMM[kinMM$id1 == "C", ]
-#' }
 #'
 #' @param kin a dataframe with columns \code{id1}, \code{id2}, and
 #' \code{kinship}. This is the kinship data reformatted from a matrix,
@@ -33,9 +16,22 @@
 #' indicating which sex pairs should be ignored with regard to kinship.
 #' Defaults to \code{list(c("F", "F"))}.
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' ped <- nprcgenekeepr::lacy1989Ped
+#' ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
+#' kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
+#' kin <- kinMatrix2LongForm(kmat, removeDups = FALSE)
+#' threshold <- 0.1
+#' kin <- filterThreshold(kin, threshold = threshold)
+#' ped$sex <- c("M", "F", "M", "M", "F", "F", "M")
+#' kinNull <- filterPairs(kin, ped, ignore = NULL)
+#' kinMM <- filterPairs(kin, ped, ignore = list(c("M", "M")))
+#' ped
+#' kin[kin$id1 == "C", ]
+#' kinMM[kinMM$id1 == "C", ]
 filterPairs <- function(kin, ped, ignore = list(c("F", "F"))) {
-
-  if (length(ignore) == 0) {
+  if (length(ignore) == 0L) {
     return(kin)
   }
   kin["sort.col"] <- seq_len(nrow(kin))
@@ -50,15 +46,16 @@ filterPairs <- function(kin, ped, ignore = list(c("F", "F"))) {
 
   for (i in seq_len(length(ignore))) {
     rel <- ignore[[i]]
-    k <- !(((g1 == rel[1]) &
-               (g2 == rel[2])) |
-             ((g1 == rel[2]) &
-                (g2 == rel[1])))
+    k <- !(((g1 == rel[1L]) &
+      (g2 == rel[2L])) |
+      ((g1 == rel[2L]) &
+        (g2 == rel[1L])))
     keep <- keep & k
   }
   kin$sort.col <- NULL
   kin <- kin[keep, ]
-  if (nrow(kin) > 0)
+  if (nrow(kin) > 0L) {
     rownames(kin) <- seq_len(nrow(kin))
-  return(kin[!is.na(kin[[1]]), ])
+  }
+  return(kin[!is.na(kin[[1L]]), ])
 }

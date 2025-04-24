@@ -1,4 +1,4 @@
-#' Copyright(c) 2017-2020 R. Mark Sharp
+#' Copyright(c) 2017-2024 R. Mark Sharp
 #' This file is part of nprcgenekeepr
 context("calcRetention")
 library(testthat)
@@ -20,8 +20,9 @@ retention <- calcRetention(ped, alleles)
 ## for this specific comparison.
 test_that(stri_c(
   "calcRetention correctly calculates mean number of alleles retained from ",
-  "each founder"), {
-    expect_equal(retention[["A"]], 0.7500)
-    expect_equal(retention[["B"]], 0.7507)
-    expect_equal(retention[["E"]], 0.7452)
-  })
+  "each founder"
+), {
+  expect_equal(retention[["A"]], 0.7500)
+  expect_equal(retention[["B"]], 0.7507)
+  expect_equal(retention[["E"]], 0.7452)
+})

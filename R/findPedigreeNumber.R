@@ -1,14 +1,19 @@
 #' Determines the generation number for each id.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' One of Pedigree Curation functions
 #'
 #' @return Integer vector indicating generation numbers for each id,
 #' starting at 0 for individuals lacking IDs for both parents.
 #'
+#' @param id character vector with unique identifier for an individual
+#' @param sire character vector with unique identifier for an
+#' individual's father (\code{NA} if unknown).
+#' @param dam character vector with unique identifier for an
+#' individual's mother (\code{NA} if unknown).
+#' @export
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' library(stringi)
 #' ped <- nprcgenekeepr::lacy1989Ped
@@ -25,29 +30,23 @@
 #' ped <- rbind(ped, ped2)
 #' ped <- rbind(ped, ped3)
 #' ped$pedigree <- findPedigreeNumber(ped$id, ped$sire, ped$dam)
-#' ped
-#' }
-#'
-#' @param id character vector with unique identifier for an individual
-#' @param sire character vector with unique identifier for an
-#' individual's father (\code{NA} if unknown).
-#' @param dam character vector with unique identifier for an
-#' individual's mother (\code{NA} if unknown).
-#' @export
+#' ped$pedigree
 findPedigreeNumber <- function(id, sire, dam) {
   founders <- id[is.na(sire) & is.na(dam)]
   pedNum <- rep(NA, length(id))
-  n <- 1
+  n <- 1L
 
   while (!isEmpty(founders)) {
-    population <- founders[1]
+    population <- founders[1L]
 
-    while (TRUE) {
-      parents <- union(sire[id %in% population],
-                       dam[id %in% population])
+    repeat {
+      parents <- union(
+        sire[id %in% population],
+        dam[id %in% population]
+      )
       parents <- parents[!is.na(parents)]
 
-      offspring <- id[(sire %in% population)  | (dam %in% population)]
+      offspring <- id[(sire %in% population) | (dam %in% population)]
 
       added <- setdiff(union(offspring, parents), population)
 
@@ -58,9 +57,9 @@ findPedigreeNumber <- function(id, sire, dam) {
       population <- union(population, union(parents, offspring))
     }
     pedNum[id %in% population] <- n
-    n <- n + 1
+    n <- n + 1L
 
     founders <- setdiff(founders, population)
   }
-  return(pedNum)
+  pedNum
 }

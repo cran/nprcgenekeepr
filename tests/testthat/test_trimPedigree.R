@@ -1,4 +1,4 @@
-#' Copyright(c) 2017-2020 R. Mark Sharp
+#' Copyright(c) 2017-2024 R. Mark Sharp
 # This file is part of nprcgenekeepr
 context("trimPedigree")
 library(testthat)
@@ -6,17 +6,21 @@ library(testthat)
 data("smallPed")
 ped <- smallPed
 trim1 <- trimPedigree(c("C", "K", "L", "D", "E"), ped,
-                      removeUninformative = FALSE,
-                      addBackParents = FALSE)
+  removeUninformative = FALSE,
+  addBackParents = FALSE
+)
 trim2 <- trimPedigree(c("C", "K", "L", "D", "E"), ped,
-                      removeUninformative = TRUE,
-                      addBackParents = FALSE)
+  removeUninformative = TRUE,
+  addBackParents = FALSE
+)
 trim3 <- trimPedigree(c("C", "K", "L", "D", "E"), ped,
-                      removeUninformative = FALSE,
-                      addBackParents = TRUE)
+  removeUninformative = FALSE,
+  addBackParents = TRUE
+)
 trim4 <- trimPedigree(c("C", "K", "L", "D", "E"), ped,
-                      removeUninformative = TRUE,
-                      addBackParents = TRUE)
+  removeUninformative = TRUE,
+  addBackParents = TRUE
+)
 eTrim1 <- c("A", "B", "C", "D", "E", "K", "L", "Q")
 eTrim2 <- c("A", "B", "C", "D", "E", "L")
 eTrim3 <- c("A", "B", "C", "D", "E", "K", "L", "Q")

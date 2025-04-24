@@ -1,20 +1,12 @@
 #' Quality Control for the Studbook or pedigree
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Main pedigree curation function that performs basic quality control on
 #' pedigree information
 #'
 #' @return A data.frame with standardized and quality controlled pedigree
 #' information.
-#'
-#' @examples
-#' \donttest{
-#' examplePedigree <- nprcgenekeepr::examplePedigree
-#' ped <- qcStudbook(examplePedigree, minParentAge = 2, reportChanges = FALSE,
-#'                   reportErrors = FALSE)
-#' names(ped)
-#' }
 #'
 #' @param sb A dataframe containing a table of pedigree and demographic
 #' information.
@@ -23,33 +15,34 @@
 #' will be used if present, but are not required):
 #'
 #' \itemize{
-#' \item{id} {--- Character vector with Unique identifier for all individuals}
-#' \item{sire} {--- Character vector with unique identifier for the father of
-#' the current id}
-#' \item{dam} {--- Character vector with unique identifier for the mother of
-#' the current id}
-#' \item{sex} {--- Factor {levels: "M", "F", "U"} Sex specifier for an
-#' individual}
-#' \item{birth} {--- Date or \code{NA} (optional) with the individual's birth
-#' date}
-#' \item{departure} {--- Date or \code{NA} (optional) an individual was sold
-#' or shipped from the colony}
-#' \item{death} {--- date or \code{NA} (optional)
-#'  Date of death, if applicable}
-#' \item{status} {--- Factor {levels: ALIVE, DEAD, SHIPPED} (optional)
-#'  Status of an individual}
-#' \item{origin} {--- Character or \code{NA} (optional)
-#'  Facility an individual originated from, if other than ONPRC}
-#' \item{ancestry} {--- Character or \code{NA} (optional)
-#'  Geographic population to which the individual belongs}
-#' \item{spf} {--- Character or \code{NA} (optional)
-#'  Specific pathogen-free status of an individual}
-#' \item{vasxOvx} {--- Character or \code{NA} (optional)
+#' \item\{id\} \{--- Character vector with Unique identifier for all
+#' individuals\}
+#' \item\{sire\} \{--- Character vector with unique identifier for the father of
+#' the current id\}
+#' \item\{dam\} \{--- Character vector with unique identifier for the mother of
+#' the current id\}
+#' \item\{sex\} \{--- Factor \{levels: "M", "F", "U"\} Sex specifier for an
+#' individual\}
+#' \item\{birth\} \{--- Date or \code{NA} (optional) with the individual's birth
+#' date\}
+#' \item\{departure\} \{--- Date or \code{NA} (optional) an individual was sold
+#' or shipped from the colony\}
+#' \item\{death\} \{--- date or \code{NA} (optional)
+#'  Date of death, if applicable\}
+#' \item\{status\} \{--- Factor \{levels: ALIVE, DEAD, SHIPPED\} (optional)
+#'  Status of an individual\}
+#' \item\{origin\} \{--- Character or \code{NA} (optional)
+#'  Facility an individual originated from, if other than ONPRC\}
+#' \item\{ancestry\} \{--- Character or \code{NA} (optional)
+#'  Geographic population to which the individual belongs\}
+#' \item\{spf\} \{--- Character or \code{NA} (optional)
+#'  Specific pathogen-free status of an individual\}
+#' \item\{vasxOvx\} \{--- Character or \code{NA} (optional)
 #'  Indicator of the vasectomy/ovariectomy status of an animal; \code{NA} if
-#'  animal is intact, assume all other values indicate surgical alteration}
-#' \item{condition} {--- Character or \code{NA} (optional)
+#'  animal is intact, assume all other values indicate surgical alteration\}
+#' \item\{condition\} \{--- Character or \code{NA} (optional)
 #'  Indicator of the restricted status of an animal. "Nonrestricted" animals
-#'  are generally assumed to be naive.}
+#'  are generally assumed to be naive.\}
 #' }
 #' @param minParentAge numeric values to set the minimum age in years for
 #' an animal to have an offspring. Defaults to 2 years. The check is not
@@ -69,11 +62,11 @@
 #' The following changes are made to the cols.
 #'
 #' \itemize{
-#' \item {Column cols are converted to all lower case}
-#' \item {Periods (".") within column cols are collapsed to no space ""}
-#' \item {\code{egoid} is converted to \code{id}}
-#' \item {\code{sireid} is convert to \code{sire}}
-#' \item {\code{damid} is converted to \code{dam}}}
+#' \item \{Column cols are converted to all lower case\}
+#' \item \{Periods (".") within column cols are collapsed to no space ""\}
+#' \item \{\code{egoid} is converted to \code{id}\}
+#' \item \{\code{sireid} is convert to \code{sire}\}
+#' \item \{\code{damid} is converted to \code{dam}\}}
 #'
 #' If the dataframe (\code{sb} does not contain the five required columns
 #' (\code{id}, \code{sire}, \code{dam}, \code{sex}), and
@@ -97,11 +90,11 @@
 #' codes:
 #'
 #' \itemize{
-#' \item{F} {-- replacing "FEMALE" or "2"}
-#' \item{M} {-- replacing "MALE" or "1"}
-#' \item{H} {-- replacing "HERMAPHRODITE" or "4", if ignore.herm == FALSE}
-#' \item{U} {-- replacing "HERMAPHRODITE" or "4", if ignore.herm == TRUE}
-#' \item{U} {-- replacing "UNKNOWN" or "3"}}
+#' \item\{F\} \{-- replacing "FEMALE" or "2"\}
+#' \item\{M\} \{-- replacing "MALE" or "1"\}
+#' \item\{H\} \{-- replacing "HERMAPHRODITE" or "4", if ignore.herm == FALSE\}
+#' \item\{U\} \{-- replacing "HERMAPHRODITE" or "4", if ignore.herm == TRUE\}
+#' \item\{U\} \{-- replacing "UNKNOWN" or "3"\}}
 #'
 #' The function \code{correctParentSex} is used to ensure no parent is both
 #' a sire and a dam. If this error is detected, the function throws an error
@@ -112,23 +105,23 @@
 #' is ignored.
 #'
 #' \itemize{
-#' \item{"ALIVE"} {--- replacing "alive", "A" and "1"}
-#' \item {"DECEASED"} {--- replacing "deceased", "DEAD", "D", "2"}
-#' \item {"SHIPPED"} {--- replacing "shipped", "sold", "sale", "s", "3"}
-#' \item{"UNKNOWN"} {--- replacing is.na(status)}
-#' \item {"UNKNOWN"} {--- replacing "unknown", "U", "4"}}
+#' \item\{"ALIVE"\} \{--- replacing "alive", "A" and "1"\}
+#' \item \{"DECEASED"\} \{--- replacing "deceased", "DEAD", "D", "2"\}
+#' \item \{"SHIPPED"\} \{--- replacing "shipped", "sold", "sale", "s", "3"\}
+#' \item\{"UNKNOWN"\} \{--- replacing is.na(status)\}
+#' \item \{"UNKNOWN"\} \{--- replacing "unknown", "U", "4"\}}
 #'
 #' The function \code{convertAncestry} coverts ancestry indicators using
 #' regular expressions such that the following conversions are made from
 #' character strings that match selected substrings to the following factors.
 #'
 #' \itemize{
-#' \item{"INDIAN"} {--- replacing "ind" and not "chin"}
-#' \item{"CHINESE"} {--- replacing "chin" and not "ind"}
-#' \item{"HYBRID"} {--- replacing "hyb" or "chin" and "ind"}
-#' \item{"JAPANESE"} {--- replacing "jap"}
-#' \item{"UNKNOWN"} {--- replacing \code{NA}}
-#' \item{"OTHER"} {--- replacing not matching any of the above}}
+#' \item\{"INDIAN"\} \{--- replacing "ind" and not "chin"\}
+#' \item\{"CHINESE"\} \{--- replacing "chin" and not "ind"\}
+#' \item\{"HYBRID"\} \{--- replacing "hyb" or "chin" and "ind"\}
+#' \item\{"JAPANESE"\} \{--- replacing "jap"\}
+#' \item\{"UNKNOWN"\} \{--- replacing \code{NA}\}
+#' \item\{"OTHER"\} \{--- replacing not matching any of the above\}}
 #'
 #' The function \code{convertDate} converts character representations of
 #' dates in the columns \code{birth}, \code{death}, \code{departure}, and
@@ -160,15 +153,23 @@
 #' @importFrom utils write.csv
 ## ##  rmsutilityr str_detect_fixed_all
 #' @export
-qcStudbook <- function(sb, minParentAge = 2, reportChanges = FALSE,
+#' @examples
+#' examplePedigree <- nprcgenekeepr::examplePedigree
+#' ped <- qcStudbook(examplePedigree,
+#'   minParentAge = 2.0, reportChanges = FALSE,
+#'   reportErrors = FALSE
+#' )
+#' names(ped)
+qcStudbook <- function(sb, minParentAge = 2.0, reportChanges = FALSE,
                        reportErrors = FALSE) {
   newColumns <- fixColumnNames(names(sb), getEmptyErrorLst())
   cols <- newColumns$newColNames
   errorLst <- newColumns$errorLst
-  if (reportChanges == FALSE) # remove changed columns
+  if (!reportChanges) { # remove changed columns
     errorLst$changedCols <- getEmptyErrorLst()$changedCols
+  }
   missingColumns <- checkRequiredCols(cols, reportErrors)
-  if (reportErrors & !is.null(missingColumns)) {
+  if (reportErrors && !is.null(missingColumns)) {
     errorLst$missingColumns <- missingColumns
     return(errorLst)
   }
@@ -178,16 +179,20 @@ qcStudbook <- function(sb, minParentAge = 2, reportChanges = FALSE,
   sb <- unknown2NA(sb)
   sb <- addUIds(sb)
   sb <- addParents(sb) # add parent record for parents that don't have
-                       #their own line entry
+  # their own line entry
   # Add and standardize needed fields
   sb$sex <- convertSexCodes(sb$sex)
   if (reportErrors) {
-    testVal <- correctParentSex(sb$id, sb$sire, sb$dam, sb$sex,
-                                sb$recordStatus, reportErrors)
-    if (is.null(testVal$femaleSires) & is.null(testVal$maleDams)
-        & is.null(testVal$sireAndDam)) {
+    testVal <- correctParentSex(
+      sb$id, sb$sire, sb$dam, sb$sex,
+      sb$recordStatus, reportErrors
+    )
+    if (is.null(testVal$femaleSires) && is.null(testVal$maleDams) &&
+      is.null(testVal$sireAndDam)) {
       sb$sex <- correctParentSex(sb$id, sb$sire, sb$dam, sb$sex,
-                                 sb$recordStatus, reportErrors = FALSE)
+        sb$recordStatus,
+        reportErrors = FALSE
+      )
     } else {
       errorLst$femaleSires <- testVal$femaleSires
       errorLst$maleDams <- testVal$maleDams
@@ -212,31 +217,31 @@ qcStudbook <- function(sb, minParentAge = 2, reportChanges = FALSE,
     sb <- sbAndErrors$sb
     errorLst <- sbAndErrors$errorLst
   } else {
-    sb <- convertDate(sb, time.origin = as.Date("1970-01-01"))
-    sb <- setExit(sb, time.origin = as.Date("1970-01-01"))
+    sb <- convertDate(sb, timeOrigin = as.Date("1970-01-01"))
+    sb <- setExit(sb, timeOrigin = as.Date("1970-01-01"))
   }
 
   # ensure parents are older than offspring
   suspiciousParents <- checkParentAge(sb, minParentAge, reportErrors)
   if (reportErrors) {
-    if (!is.null(suspiciousParents)) {
-      if (nrow(suspiciousParents) > 0)
-        errorLst$suspiciousParents <- suspiciousParents
+    if (!is.null(suspiciousParents) && nrow(suspiciousParents) > 0L) {
+      errorLst$suspiciousParents <- suspiciousParents
     }
-  } else {
-    if (nrow(suspiciousParents) > 0) {
-      fileName <- paste0(tempdir(), "/lowParentAge.csv")
+  } else if (nrow(suspiciousParents) > 0L) {
+      fileName <- file.path(tempdir(), "lowParentAge.csv")
       write.csv(suspiciousParents,
-                file = fileName, row.names = FALSE)
+        file = fileName, row.names = FALSE
+      )
 
-      stop(paste0("Parents with low age at birth of offspring are listed in ",
-                  fileName, ".\n"))
-    }
+      stop(
+        "Parents with low age at birth of offspring are listed in ",
+        fileName, ".\n", call. = TRUE
+      )
   }
   # setting age:
   # uses current date as the end point if no exit date is available
-  if (any(("birth" %in% cols)) && !any(("age" %in% cols))) {
-    if (all(is.Date(sb$birth)))
+  if (any(("birth" %in% cols)) && !any(("age" %in% cols)) &&
+      all(is.Date(sb$birth))) {
       sb["age"] <- calcAge(sb$birth, sb$exit)
   }
 
@@ -259,7 +264,7 @@ qcStudbook <- function(sb, minParentAge = 2, reportChanges = FALSE,
   novelCols <- colnames(sb)[!colnames(sb) %in% cols]
   sb <- sb[, c(cols, novelCols)]
   sb <- sb[with(sb, order(gen, id)), ]
-  rownames(sb) <- seq(length.out = nrow(sb))
+  rownames(sb) <- seq_len(length.out = nrow(sb))
 
   # Ensuring the IDs are stored as characters
   sb <- toCharacter(sb, headers = c("id", "sire", "dam"))

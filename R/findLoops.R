@@ -1,6 +1,6 @@
 #' Find loops in a pedigree tree
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Pedigree Sampling
 #' From PedigreeSampling.R
@@ -19,18 +19,14 @@
 #' is set to \code{TRUE} if the \code{id} has a loop in the pedigree.
 #' Loops occur when an animal's sire and dam have a common ancestor.
 #'
-###' @examples
-###' \donttest{
-###' data("examplePedigree")
-###' exampleTree <- createPedTree(examplePedigree)
-###' exampleLoops <- findLoops(exampleTree)
-###' }
-#'
 #' @param ptree a list of lists forming a pedigree tree as constructed by
 #' \code{createPedTree(ped)} where \code{ped} is a standard pedigree dataframe.
 #' @export
+#' @examples
+#' data("examplePedigree")
+#' exampleTree <- createPedTree(examplePedigree)
+#' exampleLoops <- findLoops(exampleTree)
 findLoops <- function(ptree) {
-
   ids <- names(ptree)
   loops <- vector("list", length(ids))
   names(loops) <- ids
@@ -38,9 +34,9 @@ findLoops <- function(ptree) {
   for (id in ids) {
     if (makesLoop(id, ptree)) {
       loops[[id]] <- TRUE
-    } else{
+    } else {
       loops[[id]] <- FALSE
     }
   }
-  return(loops)
+  loops
 }

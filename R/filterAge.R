@@ -1,8 +1,11 @@
-#' Removes kinship values where an animal is less than the minAge
+#' Removes animal pairs and their kinship values from a dataframe where an
+#' animal is less than the minAge
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Group Formation
+#' @return a dataframe with columns \code{id1}, \code{id2}, and \code{kinship}
+#' with all animals greater than or equal to the minimum age.
 #'
 #' @param kin a dataframe with columns \code{id1}, \code{id2}, and
 #' \code{kinship}. This is the kinship data reformatted from a matrix,
@@ -11,7 +14,8 @@
 #' in "candidates".
 #' @param minAge numeric value representing minimum years of age of
 #' animals to retain.
-filterAge <- function(kin, ped, minAge = 1) {
+#' @noRd
+filterAge <- function(kin, ped, minAge = 1L) {
   kin$sort.col <- seq_len(nrow(kin))
 
   a1 <- merge(kin, ped, by.x = "id1", by.y = "id", all.x = TRUE, all.y = FALSE)
@@ -24,7 +28,8 @@ filterAge <- function(kin, ped, minAge = 1) {
 
   kin$sort.col <- NULL
   kin <- kin[keep, ]
-  if (nrow(kin) > 0)
+  if (nrow(kin) > 0L) {
     rownames(kin) <- seq_len(nrow(kin))
+  }
   return(kin)
 }

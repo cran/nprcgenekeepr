@@ -1,6 +1,6 @@
 #' Add parents
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Pedigree curation function
 #' Given a pedigree, find any IDs listed in the "sire" or "dam" columns
@@ -14,15 +14,15 @@
 #' with \code{NA}.
 #'
 #' @examples
-#' \donttest{
-#' pedTwo <- data.frame(id = c("d1", "s2", "d2", "o1", "o2", "o3", "o4"),
-#'                      sire = c(NA, NA, NA, "s1", "s1", "s2", "s2"),
-#'                      dam = c(NA, NA, NA, "d1", "d2", "d2", "d2"),
-#'                      sex = c("F", "M", "F", "F", "F", "F", "M"),
-#'                      stringsAsFactors = FALSE)
+#' pedTwo <- data.frame(
+#'   id = c("d1", "s2", "d2", "o1", "o2", "o3", "o4"),
+#'   sire = c(NA, NA, NA, "s1", "s1", "s2", "s2"),
+#'   dam = c(NA, NA, NA, "d1", "d2", "d2", "d2"),
+#'   sex = c("F", "M", "F", "F", "F", "F", "M"),
+#'   stringsAsFactors = FALSE
+#' )
 #' newPed <- addParents(pedTwo)
 #' newPed
-#' }
 #'
 #' @param ped datatable that is the `Pedigree`. It contains pedigree
 #' information including the IDs listed in \code{candidates}.
@@ -40,18 +40,11 @@ addParents <- function(ped) {
   a1 <- data.frame(id = a1, stringsAsFactors = FALSE)
   a2 <- data.frame(id = a2, stringsAsFactors = FALSE)
 
-  # Add recordStatus to identify original records
-  # if (length(ped) > 4) {
-  #   ped <- cbind(ped[ , c("id", "sire", "dam", "sex")],
-  #                recordStatus = "original",
-  #                ped[ , names(ped)[5:length(ped)], drop = FALSE],
-  #                stringsAsFactors = FALSE)
-  # } else {
-    ped <- ped[ , !names(ped) %in% "recordStatus"]
-    ped <- cbind(ped, recordStatus = "original", stringsAsFactors = FALSE)
-  #}
+  ped <- ped[, names(ped) != "recordStatus"]
+  ped <- cbind(ped, recordStatus = "original", stringsAsFactors = FALSE)
+
   # Adding line entries for these parents
-  if (nrow(a1) > 0) {
+  if (nrow(a1) > 0L) {
     a1$sire <- NA
     a1$dam <- NA
     a1$sex <- "M"
@@ -59,12 +52,12 @@ addParents <- function(ped) {
     ped <- rbindFill(ped, a1)
   }
 
-  if (nrow(a2) > 0) {
+  if (nrow(a2) > 0L) {
     a2$sire <- NA
     a2$dam <- NA
     a2$sex <- "F"
     a2$recordStatus <- "added"
     ped <- rbindFill(ped, a2)
   }
-  return(ped)
+  ped
 }

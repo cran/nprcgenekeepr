@@ -1,27 +1,11 @@
 #' Finds the total number of offspring for each animal in the pedigree
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Optionally find the number that are part of the population of interest.
 #'
 #' @return A dataframe with at least \code{id} and \code{totalOffspring}
 #' required and \code{livingOffspring} optional.
-#'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' examplePedigree <- nprcgenekeepr::examplePedigree
-#' breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-#'                          reportChanges = FALSE,
-#'                          reportErrors = FALSE)
-#' focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
-#'                                   is.na(breederPed$dam)) &
-#'                                 is.na(breederPed$exit)]
-#' ped <- setPopulation(ped = breederPed, ids = focalAnimals)
-#' trimmedPed <- trimPedigree(focalAnimals, breederPed)
-#' probands <- ped$id[ped$population]
-#' counts <- offspringCounts(probands, ped)
-#' }
 #'
 #' @param probands character vector of egos for which offspring should be
 #' counted.
@@ -32,6 +16,21 @@
 #' offspring that are part of the focal population are to be counted?
 #' Default is \code{FALSE}.
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' examplePedigree <- nprcgenekeepr::examplePedigree
+#' breederPed <- qcStudbook(examplePedigree,
+#'   minParentAge = 2,
+#'   reportChanges = FALSE,
+#'   reportErrors = FALSE
+#' )
+#' focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
+#'   is.na(breederPed$dam)) &
+#'   is.na(breederPed$exit)]
+#' ped <- setPopulation(ped = breederPed, ids = focalAnimals)
+#' trimmedPed <- trimPedigree(focalAnimals, breederPed)
+#' probands <- ped$id[ped$population]
+#' counts <- offspringCounts(probands, ped)
 offspringCounts <- function(probands, ped, considerPop = FALSE) {
   totalOffspring <- findOffspring(probands, ped)
   results <- as.data.frame(totalOffspring)

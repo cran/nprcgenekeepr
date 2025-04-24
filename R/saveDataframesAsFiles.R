@@ -1,6 +1,6 @@
 #' Write copy of dataframes to either CSV, TXT, or Excel file.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' Takes a list of dataframes and creates a file based on the list name of
@@ -18,18 +18,22 @@
 ## ## rmsutilityr create_wkbk
 #' @export
 saveDataframesAsFiles <- function(dfList, baseDir, fileType = "csv") {
-  if (!(class(dfList) == "list" &
-      all(vapply(dfList, function(df) {class(df) == "data.frame"},
-                 logical(1)))))
-      stop("dfList must be a list containing only dataframes.")
+  if (!(inherits(dfList, "list") &&
+    all(vapply(
+      dfList, function(df) inherits(df, "data.frame"),
+      logical(1L)
+    )))) {
+    stop("dfList must be a list containing only dataframes.")
+  }
   stopifnot(any(fileType %in% c("txt", "csv", "excel")))
-  filesWritten <- character(0)
+  filesWritten <- character(0L)
   for (i in seq_along(dfList)) {
     filename <- paste0(baseDir, "/", names(dfList)[i], ".", fileType)
     if (fileType == "csv") {
       write.csv(dfList[[i]],
-                file = filename,
-                row.names = FALSE)
+        file = filename,
+        row.names = FALSE
+      )
     } else if (fileType == "excel") {
       status <-
         create_wkbk(
@@ -38,8 +42,9 @@ saveDataframesAsFiles <- function(dfList, baseDir, fileType = "csv") {
           sheetnames = names(dfList)[i],
           replace = TRUE
         )
-      if (!status)
-        stop(paste0("Failed to write example data out to ", filename, "."))
+      if (!status) {
+        stop("Failed to write example data out to ", filename, ".")
+      }
     } else { # txt; tab delimited
       write.table(
         dfList[[i]],

@@ -1,6 +1,6 @@
 #' Count first-order relatives.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Relations
 #'
@@ -13,17 +13,6 @@
 #' counts, broken down to indicate the number of parents, offspring, and
 #' siblings that are part of the subset under consideration.
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped <- nprcgenekeepr::lacy1989Ped
-#' ids <- c("B", "D", "E", "F", "G")
-#' countIds <- countFirstOrder(ped, ids)
-#' countIds
-#' count <- countFirstOrder(ped, NULL)
-#' count
-#' }
-#'
 #' @param ped : `Pedigree`
 #'   Standardized pedigree information in a table.
 #' @param ids character vector of IDs or NULL
@@ -32,26 +21,34 @@
 #'   consider relationships within the subset. If NULL, the analysis will
 #'   include all IDs in the pedigree.
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' ped <- nprcgenekeepr::lacy1989Ped
+#' ids <- c("B", "D", "E", "F", "G")
+#' countIds <- countFirstOrder(ped, ids)
+#' countIds
+#' count <- countFirstOrder(ped, NULL)
+#' count
 countFirstOrder <- function(ped, ids = NULL) {
   if (!is.null(ids)) {
     ped <- ped[ped$id %in% ids, ]
   }
   rownames(ped) <- seq_len(nrow(ped))
-  parents <- c()
-  offspring <- c()
-  siblings <- c()
+  parents <- integer(0L)
+  offspring <- integer(0L)
+  siblings <- integer(0L)
 
   for (i in seq_len(nrow(ped))) {
     id <- ped[i, "id"]
     sire <- ped[i, "sire"]
     dam <- ped[i, "dam"]
 
-    p <- sum(c( (sire %in% ped$id), (dam %in% ped$id)))
-    o <- sum( (ped$sire %in% id) | (ped$dam %in% id))
-    if (is.na(sire) | is.na(dam)) {
-      s <- 0
+    p <- sum(c((sire %in% ped$id), (dam %in% ped$id)))
+    o <- sum((ped$sire %in% id) | (ped$dam %in% id))
+    if (is.na(sire) || is.na(dam)) {
+      s <- 0L
     } else {
-      s <- sum( (ped$sire %in% sire) & (ped$dam %in% dam)) - 1
+      s <- sum((ped$sire %in% sire) & (ped$dam %in% dam)) - 1L
     }
 
     parents <- c(parents, p)

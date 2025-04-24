@@ -14,16 +14,16 @@ uitpOripReporting <-
         "This tab will eventually contain a report formatted
         for submission to ORIP."
       )
-      ),
+    ),
 
     # Main Panel
     div(
       style = "margin-left:425px;padding:10px;",
       img(
-        src = "extdata/www/under_construction.jpg",
-        height = 300,
-        width = 600
+        src = file.path("extdata", "www", "under_construction.jpg"),
+        height = 300L,
+        width = 600L
       )
     )
 
-    )
+  )

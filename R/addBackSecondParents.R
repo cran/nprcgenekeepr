@@ -1,6 +1,6 @@
 #' Add back single parents trimmed pedigree
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Uses the \code{ped} dataframe, which has full complement of parents and the
 #' \code{uPed} dataframe, which has all uninformative parents removed to
@@ -11,30 +11,29 @@
 #' @return A dataframe with pedigree with single parents added.
 #'
 #' @examples
-#' \donttest{
 #' examplePedigree <- nprcgenekeepr::examplePedigree
-#' breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-#'                          reportChanges = FALSE,
-#'                          reportErrors = FALSE)
+#' breederPed <- qcStudbook(examplePedigree,
+#'   minParentAge = 2,
+#'   reportChanges = FALSE,
+#'   reportErrors = FALSE
+#' )
 #' probands <- breederPed$id[!(is.na(breederPed$sire) &
-#'                                is.na(breederPed$dam)) &
-#'                                is.na(breederPed$exit)]
+#'   is.na(breederPed$dam)) &
+#'   is.na(breederPed$exit)]
 #' ped <- getProbandPedigree(probands, breederPed)
 #' nrow(ped)
 #' p <- removeUninformativeFounders(ped)
 #' nrow(p)
 #' p <- addBackSecondParents(p, ped)
 #' nrow(p)
-#' }
 #'
 #' @param uPed a trimmed pedigree dataframe with uninformative founders removed.
 #' @param ped a trimmed pedigree
 #' @export
 addBackSecondParents <- function(uPed, ped) {
-
   # Adding back second parents where one is known
   idsWithOneParent <- getIdsWithOneParent(uPed)
-  addBack <- c()
+  addBack <- character(0L)
   ## Within this loop, the second parent is added to uPed as the sire
   ## or dam as is found in ped.
   for (id in idsWithOneParent) {
@@ -42,19 +41,11 @@ addBackSecondParents <- function(uPed, ped) {
       if (is.na(uPed$sire[uPed$id == id])) {
         addBack <- c(addBack, ped$sire[ped$id == id])
         uPed[(uPed$id == id), "sire"] <- ped$sire[ped$id == id]
-      } else{
+      } else {
         addBack <- c(addBack, ped$dam[ped$id == id])
         uPed[(uPed$id == id), "dam"] <- ped$dam[ped$id == id]
       }
     }
   }
   addIdRecords(ids = addBack, fullPed = ped, partialPed = uPed)
-  # if (length(addBack) > 0) {
-  #   addBack <- ped[(ped$id %in% addBack), ]
-  #   addBack$sire <- NA
-  #   addBack$dam <- NA
-  #
-  #   uPed <- rbind(uPed, addBack)
-  # }
-  # return(uPed)
 }

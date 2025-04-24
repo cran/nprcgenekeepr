@@ -1,6 +1,6 @@
 #' Convenience function to make the initial groupMembers animal list
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' @return Initial groupMembers list
@@ -19,16 +19,19 @@
 #' @param minAge integer value indicating the minimum age to consider in group
 #' formation. Pairwise kinships involving an animal of this age or younger will
 #'  be ignored. Default is 1 year.
+#' @export
 makeGroupMembers <- function(numGp, currentGroups, candidates, ped, harem,
                              minAge) {
   groupMembers <- list()
   if (harem) {
     ## Since harems only have a single male, they are inserted during
     ## initialization.
-    groupMembers <- initializeHaremGroups(numGp, currentGroups, candidates,
-                                          ped, minAge)
+    groupMembers <- initializeHaremGroups(
+      numGp, currentGroups, candidates,
+      ped, minAge
+    )
   } else {
-    for (i in 1:numGp) {
+    for (i in seq_len(numGp)) {
       if (length(currentGroups) >= i) {
         groupMembers[[i]] <- currentGroups[[i]]
       } else {

@@ -7,11 +7,9 @@
 #' in their home directory. Instructions are embedded as comments
 #' within the file.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("exampleNprcgenekeeprConfig")
 #' head(exampleNprcgenekeeprConfig)
-#' }
 "exampleNprcgenekeeprConfig"
 #' examplePedigree is a pedigree object created by \code{qcStudbook}
 #'
@@ -36,30 +34,26 @@
 #' local.}
 #' \item{status}{-- character vector or NA. Flag indicating an individual's
 #' status as alive, dead, sold, etc. Transformed to
-#'  factor {levels: ALIVE, DECEASED, SHIPPED, UNKNOWN}. Vector of
+#'  factor \{levels: ALIVE, DECEASED, SHIPPED, UNKNOWN\}. Vector of
 #' standardized status codes with the possible values
 #' ALIVE, DECEASED, SHIPPED, or UNKNOWN}
 #' \item{recordStats}{-- character vector with value of \code{"added"} or
 #'  \code{"original"}.}
 #' }
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("examplePedigree")
 #' exampleTree <- createPedTree(examplePedigree)
 #' exampleLoops <- findLoops(exampleTree)
-#' }
 "examplePedigree"
 #' finalRpt is a list object created from the list object \emph{rpt} prepared
 #' by \code{reportGV}. It is created inside \code{orderReport}. This version
 #' is at the state just prior to calling \code{rankSubjects} inside
 #' \code{orderReport}.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("finalRpt")
 #' finalRpt <- rankSubjects(finalRpt)
-#' }
 "finalRpt"
 #' focalAnimals is a dataframe with one column (_id_) containing the of animal
 #' Ids from the __examplePedigree__ pedigree.
@@ -67,18 +61,18 @@
 #' They can be used to illustrate the identification of a population of
 #' interest as is shown in the example below.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("focalAnimals")
 #' data("examplePedigree")
 #' any(names(examplePedigree) == "population")
 #' nrow(examplePedigree)
-#' examplePedigree <- setPopulation(ped = examplePedigree,
-#'                                  ids = focalAnimals$id)
+#' examplePedigree <- setPopulation(
+#'   ped = examplePedigree,
+#'   ids = focalAnimals$id
+#' )
 #' any(names(examplePedigree) == "population")
 #' nrow(examplePedigree)
 #' nrow(examplePedigree[examplePedigree$population, ])
-#' }
 "focalAnimals"
 #' lacy1989Ped small hypothetical pedigree
 #'
@@ -123,7 +117,7 @@
 "lacy1989PedAlleles"
 #' ped1Alleles is a dataframe created by the geneDrop function
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' @format A dataframe with 554 rows and 6 variables
 #' \describe{
@@ -201,11 +195,9 @@
 #'
 #' This is used for testing and demonstration.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("pedOne")
 #' head(pedOne)
-#' }
 "pedOne"
 #' pedSameMaleIsSireAndDam is a dataframe with 8 rows and 5 columns (ego_id,
 #' sire, dam_id, sex, birth_date) representing a full pedigree with no errors.
@@ -221,11 +213,9 @@
 #'
 #' This is used for testing and demonstration.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("pedSix")
 #' head(pedSix)
-#' }
 "pedSix"
 #' pedWithGenotype is a dataframe produced from qcPed by adding made up
 #' genotypes.
@@ -253,9 +243,7 @@
 #'   }
 #'
 #' @examples
-#' \donttest{
 #' pedWithGenotypeReport <- nprcgenekeepr::pedWithGenotypeReport
-#' }
 "pedWithGenotypeReport"
 #' qcBreeders is a list of 29 baboon IDs that are potential breeders
 #'
@@ -298,16 +286,14 @@
 #'   }
 #'
 #' @examples
-#' \donttest{
 #' qcPedGvReport <- nprcgenekeepr::qcPedGvReport
-#' }
 "qcPedGvReport"
 #' smallPed is a hypothetical pedigree
 #'
 #' It has the following structure:
 #' structure(list(id = c("A", "B", "C", "D", "E", "F", "G", "H",
 #' "I", "J", "K", "L", "M", "N", "O", "P", "Q"), sire = c("Q", NA,
-#'"A", "A", NA, "D", "D", "A", "A", NA, NA, "C", "A", NA, NA, "M", NA),
+#' "A", "A", NA, "D", "D", "A", "A", NA, NA, "C", "A", NA, NA, "M", NA),
 #' dam = c(NA, NA, "B", "B", NA, "E", "E", "B", "J", NA, NA,
 #' "K", "N", NA, NA, "O", NA), sex = c("M", "F", "M", "M", "F",
 #'  "F", "F", "M", "F", "F", "F", "F", "M", "F", "F", "F", "M"),
@@ -321,10 +307,8 @@
 #'
 #' Access it using the following commands.
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("smallPedTree")
-#' }
 "smallPedTree"
 #' rhesusGenotypes is a dataframe with two haplotypes per animal
 #'
@@ -338,10 +322,8 @@
 #' \item{second_name}{-- a generic name for the second haplotype}
 #' }
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("rhesusGenotypes")
-#' }
 "rhesusGenotypes"
 #' rhesusPedigree is a pedigree object
 #'
@@ -362,8 +344,6 @@
 #' \item{age}{-- numerical vector of age in years}
 #' }
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' data("rhesusPedigree")
-#' }
 "rhesusPedigree"

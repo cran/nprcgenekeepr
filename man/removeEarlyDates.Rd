@@ -19,17 +19,17 @@ A vector of dates after the year indicated by the numeric value of
 \description{
 Dates before a specified year are set to NA. This is often used for dates
 formed from malformed character representations such as a date in
-%m-%d-%Y format being read by %Y-%m-%d format
+\%m-\%d-\%Y format being read by \%Y-\%m-\%d format
 }
 \details{
 NA values are ignored and not changed.
 }
 \examples{
-\donttest{
-dates <- structure(c(12361, 14400, 15413, NA, 11189, NA, 13224, 10971,
-                     -432000, 13262), class = "Date")
+dates <- structure(c(
+  12361, 14400, 15413, NA, 11189, NA, 13224, 10971,
+  -432000, 13262
+), class = "Date")
 cleanedDates <- removeEarlyDates(dates, firstYear = 1000)
 dates
 cleanedDates
-}
 }

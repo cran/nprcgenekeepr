@@ -4,7 +4,7 @@
 \alias{calcGU}
 \title{Calculates genome uniqueness for each ID that is part of the population.}
 \usage{
-calcGU(alleles, threshold = 1, byID = FALSE, pop = NULL)
+calcGU(alleles, threshold = 1L, byID = FALSE, pop = NULL)
 }
 \arguments{
 \item{alleles}{dataframe of containing an \code{AlleleTable}. This is a
@@ -12,12 +12,13 @@ table of allele information produced by \code{geneDrop()}.
 An AlleleTable contains information about alleles an ego has inherited.
 It contains the following columns:
 \itemize{
- \item {id} {--- A character vector of IDs for a set of animals.}
- \item {parent} {--- A factor with levels of sire and dam.}
- \item {V1} {--- Unnamed integer column representing allele 1.}
- \item {V2} {--- Unnamed integer column representing allele 2.}
- \item {...} {--- Unnamed integer columns representing alleles.}
- \item {Vn} {--- Unnamed integer column representing the nth column.}}}
+\item \{id\} \{--- A character vector of IDs for a set of animals.\}
+\item \{parent\} \{--- A factor with levels of sire and dam.\}
+\item \{V1\} \{--- Unnamed integer column representing allele 1.\}
+\item \{V2\} \{--- Unnamed integer column representing allele 2.\}
+\item \{...\} \{--- Unnamed integer columns representing alleles.\}
+\item \{Vn\} \{--- Unnamed integer column representing the nth column.\}
+}}
 
 \item{threshold}{an integer indicating the maximum number of copies of an
 allele that can be present in the population for it to be considered rare.
@@ -34,11 +35,11 @@ interest, otherwise all animals will be considered. The default is NULL.}
 }
 \value{
 Dataframe \code{rows: id, col: gu}
- A single-column table of genome uniqueness values as percentages.
- Rownames are set to 'id' values that are part of the population.
+A single-column table of genome uniqueness values as percentages.
+Rownames are set to 'id' values that are part of the population.
 }
 \description{
-{Genome Uniqueness Functions}{}
+\{Genome Uniqueness Functions\}\{\}
 }
 \details{
 Part of Genetic Value Analysis
@@ -73,15 +74,14 @@ calculated by this function should match the "founder genome uniqueness"
 measure calculated by Pedscope.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 ped1Alleles <- nprcgenekeepr::ped1Alleles
 gu_1 <- calcGU(ped1Alleles, threshold = 1, byID = FALSE, pop = NULL)
 gu_2 <- calcGU(ped1Alleles, threshold = 3, byID = FALSE, pop = NULL)
-gu_3 <- calcGU(ped1Alleles, threshold = 3, byID = FALSE,
-               pop = ped1Alleles$id[20:60])
-}
-
+gu_3 <- calcGU(ped1Alleles,
+  threshold = 3, byID = FALSE,
+  pop = ped1Alleles$id[20:60]
+)
 }
 \references{
 Ballou JD, Lacy RC.  1995. Identifying genetically important

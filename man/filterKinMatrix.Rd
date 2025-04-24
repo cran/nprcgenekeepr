@@ -21,18 +21,16 @@ rows and columns (row and col names are 'ids').
 Filters a kinship matrix to include only the egos listed in 'ids'
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 ped <- nprcgenekeepr::qcPed
 ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen,
-                sparse = FALSE)
+  sparse = FALSE
+)
 ids <- ped$id[c(189, 192, 194, 195)]
 ncol(kmat)
 nrow(kmat)
 kmatFiltered <- filterKinMatrix(ids, kmat)
 ncol(kmatFiltered)
 nrow(kmatFiltered)
-}
-
 }

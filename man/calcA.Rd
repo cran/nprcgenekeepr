@@ -5,10 +5,10 @@
 \title{Calculates \code{a}, the number of an individual's alleles that are rare in
 each simulation.}
 \usage{
-calcA(alleles, threshold = 1, byID = FALSE)
+calcA(alleles, threshold = 1L, byID = FALSE)
 }
 \arguments{
-\item{alleles}{a matrix with {id, parent, V1 ... Vn} providing the alleles
+\item{alleles}{a matrix with \{id, parent, V1 ... Vn\} providing the alleles
 an animal received during each simulation.
 The first 2 columns provide the animal ID and the parent the allele came
 from. Remaining columns provide alleles.}
@@ -19,21 +19,18 @@ Default is 1.}
 
 \item{byID}{logical variable of length 1 that is passed through to
 eventually be used by \code{alleleFreq()}, which calculates the count of each
- allele in the provided vector. If \code{byID} is TRUE and ids are provided,
- the function will only count the unique alleles for an individual
-  (homozygous alleles will be counted as 1).}
+allele in the provided vector. If \code{byID} is TRUE and ids are provided,
+the function will only count the unique alleles for an individual
+(homozygous alleles will be counted as 1).}
 }
 \value{
 A matrix with named rows indicating the number of unique alleles
-  an animal had during each round of simulation (indicated in columns).
+an animal had during each round of simulation (indicated in columns).
 }
 \description{
 Part of Genetic Value Analysis
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 rare <- calcA(nprcgenekeepr::ped1Alleles, threshold = 3, byID = FALSE)
-}
-
 }

@@ -7,7 +7,7 @@
 removeUninformativeFounders(ped)
 }
 \arguments{
-\item{ped}{datatable that is the `Pedigree`. It contains pedigree
+\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
 information. The fields \code{sire} and \code{dam} are required.}
 }
 \value{
@@ -19,20 +19,19 @@ pedigree are uninformative and can be removed from a pedigree without loss
 of information.
 }
 \examples{
-\donttest{
 examplePedigree <- nprcgenekeepr::examplePedigree
-breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-                         reportChanges = FALSE,
-                         reportErrors = FALSE)
+breederPed <- qcStudbook(examplePedigree,
+  minParentAge = 2,
+  reportChanges = FALSE,
+  reportErrors = FALSE
+)
 probands <- breederPed$id[!(is.na(breederPed$sire) &
-                               is.na(breederPed$dam)) &
-                               is.na(breederPed$exit)]
+  is.na(breederPed$dam)) &
+  is.na(breederPed$exit)]
 ped <- getProbandPedigree(probands, breederPed)
 nrow(ped)
 p <- removeUninformativeFounders(ped)
 nrow(p)
 p <- addBackSecondParents(p, ped)
 nrow(p)
-}
-
 }

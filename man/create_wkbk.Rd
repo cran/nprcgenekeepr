@@ -24,13 +24,13 @@ occurred.
 Creates an Excel workbook with worksheets.
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 
 make_df_list <- function(size) {
   df_list <- list(size)
-  if (size <= 0)
+  if (size <= 0) {
     return(df_list)
+  }
   for (i in seq_len(size)) {
     n <- sample(2:10, 2, replace = TRUE)
     df <- data.frame(matrix(data = rnorm(n[1] * n[2]), ncol = n[1]))
@@ -41,9 +41,16 @@ make_df_list <- function(size) {
 }
 df_list <- make_df_list(3)
 sheetnames <- names(df_list)
-create_wkbk(file = file.path(tempdir(), "example_excel_wkbk.xlsx"),
-            df_list = df_list,
-            sheetnames = sheetnames, replace = FALSE)
+if (any(file.exists(file.path(tempdir(), "example_excel_wkbk.xlsx")))) {
+  file.remove(file.path(tempdir(), "example_excel_wkbk.xlsx"))
+  create_wkbk(
+    file = file.path(tempdir(), "example_excel_wkbk.xlsx"),
+    df_list = df_list,
+    sheetnames = sheetnames,
+    replace = FALSE
+  )
 }
-
+if (any(file.exists(file.path(tempdir(), "example_excel_wkbk.xlsx")))) {
+  file.remove(file.path(tempdir(), "example_excel_wkbk.xlsx"))
+}
 }

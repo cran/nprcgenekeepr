@@ -1,4 +1,4 @@
-#' Copyright(c) 2017-2020 R. Mark Sharp
+#' Copyright(c) 2017-2024 R. Mark Sharp
 #' This file is part of nprcgenekeepr
 context("filterPairs")
 library(testthat)
@@ -7,7 +7,7 @@ ped <- lacy1989Ped
 
 ped$gen <- findGeneration(ped$id, ped$sire, ped$dam)
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
-kin <- kinMatrix2LongForm(kmat, rm.dups = FALSE)
+kin <- kinMatrix2LongForm(kmat, removeDups = FALSE)
 threshold <- 0.1
 kin <- filterThreshold(kin, threshold = threshold)
 ped$sex <- c("M", "F", "M", "M", "F", "F", "M")
@@ -16,10 +16,10 @@ kinFF <- filterPairs(kin, ped, ignore = list(c("F", "F")))
 kinMM <- filterPairs(kin, ped, ignore = list(c("M", "M")))
 
 test_that("filterPairs removes the correct pairs", {
-  expect_equal(nrow(kinNull), 39)
-  expect_equal(nrow(kinFF), 32)
-  expect_equal(nrow(kinMM), 23)
-  expect_equal(nrow(kinFF[kinFF$id1 == "B" & kinFF$id2 == "E", ]), 0)
-  expect_equal(nrow(kinFF[kinFF$id1 == "B" & kinFF$id2 == "F", ]), 0)
-  expect_equal(nrow(kinMM[kinMM$id1 == "A" & kinMM$id2 == "D", ]), 0)
+  expect_identical(nrow(kinNull), 39L)
+  expect_identical(nrow(kinFF), 32L)
+  expect_identical(nrow(kinMM), 23L)
+  expect_identical(nrow(kinFF[kinFF$id1 == "B" & kinFF$id2 == "E", ]), 0L)
+  expect_identical(nrow(kinFF[kinFF$id1 == "B" & kinFF$id2 == "F", ]), 0L)
+  expect_identical(nrow(kinMM[kinMM$id1 == "A" & kinMM$id2 == "D", ]), 0L)
 })

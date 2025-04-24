@@ -1,6 +1,6 @@
 #' Calculates the mean kinship for each animal in a kinship matrix
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Genetic Value Analysis
 #'
@@ -11,17 +11,14 @@
 #' @return A named numeric vector of average kinship coefficients for each
 #' animal ID. Elements are named with the IDs from the columns of kmat.
 #'
+#' @param kmat a numeric matrix of pairwise kinship coefficients.
+#' Animal IDs are the row and column names.
+#' @export
 #' @examples
-#' \donttest{
 #' library(nprcgenekeepr)
 #' ped <- nprcgenekeepr::qcPed
 #' kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
 #' head(meanKinship(kmat))
-#' }
-#'
-#' @param kmat a numeric matrix of pairwise kinship coefficients.
-#' Animal IDs are the row and column names.
-#' @export
 meanKinship <- function(kmat) {
-  return(colMeans(kmat, na.rm = TRUE))
+  colMeans(kmat, na.rm = TRUE)
 }

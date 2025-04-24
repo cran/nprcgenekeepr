@@ -1,6 +1,6 @@
 #' Order the results of the genetic value analysis for use in a report.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Genetic Value Analysis
 #'
@@ -22,61 +22,63 @@
 #' @param ped the pedigree information in datatable format with required
 #' colnames \code{id}, \code{sire}, \code{dam}, \code{gen}, \code{population}).
 #' This requires complete pedigree information..
+#' @noRd
 orderReport <- function(rpt, ped) {
-
   finalRpt <- list()
 
   founders <- ped$id[is.na(ped$sire) & is.na(ped$dam)]
 
   if ("origin" %in% names(rpt)) {
     # imports with no offspring
-    i <- (!is.na(rpt$origin) & (rpt$totalOffspring == 0) &
-            (rpt$id %in% founders))
+    i <- (!is.na(rpt$origin) & (rpt$totalOffspring == 0L) &
+      (rpt$id %in% founders))
 
     imports <- rpt[i, ]
     rpt <- rpt[!i, ]
     if ("age" %in% names(rpt)) {
       finalRpt$imports <- imports[with(imports, order(age)), ]
-    }
-    else {
+    } else {
       finalRpt$imports <- imports[with(imports, order(id)), ]
     }
 
     # ONPRC-born animals with no parentage
-    i <- (is.na(rpt$origin) & (rpt$totalOffspring == 0) &
-            (rpt$id %in% founders))
+    i <- (is.na(rpt$origin) & (rpt$totalOffspring == 0L) &
+      (rpt$id %in% founders))
 
     noParentage <- rpt[i, ]
     rpt <- rpt[!i, ]
     if ("age" %in% names(rpt)) {
       finalRpt$noParentage <- noParentage[with(noParentage, order(age)), ]
-    }
-    else {
+    } else {
       finalRpt$noParentage <- noParentage[with(noParentage, order(id)), ]
     }
   }
 
   # subjects with > 10% genome uniqueness
-  highGu <- rpt[(rpt$gu > 10), ]
+  highGu <- rpt[(rpt$gu > 10L), ]
   finalRpt$highGu <- highGu[with(highGu, order(-trunc(gu), zScores)), ]
-  rpt <- rpt[!(rpt$gu > 10), ]
+  rpt <- rpt[(rpt$gu <= 10L), ]
 
   # subjects with <= 10% genome uniqueness and <= 0.25 z-score
   lowMk <- rpt[(rpt$zScores <= 0.25), ]
   finalRpt$lowMk <- lowMk[with(lowMk, order(zScores)), ]
 
-  rpt <- rpt[!(rpt$zScores <= 0.25), ]
+  rpt <- rpt[(rpt$zScores > 0.25), ]
 
   # subjects with <= 10% genome uniqueness and > 0.25 z-score
   finalRpt$lowVal <- rpt[with(rpt, order(zScores)), ]
 
-  includeCols <- intersect(c("imports", "highGu", "lowMk",
-                              "lowVal", "noParentage"),
-                            names(finalRpt))
+  includeCols <- intersect(
+    c(
+      "imports", "highGu", "lowMk",
+      "lowVal", "noParentage"
+    ),
+    names(finalRpt)
+  )
 
   finalRpt <- finalRpt[includeCols]
   finalRpt <- rankSubjects(finalRpt)
   finalRpt <- do.call("rbind", finalRpt)
-  rownames(finalRpt) <- seq(nrow(finalRpt))
-  return(finalRpt)
+  rownames(finalRpt) <- seq_len(nrow(finalRpt))
+  finalRpt
 }

@@ -1,6 +1,6 @@
 #' Calculates genome uniqueness for each ID that is part of the population.
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Genetic Value Analysis
 #'
@@ -33,7 +33,7 @@
 #' calculated by this function should match the "founder genome uniqueness"
 #' measure calculated by Pedscope.
 #'
-#' @description {Genome Uniqueness Functions}{}
+#' @description \{Genome Uniqueness Functions\}\{\}
 #'
 #' @references Ballou JD, Lacy RC.  1995. Identifying genetically important
 #' individuals for management of genetic variation in pedigreed populations,
@@ -46,27 +46,18 @@
 #'  A single-column table of genome uniqueness values as percentages.
 #'  Rownames are set to 'id' values that are part of the population.
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped1Alleles <- nprcgenekeepr::ped1Alleles
-#' gu_1 <- calcGU(ped1Alleles, threshold = 1, byID = FALSE, pop = NULL)
-#' gu_2 <- calcGU(ped1Alleles, threshold = 3, byID = FALSE, pop = NULL)
-#' gu_3 <- calcGU(ped1Alleles, threshold = 3, byID = FALSE,
-#'                pop = ped1Alleles$id[20:60])
-#' }
-#'
 #' @param alleles dataframe of containing an \code{AlleleTable}. This is a
 #' table of allele information produced by \code{geneDrop()}.
 #' An AlleleTable contains information about alleles an ego has inherited.
 #' It contains the following columns:
 #' \itemize{
-#'  \item {id} {--- A character vector of IDs for a set of animals.}
-#'  \item {parent} {--- A factor with levels of sire and dam.}
-#'  \item {V1} {--- Unnamed integer column representing allele 1.}
-#'  \item {V2} {--- Unnamed integer column representing allele 2.}
-#'  \item {...} {--- Unnamed integer columns representing alleles.}
-#'  \item {Vn} {--- Unnamed integer column representing the nth column.}}
+#'  \item \{id\} \{--- A character vector of IDs for a set of animals.\}
+#'  \item \{parent\} \{--- A factor with levels of sire and dam.\}
+#'  \item \{V1\} \{--- Unnamed integer column representing allele 1.\}
+#'  \item \{V2\} \{--- Unnamed integer column representing allele 2.\}
+#'  \item \{...\} \{--- Unnamed integer columns representing alleles.\}
+#'  \item \{Vn\} \{--- Unnamed integer column representing the nth column.\}
+#'  }
 #'
 #' @param threshold an integer indicating the maximum number of copies of an
 #' allele that can be present in the population for it to be considered rare.
@@ -79,7 +70,16 @@
 #' @param pop character vector with animal IDs to consider as the population of
 #' interest, otherwise all animals will be considered. The default is NULL.
 #' @export
-calcGU <- function(alleles, threshold = 1, byID = FALSE, pop = NULL) {
+#' @examples
+#' library(nprcgenekeepr)
+#' ped1Alleles <- nprcgenekeepr::ped1Alleles
+#' gu_1 <- calcGU(ped1Alleles, threshold = 1, byID = FALSE, pop = NULL)
+#' gu_2 <- calcGU(ped1Alleles, threshold = 3, byID = FALSE, pop = NULL)
+#' gu_3 <- calcGU(ped1Alleles,
+#'   threshold = 3, byID = FALSE,
+#'   pop = ped1Alleles$id[20:60]
+#' )
+calcGU <- function(alleles, threshold = 1L, byID = FALSE, pop = NULL) {
   if (!is.null(pop)) {
     alleles <- alleles[alleles$id %in% pop, ]
   }
@@ -88,10 +88,10 @@ calcGU <- function(alleles, threshold = 1, byID = FALSE, pop = NULL) {
   # each simulation and average across all simulated alleles.
   rare <- calcA(alleles, threshold, byID)
   iterations <- sum(!(colnames(alleles) %in% c("id", "parent")))
-  gu <- rowSums(rare) / (2 * iterations)
+  gu <- rowSums(rare) / (2L * iterations)
 
   # convert to a percentage
-  gu <- gu * 100
+  gu <- gu * 100L
   gu <- as.data.frame(gu)
 
   return(gu)

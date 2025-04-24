@@ -12,19 +12,18 @@ status as alive, dead, sold, etc.}
 }
 \value{
 A factor vector of the standardized status codes with levels:
-`ALIVE`, `DECEASED`, `SHIPPED`, and `UNKNOWN`.
+\code{ALIVE}, \code{DECEASED}, \code{SHIPPED}, and \code{UNKNOWN}.
 }
 \description{
 Part of Pedigree Curation
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
-original <- c("A", "alive", "Alive", "1", "S", "Sale", "sold", "shipped",
-              "D", "d", "dead", "died", "deceased", "2",
-              "shiped", "3", "U", "4", "unknown", NA,
-              "Unknown", "H", "hermaphrodite", "U", "Unknown", "4")
+original <- c(
+  "A", "alive", "Alive", "1", "S", "Sale", "sold", "shipped",
+  "D", "d", "dead", "died", "deceased", "2",
+  "shiped", "3", "U", "4", "unknown", NA,
+  "Unknown", "H", "hermaphrodite", "U", "Unknown", "4"
+)
 convertStatusCodes(original)
-}
-
 }

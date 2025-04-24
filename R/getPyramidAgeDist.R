@@ -1,9 +1,10 @@
 #' Get the age distribution for the pedigree
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Forms a dataframe with columns \code{id}, \code{birth}, \code{sex},
-#' and {age} for those animals with a status of \code{Alive} in the pedigree.
+#' and \code{age} for those animals with a status of \code{Alive} in the
+#' pedigree.
 #'
 #' The lubridate package is used here because of the way the modern Gregorian
 #' calendar is constructed, there is no straightforward arithmetic method
@@ -16,17 +17,14 @@
 #' which has the animal's age in years or \code{NA} if it cannot be calculated.
 #' The \code{exit} column values have been remapped to valid dates or \code{NA}.
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' ped <- getPyramidAgeDist()
-#' }
-#'
 #' @param ped dataframe with pedigree
 #' @importFrom anytime anytime
 #' @importFrom lubridate interval duration
 #' @importFrom utils read.csv
 #' @export
+#' @examples
+#' library(nprcgenekeepr)
+#' ped <- getPyramidAgeDist()
 getPyramidAgeDist <- function(ped = NULL) {
   if (is.null(ped)) {
     ped <- nprcgenekeepr::qcPed
@@ -35,35 +33,39 @@ getPyramidAgeDist <- function(ped = NULL) {
   }
   colNames <- c("id", "sire", "dam", "sex", "birth", "exit_date")
   names(ped) <- colNames
-  ped <- ped[ , colNames]
+  ped <- ped[, colNames]
   if (!any(class(ped$birth) %in% c("Date", "POSIXct", "character"))) {
     stop("birth column must be of class 'Date', 'POSIXct', or 'character'")
-  } else if (class(ped$birth)[[1]] == "character") {
-    ped$birth <- anytime::anytime(ped$birth)
+  } else if (class(ped$birth)[[1L]] == "character") {
+    ped$birth <- suppressWarnings(anytime::anytime(ped$birth))
   } else {
-    ped$birth <- as.Date(ped$birth)
+    ped$birth <- suppressWarnings(as.Date(ped$birth))
   }
   ped$status[is.na(ped$exit_date)] <- "ALIVE"
   ped$status[!is.na(ped$exit_date) | is.na(ped$birth)] <- "DECEASED"
-  if (!any(class(ped$exit_date) %in% c("Date", "POSIXct", "character"))) {
+  if (!any(inherits(ped$exit_date, c("Date", "POSIXct", "character")))) {
     stop("exit_date column must be of class 'Date', 'POSIXct', or 'character'")
-  } else if (class(ped$exit_date)[[1]] == "character") {
+  } else if (class(ped$exit_date)[[1L]] == "character") {
     ped$status[ped$exit_date == "9999999999"] <- "DECEASED"
-    ped$exit_date[ped$exit_date == "" | ped$exit_date == "9999999999"] <- NA
-    ped$exit_date <- anytime::anytime(ped$exit_date)
+    ped$exit_date[!nzchar(ped$exit_date) | ped$exit_date == "9999999999"] <- NA
+    ped$exit_date <- suppressWarnings(anytime::anytime(ped$exit_date))
   } else {
-    ped$exit_date <- as.Date(ped$exit_date)
+    ped$exit_date <- suppressWarnings(as.Date(ped$exit_date))
   }
   ped$age[is.na(ped$exit_date) & !is.na(ped$birth)] <-
-    interval(start = ped$birth[is.na(ped$exit_date) &
-                                 !is.na(ped$birth)],
-             end = now()) / duration(num = 1, units = "years")
+    interval(
+      start = ped$birth[is.na(ped$exit_date) &
+        !is.na(ped$birth)],
+      end = now()
+    ) / duration(num = 1L, units = "years")
   ped$age[!is.na(ped$exit_date) & !is.na(ped$birth)] <-
-    interval(start = ped$birth[!is.na(ped$exit_date) &
-                                 !is.na(ped$birth)],
-             end = ped$exit_date[!is.na(ped$exit_date) &
-                                       !is.na(ped$birth)]) /
-    duration(num = 1, units = "years")
+    interval(
+      start = ped$birth[!is.na(ped$exit_date) &
+        !is.na(ped$birth)],
+      end = ped$exit_date[!is.na(ped$exit_date) &
+        !is.na(ped$birth)]
+    ) /
+      duration(num = 1L, units = "years")
   names(ped)[names(ped) == "exit_date"] <- "exit"
   ped
 }

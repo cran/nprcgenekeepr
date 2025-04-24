@@ -10,7 +10,7 @@ addSexAndAgeToGroup(ids, ped)
 \arguments{
 \item{ids}{character vector of animal Ids}
 
-\item{ped}{datatable that is the `Pedigree`. It contains pedigree
+\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
 information including the IDs listed in \code{candidates}.}
 }
 \value{
@@ -21,12 +21,9 @@ Forms a dataframe with Id, Sex, and current Age given a list of Ids and a
 pedigree
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 data("qcBreeders")
 data("qcPed")
 df <- addSexAndAgeToGroup(ids = qcBreeders, ped = qcPed)
 head(df)
-}
-
 }

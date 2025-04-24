@@ -1,6 +1,6 @@
 #' Forms and fills list of animals groups based on provided constraints
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' @return A list of animal groups and their member animals
@@ -24,33 +24,51 @@
 #' @param sexRatio numeric value indicating the ratio of females to males x
 #' (from 0.5 to 20 by increments of 0.5 within the accompanying Shiny
 #' application. A sex ratio of 0 ignores sex in making up groups.
-fillGroupMembers <- function(candidates, currentGroups, kin, ped, harem, minAge,
-                             numGp, sexRatio) {
-  groupMembers <- makeGroupMembers(numGp, currentGroups, candidates, ped, harem,
-                                   minAge)
+#' @noRd
+fillGroupMembers <- function(candidates,
+                             currentGroups,
+                             kin,
+                             ped,
+                             harem,
+                             minAge,
+                             numGp,
+                             sexRatio) {
+  groupMembers <- makeGroupMembers(
+    numGp, currentGroups, candidates, ped,
+    harem, minAge
+  )
   grpNum <- makeGrpNum(numGp)
 
-  if (harem) { # Sires were added to groupMembers
+  if (harem) {
+    # Sires were added to groupMembers
     candidates <- removePotentialSires(candidates, minAge, ped)
   }
-  if (sexRatio != 0) {
+  if (sexRatio != 0.0) {
     groupMembers <- fillGroupMembersWithSexRatio(
-      candidates, groupMembers, grpNum, kin, ped, minAge, numGp, sexRatio)
+      candidates,
+      groupMembers,
+      grpNum,
+      kin,
+      ped,
+      minAge,
+      numGp,
+      sexRatio
+    )
     return(groupMembers)
   } else {
     available <- makeAvailable(candidates, numGp)
   }
 
-  while (TRUE) {
+  repeat {
     if (isEmpty(grpNum)) {
       break
     }
 
     # Select a group at random
-    i <- sample(grpNum, 1)[[1]]
+    i <- sample(grpNum, 1L)[[1L]]
 
     # Select an animal that can be added to this group and add it
-    id <- sample(available[[i]], 1)
+    id <- sample(available[[i]], 1L)
     groupMembers[[i]] <- c(groupMembers[[i]], id)
     available <-
       removeSelectedAnimalFromAvailableAnimals(available, id, numGp)

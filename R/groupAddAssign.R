@@ -1,6 +1,6 @@
 #' Add animals to an existing breeding group or forms groups:
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of Group Formation
 #'
@@ -27,47 +27,6 @@
 #' The list item \code{groupKin} contains the subset of the kinship matrix
 #' that is specific for each group formed.
 #'
-#' @examples
-#' \donttest{
-#' library(nprcgenekeepr)
-#' examplePedigree <- nprcgenekeepr::examplePedigree
-#' breederPed <- qcStudbook(examplePedigree, minParentAge = 2,
-#'                         reportChanges = FALSE,
-#'                         reportErrors = FALSE)
-#' focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
-#'                                  is.na(breederPed$dam)) &
-#'                                is.na(breederPed$exit)]
-#' ped <- setPopulation(ped = breederPed, ids = focalAnimals)
-#' trimmedPed <- trimPedigree(focalAnimals, breederPed)
-#' probands <- ped$id[ped$population]
-#' ped <- trimPedigree(probands, ped, removeUninformative = FALSE,
-#'                    addBackParents = FALSE)
-#' geneticValue <- reportGV(ped, guIter = 50, # should be >= 1000
-#'                         guThresh = 3,
-#'                         byID = TRUE,
-#'                         updateProgress = NULL)
-#' trimmedGeneticValue <- reportGV(trimmedPed, guIter = 50, # should be >= 1000
-#'                                guThresh = 3,
-#'                                byID = TRUE,
-#'                                updateProgress = NULL)
-#' candidates <- trimmedPed$id[trimmedPed$birth < as.Date("2013-01-01") &
-#'                             !is.na(trimmedPed$birth) &
-#'                             is.na(trimmedPed$exit)]
-#' haremGrp <- groupAddAssign(candidates = candidates,
-#'                           kmat = trimmedGeneticValue[["kinship"]],
-#'                           ped = trimmedPed,
-#'                           iter = 10, # should be >= 1000
-#'                           numGp = 6,
-#'                           harem = TRUE)
-#' haremGrp$group
-#' sexRatioGrp <- groupAddAssign(candidates = candidates,
-#'                              kmat = trimmedGeneticValue[["kinship"]],
-#'                              ped = trimmedPed,
-#'                              iter = 10, # should be >= 1000
-#'                              numGp = 6,
-#'                              sexRatio = 9)
-#' sexRatioGrp$group
-#' }
 #' @param candidates Character vector of IDs of the animals available for
 #' use in forming the groups. The animals that may be present in
 #' \code{currentGroups} are not included within \code{candidates}.
@@ -106,47 +65,111 @@
 #' \code{shiny::Progress} object.
 #'
 #' @export
-groupAddAssign <- function(candidates, currentGroups = list(character(0)), kmat,
+#' @examples
+#' library(nprcgenekeepr)
+#' examplePedigree <- nprcgenekeepr::examplePedigree
+#' breederPed <- qcStudbook(examplePedigree,
+#'   minParentAge = 2,
+#'   reportChanges = FALSE,
+#'   reportErrors = FALSE
+#' )
+#' focalAnimals <- breederPed$id[!(is.na(breederPed$sire) &
+#'   is.na(breederPed$dam)) &
+#'   is.na(breederPed$exit)]
+#' ped <- setPopulation(ped = breederPed, ids = focalAnimals)
+#' trimmedPed <- trimPedigree(focalAnimals, breederPed)
+#' probands <- ped$id[ped$population]
+#' ped <- trimPedigree(probands, ped,
+#'   removeUninformative = FALSE,
+#'   addBackParents = FALSE
+#' )
+#' geneticValue <- reportGV(ped,
+#'   guIter = 50, # should be >= 1000
+#'   guThresh = 3,
+#'   byID = TRUE,
+#'   updateProgress = NULL
+#' )
+#' trimmedGeneticValue <- reportGV(trimmedPed,
+#'   guIter = 50, # should be >= 1000
+#'   guThresh = 3,
+#'   byID = TRUE,
+#'   updateProgress = NULL
+#' )
+#' candidates <- trimmedPed$id[trimmedPed$birth < as.Date("2013-01-01") &
+#'   !is.na(trimmedPed$birth) &
+#'   is.na(trimmedPed$exit)]
+#' haremGrp <- groupAddAssign(
+#'   candidates = candidates,
+#'   kmat = trimmedGeneticValue[["kinship"]],
+#'   ped = trimmedPed,
+#'   iter = 10, # should be >= 1000
+#'   numGp = 6,
+#'   harem = TRUE
+#' )
+#' haremGrp$group
+#' sexRatioGrp <- groupAddAssign(
+#'   candidates = candidates,
+#'   kmat = trimmedGeneticValue[["kinship"]],
+#'   ped = trimmedPed,
+#'   iter = 10L, # should be >= 1000L
+#'   numGp = 6L,
+#'   sexRatio = 9.0
+#' )
+#' sexRatioGrp$group
+groupAddAssign <- function(candidates, currentGroups = list(character(0L)),
+                           kmat,
                            ped,
-                            threshold = 0.015625, ignore = list(c("F", "F")),
-                            minAge = 1, iter = 1000,
-                            numGp = 1, harem = FALSE,
-                            sexRatio = 0, withKin = FALSE,
+                           threshold = 0.015625, ignore = list(c("F", "F")),
+                           minAge = 1.0, iter = 1000L,
+                           numGp = 1L, harem = FALSE,
+                           sexRatio = 0.0, withKin = FALSE,
                            updateProgress = NULL) {
-  if (length(currentGroups) > numGp)
-    stop(paste0("Cannot have more groups with seed animals than number of ",
-                "groups to be formed."))
+  if (length(currentGroups) > numGp) {
+    stop(
+      "Cannot have more groups with seed animals than number of ",
+      "groups to be formed."
+    )
+  }
   kmat <- filterKinMatrix(union(candidates, unlist(currentGroups)), kmat)
-  kin <- getAnimalsWithHighKinship(kmat, ped, threshold, currentGroups, ignore,
-                                               minAge)
+  kin <- getAnimalsWithHighKinship(
+    kmat, ped, threshold, currentGroups, ignore,
+    minAge
+  )
 
   # Filtering out candidates related to current group members
-  conflicts <- unique(c(unlist(kin[unlist(currentGroups)]),
-                        unlist(currentGroups)))
+  conflicts <- unique(c(
+    unlist(kin[unlist(currentGroups)]),
+    unlist(currentGroups)
+  ))
   candidates <- setdiff(candidates, conflicts)
 
 
   kin <- addAnimalsWithNoRelative(kin, candidates)
-  if (harem) {
-    if (length(getPotentialSires(candidates, minAge, ped)) < numGp) {
-      stop(paste0("User selected to form ", numGp, " harems with only ",
-                  length(getPotentialSires(candidates, minAge, ped)),
-                  " males at least ",
-                  minAge, " years old in the list of candidates."))
-
-    }
+  if (harem &&
+      length(getPotentialSires(candidates, minAge, ped)) < numGp) {
+    stop(
+      "User selected to form ",
+      numGp,
+      " harems with only ",
+      length(getPotentialSires(candidates, minAge, ped)),
+      " males at least ",
+      minAge,
+      " years old in the list of candidates."
+    )
   }
 
   # Starting the group assignment simulation
-  savedScore <- -1
+  savedScore <- -1L
   savedGroupMembers <- list()
 
-  for (k in 1:iter) {
-    groupMembers <- fillGroupMembers(candidates, currentGroups, kin, ped, harem,
-                                     minAge, numGp, sexRatio)
+  for (k in 1L:iter) {
+    groupMembers <- fillGroupMembers(
+      candidates, currentGroups, kin, ped, harem,
+      minAge, numGp, sexRatio
+    )
 
     # Score the resulting groups
-    score <- min(vapply(groupMembers, length, integer(1)))
+    score <- min(lengths(groupMembers))
 
     if (score > savedScore) {
       savedGroupMembers <- groupMembers
@@ -159,8 +182,10 @@ groupAddAssign <- function(candidates, currentGroups = list(character(0)), kmat,
     }
   }
 
-  savedGroupMembers <- addGroupOfUnusedAnimals(savedGroupMembers, candidates,
-                                               ped, minAge, harem)
+  savedGroupMembers <- addGroupOfUnusedAnimals(
+    savedGroupMembers, candidates,
+    ped, minAge, harem
+  )
 
   groupMembersReturn(savedGroupMembers, savedScore, withKin, kmat)
 }

@@ -4,7 +4,7 @@
 \alias{checkParentAge}
 \title{Check parent ages to be at least \code{minParentAge}}
 \usage{
-checkParentAge(sb, minParentAge = 2, reportErrors = FALSE)
+checkParentAge(sb, minParentAge = 2L, reportErrors = FALSE)
 }
 \arguments{
 \item{sb}{A dataframe containing a table of pedigree and demographic
@@ -23,24 +23,22 @@ A dataframe containing rows for each animal where one or more
 parent was less than \code{minParentAge}. It contains all of the columns
 in the original \code{sb} dataframe with the following added columns:
 \enumerate{
-\item {sireBirth} {sire's birth date}
-\item{sireAge} {age of sire in years on the date indicated by \code{birth}.}
-\item{damBirth} {dam's birth date}
-\code{damAge} {age of dam in years on the date indicated by \code{birth}.}
+\item \{sireBirth\} \{sire's birth date\}
+\item\{sireAge\} \{age of sire in years on the date indicated by
+\code{birth}.\}
+\item\{damBirth\} \{dam's birth date\}
+\code{damAge} \{age of dam in years on the date indicated by \code{birth}.\}
 }
 }
 \description{
 Ensure parents are sufficiently older than offspring
 }
 \examples{
-\donttest{
 library(nprcgenekeepr)
 qcPed <- nprcgenekeepr::qcPed
-checkParentAge(qcPed, minParentAge = 2)
-checkParentAge(qcPed, minParentAge = 3)
-checkParentAge(qcPed, minParentAge = 5)
-checkParentAge(qcPed, minParentAge = 6)
-checkParentAge(qcPed, minParentAge = 10)
-}
-
+checkParentAge(qcPed, minParentAge = 2L)
+checkParentAge(qcPed, minParentAge = 3L)
+checkParentAge(qcPed, minParentAge = 5L)
+checkParentAge(qcPed, minParentAge = 6L)
+head(checkParentAge(qcPed, minParentAge = 10L))
 }

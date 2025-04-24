@@ -16,8 +16,8 @@ Allows running \code{shiny} application with
 \code{nprcgenekeepr::runGeneKeepR()}
 }
 \examples{
-\dontrun{
-library(nprcgenekeepr)
-runGeneKeepR()
+if (interactive()) {
+  library(nprcgenekeepr)
+  runGeneKeepR()
 }
 }

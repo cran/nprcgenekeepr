@@ -1,6 +1,9 @@
-#' insertSeparators inserts the character "-" between year and month and
-#' between month and day portions of a date string in \%Y\%m\%d format.
-## Copyright(c) 2017-2020 R. Mark Sharp
+#' Inserts "-" between year, month, and day of YYYYMMDD formatted dates.
+#'
+#' Inserts "-" between year, month, and day of a date string in dates formatted
+#' as YYYYMMDD to form YYYY-MM-DD formatted dates.
+#'
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #'
 #' This function is not exported because it is not general purpose and
@@ -9,15 +12,22 @@
 #' @return A character vector of potential dates in \%Y-\%m-\%d format.
 #'
 #' @param dates character vector of potential dates
+#'
 #' @importFrom stringi stri_detect_regex stri_sub stri_c
+#'
+#' @noRd
 insertSeparators <- function(dates) {
   if (!any(stri_detect_regex(dates[!is.na(dates)], pattern = "[-/]"))) {
     if (all(suppressWarnings(as.integer(dates[!is.na(dates)]) &
                              !is.na(as.integer(dates[!is.na(dates)]))))) {
       dates <- vapply(dates, function(x) {
-        stri_c(stri_sub(x, from = 1, to = 4), "-",
-               stri_sub(x, from = 5, to = 6), "-",
-               stri_sub(x, from = 7, to = 8))
+        stri_c(
+          stri_sub(x, from = 1, to = 4),
+          "-",
+          stri_sub(x, from = 5, to = 6),
+          "-",
+          stri_sub(x, from = 7, to = 8)
+        )
       }, character(1))
     }
   }

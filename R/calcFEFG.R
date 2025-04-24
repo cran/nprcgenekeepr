@@ -1,6 +1,6 @@
 #' Calculates Founder Equivalents and Founder Genome Equivalents
 #'
-## Copyright(c) 2017-2020 R. Mark Sharp
+## Copyright(c) 2017-2024 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 #' Part of the Genetic Value Analysis
 #'
@@ -10,8 +10,14 @@
 #' descendants and \code{r} is the mean number of founder alleles retained
 #' in the gene dropping experiment.
 #'
+#' @param ped the pedigree information in datatable format.  Pedigree
+#' (req. fields: id, sire, dam, gen, population).
+#'
+#' It is assumed that the pedigree has no partial parentage
+#' @param alleles dataframe contains an \code{AlleleTable}. This is a
+#' table of allele information produced by \code{geneDrop()}.
+#' @export
 #' @examples
-#' \donttest{
 #' data(lacy1989Ped)
 #' ## Example from Analysis of Founder Representation in Pedigrees: Founder
 #' ## Equivalents and Founder Genome Equivalents.
@@ -29,28 +35,23 @@
 #'   stringsAsFactors = TRUE
 #' )
 #' allelesFactors <- geneDrop(pedFactors$id, pedFactors$sire, pedFactors$dam,
-#'                            pedFactors$gen, genotype = NULL, n = 5000,
-#'                            updateProgress = NULL)
+#'   pedFactors$gen,
+#'   genotype = NULL, n = 5000,
+#'   updateProgress = NULL
+#' )
 #' feFg <- calcFEFG(ped, alleles)
 #' feFgFactors <- calcFEFG(pedFactors, allelesFactors)
-#' }
-#'
-#' @param ped the pedigree information in datatable format.  Pedigree
-#' (req. fields: id, sire, dam, gen, population).
-#'
-#' It is assumed that the pedigree has no partial parentage
-#' @param alleles dataframe contains an \code{AlleleTable}. This is a
-#' table of allele information produced by \code{geneDrop()}.
-#' @export
 calcFEFG <- function(ped, alleles) {
   ped <- toCharacter(ped, headers = c("id", "sire", "dam"))
   founders <- ped$id[is.na(ped$sire) & is.na(ped$dam)]
+  # nolint start: commented_code_linter.
   ## UID.founders <- founders[grepl("^U", founders, ignore.case = TRUE)]
+  # nolint end: commented_code_linter.
   ## UID.founders is not used; It may be a mistake, but it could be vestiges of
   ## something planned that was not done.
   descendants <- ped$id[!(ped$id %in% founders)]
 
-  d <- matrix(0, nrow = length(descendants), ncol = length(founders))
+  d <- matrix(0L, nrow = length(descendants), ncol = length(founders))
   colnames(d) <- founders
   rownames(d) <- descendants
 
@@ -69,7 +70,7 @@ calcFEFG <- function(ped, alleles) {
       ego <- gen$id[j]
       sire <- gen$sire[j]
       dam <- gen$dam[j]
-      d[ego, ] <- (d[sire, ] + d[dam, ]) / 2
+      d[ego, ] <- (d[sire, ] + d[dam, ]) / 2L
     }
   }
 
@@ -78,5 +79,5 @@ calcFEFG <- function(ped, alleles) {
   p <- colMeans(d)
 
   r <- calcRetention(ped, alleles)
-  return(list(FE = 1 / sum(p ^ 2), FG = 1 / sum( (p ^ 2) / r, na.rm = TRUE)))
+  list(FE = 1L / sum(p^2L), FG = 1L / sum((p^2L) / r, na.rm = TRUE))
 }
