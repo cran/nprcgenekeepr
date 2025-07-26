@@ -1901,10 +1901,10 @@ modifying the number of times each parent is included in the list.</p>
 <p>Animals , , and
 <!-- TODO explain the use of the simParent_n lists --></p>
 <pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
-library(kableExtra)
-library(magrittr)
-library(nprcgenekeepr)
-library(stringi)
+library(kableExtra) # nolint: undesirable_function_linter
+library(magrittr) # nolint: undesirable_function_linter
+library(nprcgenekeepr) # nolint: undesirable_function_linter
+library(stringi) # nolint: undesirable_function_linter
 
 ped &lt;- nprcgenekeepr::smallPed
 simParent_1 &lt;- list( # nolint: object_name_linter

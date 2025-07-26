@@ -1,18 +1,18 @@
 README
 ================
 R. Mark Sharp, Ph.D.
-2024-12-17
+2025-07-25
 
 # nprcgenekeepr <a href="https://github.com/rmsharp/nprcgenekeepr"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
 
-Version1.0.6 (2024-12-20)
+Version 1.0.8 (2025-07-25)
 
 <!-- badges: start -->
 
-[![Rdoc](https://www.rdocumentation.org/badges/version/nprcgenekeepr)](https://www.rdocumentation.org/packages/nprcgenekeepr)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/rmsharp/nprcgenekeepr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rmsharp/nprcgenekeepr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/rmsharp/nprcgenekeepr/graph/badge.svg)](https://app.codecov.io/gh/rmsharp/nprcgenekeepr)
@@ -34,7 +34,9 @@ Southwest National Primate Research Center and P51 OD011092 to the
 Oregon National Primate Research Center.
 
 <!--It is now managed and maintained as a joint effort between ONPRC-->
+
 <!--and Southwest National Primate Research Center (SNPRC) with the -->
+
 <!--coding being done by R. Mark Sharp, Ph.D.-->
 
 At present, the application supports 5 functions:
@@ -71,7 +73,7 @@ from the R console prompt with:
 
 ``` r
 install.packages("devtools")
-devtools::install_github("rmsharp/nprcgenekeepr")
+devtools::install_github(file.path("rmsharp", "nprcgenekeepr"))
 ```
 
 All missing dependencies should be automatically installed.
@@ -101,7 +103,7 @@ scripts. However, it was originally designed to be used within a Shiny
 application that can be started with:
 
 ``` r
-library(nprcgenekeepr)
+library(nprcgenekeepr) # nolint: undesirable_function_linter
 runGeneKeepR()
 ```
 

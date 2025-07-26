@@ -1,7 +1,9 @@
+Config/renv/profiles/dev/dependencies: checkhelper,devtools, httpuv,
+        qpdf, markdown, pak, roxygen2, spelling, usethis
 Package: nprcgenekeepr
 Type: Package
 Title: Genetic Tools for Colony Management
-Version: 1.0.7
+Version: 1.0.8
 Authors@R: c(
     person("Michael", "Raboin", role = c("aut")),
     person("Terry", "Therneau", role = c("aut")),
@@ -40,7 +42,7 @@ Imports: anytime, data.table, futile.logger, htmlTable, lifecycle,
         lubridate, Matrix, plotrix, readxl, Rlabkey, sessioninfo,
         shiny, stringi, utils, WriteXLS
 Suggests: covr, dplyr, ggplot2, grid, kableExtra, knitr, markdown,
-        pkgdown, png, rmarkdown, roxygen2 (>= 7.3.2), shinyBS,
+        mockery, pkgdown, png, rmarkdown, roxygen2 (>= 7.3.2), shinyBS,
         shinyWidgets, spelling, testthat
 Language: en-US
 Encoding: UTF-8
@@ -49,15 +51,15 @@ RoxygenNote: 7.3.2
 LazyData: TRUE
 VignetteBuilder: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2025-04-22 19:08:14 UTC; rmsharp
+Packaged: 2025-07-26 02:48:08 UTC; rmsharp
 Author: Michael Raboin [aut],
   Terry Therneau [aut],
   Amanda Vinson [aut, dtc],
-  R. Mark Sharp [aut, cre, cph, dtc]
-    (<https://orcid.org/0000-0002-6170-6942>),
-  Matthew Schultz [aut] (<https://orcid.org/0000-0001-5103-4305>),
+  R. Mark Sharp [aut, cre, cph, dtc] (ORCID:
+    <https://orcid.org/0000-0002-6170-6942>),
+  Matthew Schultz [aut] (ORCID: <https://orcid.org/0000-0001-5103-4305>),
   Southwest National Primate Research Center NIH grant P51 RR13986 [fnd],
   Oregon National Primate Research Center grant P51 OD011092 [fnd]
 Maintainer: R. Mark Sharp <rmsharp@me.com>
 Repository: CRAN
-Date/Publication: 2025-04-24 17:20:05 UTC
+Date/Publication: 2025-07-26 04:00:02 UTC

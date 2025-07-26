@@ -10,6 +10,6 @@
 # devtools::install_github(file.path("rmsharp", "nprcgenekeepr"))
 
 ## ----running-shiny-application, echo = TRUE, eval = FALSE---------------------
-# library(nprcgenekeepr)
+# library(nprcgenekeepr) # nolint: undesirable_function_linter
 # runGeneKeepR()
 

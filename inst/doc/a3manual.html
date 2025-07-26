@@ -266,7 +266,7 @@ devtools::install_github(file.path(&quot;rmsharp&quot;, &quot;nprcgenekeepr&quot
 <p>The toolset available within nprcgenekeepr can be used inside standard R scripts.
 However, it was originally designed to be used within a Shiny application
 that can be started with:</p>
-<pre><code class="language-r">library(nprcgenekeepr)
+<pre><code class="language-r">library(nprcgenekeepr) # nolint: undesirable_function_linter
 runGeneKeepR()
 </code></pre>
 <h2 id="sec:input">Input</h2>
