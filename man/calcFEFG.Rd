@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcFEFG.R
 \name{calcFEFG}
 \alias{calcFEFG}
-\title{Calculates Founder Equivalents and Founder Genome Equivalents}
+\title{Calculate founder equivalents and founder genome equivalents}
 \usage{
 calcFEFG(ped, alleles)
 }
@@ -10,7 +10,8 @@ calcFEFG(ped, alleles)
 \item{ped}{the pedigree information in datatable format.  Pedigree
 (req. fields: id, sire, dam, gen, population).
 
-It is assumed that the pedigree has no partial parentage}
+The pedigree must have no partial parentage (every animal has both parents
+known or both unknown); \code{calcFEFG} stops with an error otherwise.}
 
 \item{alleles}{dataframe contains an \code{AlleleTable}. This is a
 table of allele information produced by \code{geneDrop()}.}
@@ -18,9 +19,16 @@ table of allele information produced by \code{geneDrop()}.}
 \value{
 The list containing the founder equivalents,
 \code{FE = 1 / sum(p ^ 2)}, and the founder genome equivalents,
-\code{FG = 1 / sum( (p ^ 2) / r} where \code{p} is average number of
-descendants and \code{r} is the mean number of founder alleles retained
-in the gene dropping experiment.
+\code{FG = 1 / sum( (p ^ 2) / r)} where \code{p} is the vector of founder
+mean contributions to the current descendants and \code{r} is the mean
+number of founder alleles retained in the gene dropping experiment.
+
+\code{FE} is deterministic and always returned. \code{FG} is \code{NA}
+(with a warning) when a contributing founder (\code{p > 0}) is retained
+in zero of the gene-drop iterations (\code{r == 0}), which would
+otherwise collapse \code{FG} silently to 0; raise the number of
+iterations. See \code{\link{calcFGSE}} for the sampling standard error
+of \code{FG}.
 }
 \description{
 Part of the Genetic Value Analysis
@@ -44,9 +52,28 @@ pedFactors <- data.frame(
 )
 allelesFactors <- geneDrop(pedFactors$id, pedFactors$sire, pedFactors$dam,
   pedFactors$gen,
-  genotype = NULL, n = 5000,
+  genotype = NULL, n = 1000,
   updateProgress = NULL
 )
 feFg <- calcFEFG(ped, alleles)
 feFgFactors <- calcFEFG(pedFactors, allelesFactors)
 }
+\references{
+Lacy RC. 1989. Analysis of founder representation in
+pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+8:111-123.
+}
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcA]{calcA()}},
+\code{\link[=calcFE]{calcFE()}},
+\code{\link[=calcFG]{calcFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGU]{calcGU()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}},
+\code{\link[=calcRetention]{calcRetention()}}
+}
+\concept{genetic value analysis}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/obfuscateId.R
 \name{obfuscateId}
 \alias{obfuscateId}
-\title{obfucateId creates a vector of ID aliases of specified length}
+\title{Create ID aliases of a specified length}
 \usage{
 obfuscateId(id, size = 10L, existingIds = character(0L))
 }
@@ -22,6 +22,8 @@ ID aliases are pseudorandom sequences of alphanumeric upper case characters
 where the letter "O" is not included for readability..
 User has the option of providing a character vector of aliases to avoid
 using.
+Because aliases are alphanumeric, they never contain a period ("."),
+honoring the ID rule enforced at data input by \code{qcStudbook}.
 }
 \examples{
 library(nprcgenekeepr)
@@ -30,3 +32,10 @@ obfuscateId(integerIds, size = 4L)
 characterIds <- paste0(paste0(sample(LETTERS, 1L, replace = FALSE)), 1L:10L)
 obfuscateId(characterIds, size = 4L)
 }
+\seealso{
+Other obfuscation:
+\code{\link[=mapIdsToObfuscated]{mapIdsToObfuscated()}},
+\code{\link[=obfuscateDate]{obfuscateDate()}},
+\code{\link[=obfuscatePed]{obfuscatePed()}}
+}
+\concept{obfuscation}

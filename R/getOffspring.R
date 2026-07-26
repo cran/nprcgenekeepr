@@ -1,15 +1,15 @@
-#' Get offspring to corresponding animal IDs provided
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A character vector containing all of the ancestor IDs for all of the
-#' IDs provided in the second argument \code{ids}. All ancestors are combined
-#' and duplicates are removed.
+
+#' Get offspring to corresponding animal IDs provided
 #'
 #' @param pedSourceDf dataframe with pedigree structure having at least the
 #' columns id, sire, and dam.
-#' @param ids character vector of animal IDs
+#' @inheritParams getParents
+#' @return A character vector containing all of the offspring IDs for all of the
+#' IDs provided in the second argument \code{ids}. All offspring are combined
+#' and duplicates are removed.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

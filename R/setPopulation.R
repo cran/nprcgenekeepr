@@ -1,17 +1,18 @@
-#' Population designation function
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Flag animals as the population of interest
+#'
 #' Part of the pedigree filtering toolset.
 #'
+#' @param ped datatable that is the \code{Pedigree}. It contains pedigree
+#' information. The \code{id} column is required.
+#' @param ids character vector of IDs to be flagged as part of the population
+#' under consideration.
 #' @return An updated pedigree with the \code{population} column added or
 #' updated by being set to \code{TRUE} for the animal IDs in \code{ped$id} and
 #' \code{FALSE} otherwise.
 #'
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information. The \code{id} column is required.
-#' @param ids character vector of IDs to be flagged as part of the population
-#' under consideration.
 #' @export
 #' @examples
 #' examplePedigree <- nprcgenekeepr::examplePedigree

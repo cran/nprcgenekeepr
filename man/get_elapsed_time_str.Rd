@@ -2,12 +2,13 @@
 % Please edit documentation in R/get_elapsed_time_str.R
 \name{get_elapsed_time_str}
 \alias{get_elapsed_time_str}
-\title{Returns the elapsed time since start_time.}
+\title{Format the elapsed time since a start time}
 \usage{
 get_elapsed_time_str(start_time)
 }
 \arguments{
-\item{start_time}{a POSIXct time object}
+\item{start_time}{a \code{proc_time} object as returned by
+\code{proc.time()}}
 }
 \value{
 A character vector describing the passage of time in hours, minutes,

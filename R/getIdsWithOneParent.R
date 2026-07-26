@@ -1,11 +1,11 @@
-#' getIdsWithOneParent extracts IDs of animals pedigree without either a
-#' sire or a dam
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return Character vector of all single parents
+
+#' Get ids of animals with only one parent
 #'
 #' @param uPed a trimmed pedigree dataframe with uninformative founders removed.
+#' @return Character vector of all single parents
+#'
 #' @export
 #' @examples
 #' examplePedigree <- nprcgenekeepr::examplePedigree
@@ -23,6 +23,7 @@
 #' nrow(p)
 #' p <- addBackSecondParents(p, ped)
 #' nrow(p)
+#' getIdsWithOneParent(p)
 getIdsWithOneParent <- function(uPed) {
   uPed$id[(is.na(uPed$sire) & !is.na(uPed$dam)) |
     (!is.na(uPed$sire) & is.na(uPed$dam))]

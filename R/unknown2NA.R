@@ -1,12 +1,13 @@
-#' Removing IDs having "UNKNOWN" regardless of case
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Remove IDs having UNKNOWN regardless of case
+#'
 #' Someone started entering "unknown" for unknown parents instead of leaving
 #' the field blank in PRIMe.
+#' @param ped  A dataframe containing at least and "id" field
 #' @return A dataframe with "UNKNOWN" values in the columns \code{id},
 #' \code{sire}, and \code{dam} replaced with NA
-#' @param ped  A dataframe containing at least and "id" field
 #' @noRd
 unknown2NA <- function(ped) {
   if ("id" %in% names(ped)) {

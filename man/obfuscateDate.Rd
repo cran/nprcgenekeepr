@@ -2,7 +2,7 @@
 % Please edit documentation in R/obfuscateDate.R
 \name{obfuscateDate}
 \alias{obfuscateDate}
-\title{obfucateDate adds a random number of days bounded by plus and minus max delta}
+\title{Obfuscate dates with a random day offset}
 \usage{
 obfuscateDate(baseDate, minDate, maxDelta = 30L)
 }
@@ -32,3 +32,10 @@ someDates <- rep(
 minBirthDate <- rep(as.Date("2009-2-16", format = "\%Y-\%m-\%d"), 20)
 obfuscateDate(someDates, minBirthDate, 30L)
 }
+\seealso{
+Other obfuscation:
+\code{\link[=mapIdsToObfuscated]{mapIdsToObfuscated()}},
+\code{\link[=obfuscateId]{obfuscateId()}},
+\code{\link[=obfuscatePed]{obfuscatePed()}}
+}
+\concept{obfuscation}

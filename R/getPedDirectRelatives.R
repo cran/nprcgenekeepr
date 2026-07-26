@@ -1,30 +1,31 @@
-#' Get the direct ancestors of selected animals from supplied pedigree.
-#'
-## Copyright(c) 2017-2023 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Gets direct ancestors from labkey \code{study} schema and \code{demographics}
-#' table.
+
+#' Get the direct relatives of selected animals from a pedigree
 #'
-#' @return A data.frame with pedigree structure having all of the direct
-#' ancestors for the Ids provided.
+#' Gets the direct relatives (ancestors and descendants) of the selected
+#' animals from the supplied pedigree (\code{ped}).
 #'
-#' @param ids character vector with Ids.
+#' @inheritParams getParents
 #' @param ped pedigree dataframe object that is used as the source of
 #' pedigree information.
 #' @param unrelatedParents logical vector when \code{FALSE} the unrelated
-#' parents of offspring do not get a record as an ego; when \code{TRUE}
-#' a place holder record where parent (\code{sire},
+#' parents of offspring do not get a record as an ego; when \code{TRUE} they
+#' get a place holder record as an ego in which the parent (\code{sire},
 #' \code{dam}) IDs are set to \code{NA}.
 #'
-#' @import futile.logger
+#' @return A data.frame of pedigree records for the selected animals and
+#' their direct relatives (ancestors and descendants) in \code{ped}.
+#'
 #' @importFrom data.table rbindlist
 #' @importFrom stringi stri_c
+#' @family direct relatives
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
-#' ## Have to a vector of focal animals
-#' focalAnimals <- c("1X2701", "1X0101")
-#' suppressWarnings(getLkDirectRelatives(ids = focalAnimals))
+#' ## A pedigree to search and a focal animal whose direct relatives we want
+#' ped <- nprcgenekeepr::lacy1989Ped
+#' getPedDirectRelatives(ids = "E", ped = ped)
 getPedDirectRelatives <- function(ids, ped, unrelatedParents = FALSE) {
   if (missing(ids)) {
     stop("Need to specify IDs in 'id' parameter.")
@@ -58,13 +59,18 @@ getPedDirectRelatives <- function(ids, ped, unrelatedParents = FALSE) {
     ids <- ids[!is.na(ids)]
   }
 
+  relatives <- ped[ped$id %in% ids, ]
   if (unrelatedParents) {
     unrelated <- unique(ids[!ids %in% ped$id])
     unrelated <- unrelated[!is.na(unrelated)]
-    addIdRecords(
-      ids = unrelated, fullPed = ped,
-      partialPed = ped[ped$id %in% ids, ]
-    )
+    if (length(unrelated) > 0L) {
+      placeholders <- relatives[rep(NA_integer_, length(unrelated)), ]
+      placeholders$id <- unrelated
+      placeholders$sire <- NA
+      placeholders$dam <- NA
+      relatives <- rbind(relatives, placeholders)
+      rownames(relatives) <- NULL
+    }
   }
-  ped[ped$id %in% ids, ]
+  relatives
 }

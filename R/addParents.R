@@ -1,7 +1,8 @@
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
 #' Add parents
 #'
-## Copyright(c) 2017-2024 R. Mark Sharp
-## This file is part of nprcgenekeepr
 #' Pedigree curation function
 #' Given a pedigree, find any IDs listed in the "sire" or "dam" columns
 #' that lack their own line entry and generate one.
@@ -9,10 +10,12 @@
 #' This must be run after to \code{addUIds} since the IDs made there are
 #' used by \code{addParents}
 #'
+#' @inheritParams reportGV
 #' @return An updated pedigree with entries added as necessary.
 #' Entries have the id and sex specified; all remaining columns are filled
 #' with \code{NA}.
 #'
+#' @export
 #' @examples
 #' pedTwo <- data.frame(
 #'   id = c("d1", "s2", "d2", "o1", "o2", "o3", "o4"),
@@ -24,9 +27,6 @@
 #' newPed <- addParents(pedTwo)
 #' newPed
 #'
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
-#' @export
 addParents <- function(ped) {
   sires <- ped$sire
   dams <- ped$dam

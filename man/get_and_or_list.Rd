@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_and_or_list.R
 \name{get_and_or_list}
 \alias{get_and_or_list}
-\title{Returns a one element character string with correct punctuation for
-a list made up of the elements of the character vector argument.}
+\title{Join a character vector into an and/or list}
 \usage{
 get_and_or_list(c_vector, conjunction = "and")
 }
@@ -12,7 +11,8 @@ get_and_or_list(c_vector, conjunction = "and")
 to be put in a list.}
 
 \item{conjunction}{The conjunction to be used as the connector.
-This is usually \verb{and' or }or' with `and' being the default.}
+This is usually \sQuote{and} or \sQuote{or} with \sQuote{and} being
+the default.}
 }
 \value{
 A character vector of length one containing the a single correctly
@@ -21,8 +21,7 @@ vector with commas between if there are more than two elements with the
 last two elements joined by the selected conjunction.
 }
 \description{
-Returns a one element character string with correct punctuation for
-a list made up of the elements of the character vector argument.
+Join a character vector into an and/or list
 }
 \examples{
 get_and_or_list(c("Bob", "John")) # "Bob and John"

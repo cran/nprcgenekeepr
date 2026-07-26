@@ -2,31 +2,78 @@
 % Please edit documentation in R/getPotentialParents.R
 \name{getPotentialParents}
 \alias{getPotentialParents}
-\title{Get the lists of portential parents for all individuals born in the colony
-with one or two unknown parents.}
+\title{Get potential parents for animals with unknown parents}
 \usage{
-getPotentialParents(ped, minParentAge, maxGestationalPeriod)
+getPotentialParents(
+  ped,
+  minSireAge = NULL,
+  minDamAge = NULL,
+  minParentAge = lifecycle::deprecated(),
+  maxGestationalPeriod = NULL,
+  gestationTable = NULL
+)
 }
 \arguments{
 \item{ped}{the pedigree information in data.frame format. Pedigree
 (req. fields: id, sire, dam, gen, population).
 This requires complete pedigree information.}
 
-\item{minParentAge}{numeric values to set the minimum age in years for
-an animal to have an offspring. Defaults to 2 years. The check is not
-performed for animals with missing birth dates.}
+\item{minSireAge}{numeric minimum age in years for a male to be proposed
+as a potential sire. \code{NULL} (default) looks up the floor for each
+candidate's species via \code{\link{getSpeciesMinBreedingAge}} (falling
+back to 2 years when the species is missing or unknown); a supplied value
+overrides that floor for all male candidates. Candidates with missing
+birth dates are not considered.}
 
-\item{maxGestationalPeriod}{integer value describing the days between
-conception and birth. This will be used to prevent the removal of sires
-who exit the colony between date of conception and birth. Need to decide
-where this will come from.}
+\item{minDamAge}{numeric minimum age in years for a female to be proposed
+as a potential dam. \code{NULL} (default) looks up the floor for each
+candidate's species via \code{\link{getSpeciesMinBreedingAge}} (falling
+back to 2 years when the species is missing or unknown); a supplied value
+overrides that floor for all female candidates.}
+
+\item{minParentAge}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Deprecated scalar
+minimum parent age. Supplying it sets both \code{minSireAge} and
+\code{minDamAge}; use those sex-specific parameters instead.}
+
+\item{maxGestationalPeriod}{integer maximum number of days between conception
+and birth for the species being analyzed (a conservative upper bound, e.g.
+210 for rhesus whose typical gestation is about 165 days). When \code{NULL}
+(the default) the window is looked up per animal from the \code{species}
+column of \code{ped} via \code{\link{getSpeciesGestation}}, falling back to
+210 days for animals whose species is missing or unrecognized; supply an
+explicit integer to use one fixed window for every animal. It is used two
+ways: (1) a sire who exited the colony between conception
+(birth - maxGestationalPeriod) and birth is still retained as a candidate;
+and (2) a female who delivered another offspring within maxGestationalPeriod
+days of the focal birth is excluded as a candidate dam, because a female
+bears one offspring at a time. The sire check uses presence at conception
+while the dam check uses presence at birth; this asymmetry is intentional --
+a sire need only be present to conceive, whereas a dam must be present
+through the pregnancy to give birth.}
+
+\item{gestationTable}{optional data.frame (columns \code{species},
+\code{gestation}) passed to \code{\link{getSpeciesGestation}} for the
+per-animal lookup when \code{maxGestationalPeriod} is \code{NULL}. Defaults
+to \code{NULL}, which uses the bundled \code{\link{speciesGestation}} table.}
 }
 \value{
 a list of list with each internal list being made up of an animal
-id (\code{id}), a vector of possible sires (\code{sire}) and a vector of
-possible dams (\code{dam}). The \code{id} must be defined while the
-vectors \code{sire} and \code{dam} can be empty.
+id (\code{id}), a vector of possible sires (\code{sires}) and a vector of
+possible dams (\code{dams}). The \code{id} must be defined while the
+vectors \code{sires} and \code{dams} can be empty.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\examples{
+library(nprcgenekeepr)
+ped <- nprcgenekeepr::rhesusPedigree
+## getPotentialParents needs a logical fromCenter column flagging
+## colony-born animals; add one if your pedigree lacks it.
+ped$fromCenter <- TRUE
+potentialParents <- getPotentialParents(
+  ped = ped, minSireAge = 2, minDamAge = 2, maxGestationalPeriod = 210L
+)
+## Each element pairs a focal id with candidate sires and dams.
+potentialParents[[1L]]
 }

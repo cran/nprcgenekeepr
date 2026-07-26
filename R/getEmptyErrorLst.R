@@ -1,7 +1,8 @@
-#' Creates a empty errorLst object
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Create an empty errorLst object
+#'
 
 #' @return An errorLst object with placeholders for error types found in a
 #' pedigree file by \code{qcStudbook}.
@@ -20,6 +21,7 @@ getEmptyErrorLst <- function() {
     maleDams = character(0L),
     sireAndDam = character(0L),
     duplicateIds = character(0L),
+    invalidIdChars = character(0L),
     changedCols = list(
       caseChange = character(0L),
       spaceRemoved = character(0L),

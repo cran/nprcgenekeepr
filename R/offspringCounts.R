@@ -1,11 +1,9 @@
-#' Finds the total number of offspring for each animal in the pedigree
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Optionally find the number that are part of the population of interest.
+
+#' Tabulate offspring counts, optionally by population
 #'
-#' @return A dataframe with at least \code{id} and \code{totalOffspring}
-#' required and \code{livingOffspring} optional.
+#' Optionally find the number that are part of the population of interest.
 #'
 #' @param probands character vector of egos for which offspring should be
 #' counted.
@@ -15,6 +13,10 @@
 #' @param considerPop logical value indication whether or not the number of
 #' offspring that are part of the focal population are to be counted?
 #' Default is \code{FALSE}.
+#' @return A dataframe containing the column \code{totalOffspring} (and
+#' \code{livingOffspring} when \code{considerPop} is \code{TRUE}), with the
+#' animal ids as the data frame row names.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -40,5 +42,5 @@ offspringCounts <- function(probands, ped, considerPop = FALSE) {
     livingOffspring <- findOffspring(probands, pop)
     results <- cbind(results, livingOffspring)
   }
-  return(results)
+  results
 }

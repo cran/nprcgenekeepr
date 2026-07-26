@@ -2,22 +2,27 @@
 % Please edit documentation in R/reportGV.R
 \name{reportGV}
 \alias{reportGV}
-\title{Generates a genetic value report for a provided pedigree.}
+\title{Generate a genetic value report for a pedigree}
 \usage{
 reportGV(
   ped,
-  guIter = 5000L,
+  guIter = 1000L,
   guThresh = 1L,
   pop = NULL,
   byID = TRUE,
-  updateProgress = NULL
+  updateProgress = NULL,
+  breedingTable = NULL,
+  gestationTable = NULL,
+  breedingAgeDefault = NULL,
+  gestationDefault = NULL,
+  kinshipOverrides = NULL
 )
 }
 \arguments{
 \item{ped}{The pedigree information in data.frame format}
 
 \item{guIter}{Integer indicating the number of iterations for the gene-drop
-analysis. Default is 5000 iterations}
+analysis. Default is 1000 iterations}
 
 \item{guThresh}{Integer indicating the threshold number of animals for
 defining a unique allele. Default considers an allele "unique"
@@ -35,13 +40,74 @@ the function will only count the unique alleles for an individual
 \item{updateProgress}{Function or NULL. If this function is defined, it
 will be called during each iteration to update a
 \code{shiny::Progress} object.}
+
+\item{breedingTable}{Optional data.frame overriding the bundled per-species
+minimum breeding ages used by the unknown-parent mean-kinship correction.
+\code{NULL} (the default) uses the bundled
+\code{\link{speciesGestation}} table.}
+
+\item{gestationTable}{Optional data.frame overriding the bundled per-species
+gestation windows used by the correction's conception window. \code{NULL}
+uses the bundled table.}
+
+\item{breedingAgeDefault}{Optional numeric fallback minimum breeding age
+(years) for species absent from the table. \code{NULL} uses the built-in
+2 years.}
+
+\item{gestationDefault}{Optional integer fallback gestation window (days) for
+species absent from the table. \code{NULL} uses the built-in 210 days.}
+
+\item{kinshipOverrides}{Optional data.frame of outside-information kinship
+overrides (\code{id1}, \code{id2}, \code{kinship}; the coefficient \emph{f},
+not relatedness \emph{r}) applied to the kinship matrix before mean kinship
+and the unknown-parent correction. \code{NULL} (the default)
+leaves the pedigree-derived matrix unchanged. Ids outside the analysis
+set are warn-dropped (the run is not aborted). An override REFINES the
+named kinship cell; it does not suppress the \code{+ sexMean / 2}
+unknown-parent correction, which is kept for every animal missing one
+parent. See \code{\link{applyKinshipOverrides}}.}
 }
 \value{
-A dataframe with the genetic value report. Animals are ranked
-in order of descending value.
+An object of class \code{nprcgenekeeprGV}: a list with elements
+\code{report} (a dataframe with the genetic value report, with animals
+ranked in order of descending value; it carries both a \code{gu} column and a
+\code{guSE} column -- the Monte Carlo sampling standard error of each genome
+uniqueness estimate, see \code{\link{calcGUSE}}), \code{kinship} (the kinship
+matrix), \code{gu} (a dataframe with a \code{gu} column of genome uniqueness
+values and a \code{guSE} column of their standard errors; \code{gu} and
+\code{guSE} are reported as 0 for unknown-origin both-unknown "Undetermined"
+animals, whose apparent uniqueness is an artifact of unknown parentage),
+\code{fe} (founder equivalents),
+\code{fg} (founder genome equivalents), \code{fgSE} (the Monte Carlo sampling
+standard error of \code{fg}, computed from the same gene drop; a single
+colony-level number, \code{NA} when a contributing founder is retained in
+zero gene-drop iterations -- see \code{\link{calcFGSE}}), \code{neGD} (gene
+diversity retained in the founding gene pool, \code{1 - 1 / (2 * fg)}; a
+colony-level scalar beside \code{fg}, \code{NA} when \code{fg} is \code{NA};
+see \code{\link{calcGeneDiversity}}), \code{neSexRatio} (the demographic
+sex-ratio effective size, \code{4 * nMale * nFemale / (nMale + nFemale)},
+over the current living breeders -- a different population than \code{fg} and
+\code{neGD}; \code{0} when a breeding sex is absent; see
+\code{\link{calcNeSexRatio}}), \code{neVariance} (the variance effective
+size, the mean-adjusted Crow-Kimura form
+\code{(N * kbar - 1) / (kbar - 1 + Vk / kbar)} over the same current living
+breeders; \code{NA} when fewer than two living breeders; see
+\code{\link{calcNeVariance}}), \code{maleFounders}
+and
+\code{femaleFounders} (dataframes of the known male and female founder
+records), \code{nMaleFounders} and \code{nFemaleFounders} (the counts of
+those founders), and \code{total} (the total number of known founders).
 }
 \description{
 This is the main function for the Genetic Value Analysis.
+}
+\details{
+Reported genome uniqueness (\code{gu}) is set to 0 for "Undetermined"
+animals -- those with both parents unknown (U-id aware) and no recorded
+origin -- because their apparent uniqueness is an artifact of unknown
+parentage (decline-to-credit policy). Imports (both parents
+unknown but with a recorded origin) and all other animals are unaffected,
+and \code{\link{calcGU}} itself is unchanged.
 }
 \examples{
 library(nprcgenekeepr)

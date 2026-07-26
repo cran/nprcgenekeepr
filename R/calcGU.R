@@ -1,7 +1,8 @@
-#' Calculates genome uniqueness for each ID that is part of the population.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Calculate genome uniqueness for each population ID
+#'
 #' Part of Genetic Value Analysis
 #'
 #' The following functions calculate genome uniqueness according to the equation
@@ -33,30 +34,23 @@
 #' calculated by this function should match the "founder genome uniqueness"
 #' measure calculated by Pedscope.
 #'
-#' @description \{Genome Uniqueness Functions\}\{\}
-#'
-#' @references Ballou JD, Lacy RC.  1995. Identifying genetically important
-#' individuals for management of genetic variation in pedigreed populations,
-#' p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors.
-#' Population management for survival and recovery. New York (NY):
-#' Columbia University Press.
-#'
-#'
-#' @return Dataframe \code{rows: id, col: gu}
-#'  A single-column table of genome uniqueness values as percentages.
-#'  Rownames are set to 'id' values that are part of the population.
+#' Note that \code{calcGU} computes this statistic for every animal and still
+#' includes living founders' alleles; it is unchanged. The genetic value report
+#' (\code{\link{reportGV}}) separately applies a colony decline-to-credit policy
+#' that reports genome uniqueness as 0 for unknown-origin both-unknown
+#' ("Undetermined") animals.
 #'
 #' @param alleles dataframe of containing an \code{AlleleTable}. This is a
 #' table of allele information produced by \code{geneDrop()}.
 #' An AlleleTable contains information about alleles an ego has inherited.
 #' It contains the following columns:
 #' \itemize{
-#'  \item \{id\} \{--- A character vector of IDs for a set of animals.\}
-#'  \item \{parent\} \{--- A factor with levels of sire and dam.\}
-#'  \item \{V1\} \{--- Unnamed integer column representing allele 1.\}
-#'  \item \{V2\} \{--- Unnamed integer column representing allele 2.\}
-#'  \item \{...\} \{--- Unnamed integer columns representing alleles.\}
-#'  \item \{Vn\} \{--- Unnamed integer column representing the nth column.\}
+#'  \item \code{V1} --- Unnamed integer column representing allele 1.
+#'  \item \code{V2} --- Unnamed integer column representing allele 2.
+#'  \item \code{...} --- Unnamed integer columns representing alleles.
+#'  \item \code{Vn} --- Unnamed integer column representing the nth column.
+#'  \item \code{id} --- A character vector of IDs for a set of animals.
+#'  \item \code{parent} --- A factor with levels of sire and dam.
 #'  }
 #'
 #' @param threshold an integer indicating the maximum number of copies of an
@@ -69,6 +63,20 @@
 #' (homozygous alleles will be counted as 1).
 #' @param pop character vector with animal IDs to consider as the population of
 #' interest, otherwise all animals will be considered. The default is NULL.
+#' @return Dataframe \code{rows: id, col: gu}
+#'  A single-column table of genome uniqueness values as percentages.
+#'  Rownames are set to 'id' values that are part of the population.
+#'
+#' @references Ballou JD, Lacy RC.  1995. Identifying genetically important
+#' individuals for management of genetic variation in pedigreed populations,
+#' p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors.
+#' Population management for survival and recovery. New York (NY):
+#' Columbia University Press.
+#' @references MacCluer JW, et al. 1986. Pedigree analysis by computer
+#' simulation. Zoo Biology 5:147-160.
+#'
+#'
+#' @family genetic value analysis
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -94,5 +102,5 @@ calcGU <- function(alleles, threshold = 1L, byID = FALSE, pop = NULL) {
   gu <- gu * 100L
   gu <- as.data.frame(gu)
 
-  return(gu)
+  gu
 }

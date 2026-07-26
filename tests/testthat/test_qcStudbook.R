@@ -1,6 +1,5 @@
-#' Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 # This file is part of nprcgenekeepr
-context("qcStudbook")
 library(testthat)
 library(lubridate)
 library(stringi)
@@ -300,4 +299,114 @@ test_that(test_str, {
   ped9 <- qcStudbook(pedNine, minParentAge = NULL, reportErrors = TRUE)
   expect_identical(ped9$sireAndDam, "s0")
   expect_length(ped9$duplicateIds, 0L)
+})
+
+## NEW-45: IDs may not contain a period ('.'). The documented domain spec
+## (input_format.html: id/sire/dam are "Alphanumeric characters (no symbols)")
+## is now enforced at data input. Default mode -> stop(); reportErrors == TRUE
+## -> the offending value(s) are returned in errorLst$invalidIdChars.
+pedPeriod <- data.frame(
+  id = c("s1", "d1", "o1.2"),
+  sire = c(NA, NA, "s1"),
+  dam = c(NA, NA, "d1"),
+  sex = c("M", "F", "F"),
+  birth = as.Date(c("2000-01-01", "2000-01-01", "2010-01-01")),
+  stringsAsFactors = FALSE
+)
+test_that("qcStudbook rejects IDs containing a period in default mode (NEW-45)", {
+  expect_error(
+    qcStudbook(pedPeriod, minParentAge = NULL),
+    "must not contain a period"
+  )
+})
+test_that("qcStudbook reports period-bearing IDs when reportErrors == TRUE", {
+  res <- qcStudbook(pedPeriod, minParentAge = NULL, reportErrors = TRUE)
+  expect_identical(res$invalidIdChars, "o1.2")
+})
+test_that("qcStudbook accepts period-free IDs (no false positive) (NEW-45)", {
+  ## pedFive is period-free (it has an unrelated femaleSires error that keeps
+  ## the errorLst non-NULL), so the invalidIdChars field must be empty (length
+  ## 0) before AND after the fix.
+  expect_length(
+    qcStudbook(pedFive, minParentAge = NULL, reportErrors = TRUE)$invalidIdChars,
+    0L
+  )
+})
+
+## Issue #117 spinoff (S299): qcStudbook() must preserve the genotype-bearing
+## headers first_name/second_name through its column-name normalization.
+## fixColumnNames() (the #117 fix) restores every spelling of these headers to
+## canonical first_name/second_name before the point where the downstream
+## fixGenotypeCols() workaround used to run, so that redundant call was removed
+## from qcStudbook(). This guards the invariant end-to-end: a future
+## fixColumnNames() regression is caught even though the fixGenotypeCols() safety
+## net is gone.
+mkGenoPed <- function(fn, sn) {
+  ped <- data.frame(
+    id = c("s1", "d1", "o1", "o2"),
+    sire = c(NA, NA, "s1", "s1"),
+    dam = c(NA, NA, "d1", "d1"),
+    sex = c("M", "F", "F", "M"),
+    birth = as.Date(c("2000-01-01", "2000-01-01",
+                      "2010-01-01", "2010-01-01")),
+    stringsAsFactors = FALSE
+  )
+  ped[[fn]] <- c("A004_B002", "A004_B012b", "A008_B017a", "A004_B048a")
+  ped[[sn]] <- c("A004_B048a", "A008_B017a", "A004_B002", "A004_B012b")
+  ped
+}
+test_that(
+  "qcStudbook keeps genotype first_name/second_name across header spellings",
+  {
+    spellings <- list(
+      c("first_name", "second_name"),
+      c("First Name", "Second Name"),
+      c("first.name", "second.name"),
+      c("firstname", "secondname"),
+      c("FIRSTNAME", "SECONDNAME")
+    )
+    for (sp in spellings) {
+      out <- qcStudbook(mkGenoPed(sp[[1L]], sp[[2L]]), minParentAge = NULL)
+      expect_true(all(c("first_name", "second_name") %in% names(out)))
+      expect_false(any(c("firstname", "secondname") %in% names(out)))
+    }
+  }
+)
+
+## Issue #119 Slice 1: qcStudbook threads the new sex-specific breeding-age
+## params through to checkParentAge; minParentAge stays a deprecated alias.
+test_that("qcStudbook accepts minSireAge/minDamAge (issue #119)", {
+  pedNew <- qcStudbook(nprcgenekeepr::examplePedigree,
+    minSireAge = 2.0, minDamAge = 2.0
+  )
+  pedOld <- suppressWarnings(
+    qcStudbook(nprcgenekeepr::examplePedigree, minParentAge = 2.0)
+  )
+  expect_identical(pedNew, pedOld)
+})
+
+test_that("qcStudbook minParentAge alias emits a deprecation warning", {
+  lifecycle::expect_deprecated(
+    qcStudbook(nprcgenekeepr::examplePedigree, minParentAge = 2.0)
+  )
+})
+
+## Issue #123 (XARCH-5) Phase 1, Dragon 2: no known code path drops a required
+## column between checkRequiredCols() (~line 210) and the line-316 reorder --
+## checkRequiredCols() already guarantees id/sire/dam/sex/birth ~100 lines
+## earlier in the same function. This is a defense-in-depth guard against a
+## FUTURE internal regression, not a fix for an observed-today bug -- stated
+## honestly here, per the plan's own Dragon 2 caveat. The fault below is
+## CONTRIVED by stubbing removeDuplicates() to strip 'sex' from its returned
+## data.frame, simulating a hypothetical future internal fault reaching line
+## 316, rather than reproducing any bug this codebase actually exhibits.
+test_that("qcStudbook's line-316 guard fires on a contrived internal fault (issue #123 / XARCH-5 Dragon 2)", {
+  mockery::stub(qcStudbook, "removeDuplicates", function(sb, ...) {
+    sb$sex <- NULL
+    sb
+  })
+  expect_error(
+    qcStudbook(pedOne, minParentAge = NULL),
+    "required column\\(s\\) missing.*sex"
+  )
 })

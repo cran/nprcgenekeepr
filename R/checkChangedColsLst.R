@@ -1,13 +1,13 @@
-#' checkChangedColsLst examines list for non-empty fields
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return Returns \code{NULL} if all fields are empty
-#' else the entire list is returned.
+
+#' Check a changed-columns list for non-empty fields
 #'
 #' @param changedCols list with fields for each type of column change
 #' \code{qcStudbook}.
+#' @return Returns \code{TRUE} if any changed-columns field is
+#' non-empty, otherwise \code{FALSE}.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

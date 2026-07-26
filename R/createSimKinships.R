@@ -1,15 +1,13 @@
-#' Makes a list object of kinship matrices from simulated pedigrees of possible
-#' parents for animals with unknown parents
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Build kinship matrices from simulated pedigrees
 #'
 #' \code{createSimKinships} uses \code{makeSimPed} with the \code{ped} object
 #' and the \code{allSimParents} object to create a set of kinship matrices to
 #' be used in forming the \emph{Monte Carlo} estimates for the kinship values.
 #'
-#' @return A list of \code{n} lists with each internal list containing a
-#'         kinship matrix from simulated pedigrees of possible
-#'         parents for animals with unknown parents.
-#'
-#' @param ped The pedigree information in data.frame format
+#' @inheritParams reportGV
 #' @param allSimParents list made up of lists where the internal list
 #'        has the offspring ID, \code{id}, a vector of representative sires
 #'        (\code{sires}), and a vector of representative dams (\code{dams}).
@@ -20,7 +18,11 @@
 #' @param n integer value of the number of simulated pedigrees to generate.
 #' @param verbose logical vector of length one that indicates whether or not
 #'        to print out when an animal is missing a sire or a dam.
-#' @importFrom data.table setDT
+#' @return A list of \code{n} lists with each internal list containing a
+#'         kinship matrix from simulated pedigrees of possible
+#'         parents for animals with unknown parents.
+#'
+#' @importFrom data.table as.data.table
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -47,7 +49,7 @@ createSimKinships <- function(ped, allSimParents, pop = NULL, n = 10L,
                               verbose = FALSE) {
   ## If user has limited the population of interest by defining 'pop',
   ## that information is incorporated via the 'population' column.
-  setDT(ped)
+  ped <- data.table::as.data.table(ped)
   ped$population <- getGVPopulation(ped, pop)
 
   # Get the list of animals in the population to consider

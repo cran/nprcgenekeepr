@@ -1,20 +1,25 @@
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
 #' Remove duplicate records from pedigree
 #'
-## Copyright(c) 2017-2024 R. Mark Sharp
-## This file is part of nprcgenekeepr
 #' Part of Pedigree Curation
 #'
 #' Returns an updated dataframe with duplicate rows removed.
 #'
 #' Returns an error if the table has duplicate IDs with differing data.
 #'
-#' @return Pedigree object with all duplicates removed.
+#' @param ped dataframe that is the \code{Pedigree}. It contains pedigree
+#' information. The \code{id} and \code{recordStatus} columns are required.
+#' @param reportErrors logical value if TRUE the function returns a
+#' character vector of duplicate \code{id} values found among
+#' original records (or \code{NULL} when none are found) instead of
+#' the de-duplicated pedigree.
+#' @return When \code{reportErrors} is \code{FALSE}, a \code{Pedigree}
+#' object with duplicate rows removed; when \code{reportErrors} is
+#' \code{TRUE}, a character vector of duplicate \code{id} values (or
+#' \code{NULL} when none are found).
 #'
-#' @param ped dataframe that is the `Pedigree`. It contains pedigree
-#' information. The \code{id} column is required.
-#' @param reportErrors logical value if TRUE will scan the entire file and
-#' make a list of all errors found. The errors will be returned in a
-#' list of list where each sublist is a type of error found.
 #' @export
 #' @examples
 #' ped <- nprcgenekeepr::smallPed
@@ -31,17 +36,16 @@ removeDuplicates <- function(ped, reportErrors = FALSE) {
     stop("ped must have columns \"id\" and \"recordStatus\".")
   }
   if (reportErrors) {
-    if (sum(duplicated(ped$id[ped$recordStatus == "original"])) == 0L) {
-      return(NULL)
+    if (anyDuplicated(ped$id[ped$recordStatus == "original"]) > 0L) {
+      ped$id[duplicated(ped$id[ped$recordStatus == "original"])]
     } else {
-      return(ped$id[duplicated(ped$id[ped$recordStatus == "original"])])
+      NULL
     }
   } else {
     p <- unique(ped)
-    if (sum(duplicated(p$id)) == 0L) {
-      return(p)
-    } else {
+    if (anyDuplicated(p$id) > 0L) {
       stop("Duplicate IDs with mismatched information present")
     }
+    p
   }
 }

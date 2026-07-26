@@ -7,5 +7,66 @@
 </p>
 
 <p>
+	Genome uniqueness is an <em>estimate</em> produced by a gene-drop
+	simulation. The analysis drops alleles down the pedigree many times
+	(the number of iterations you choose) and reports the average result, so
+	each genome uniqueness value comes with a sampling
+	<b>standard error</b> -- the <b>+/-</b> shown in the
+	<b>guSE</b> column, and summarized as the largest value on the
+	<b>Summary</b> tab. Running more iterations makes that +/- smaller
+	(it shrinks roughly in proportion to one over the square root of the
+	number of iterations), so there is no single iteration count that is
+	right for every colony: how many you need depends on your pedigree.
+</p>
+
+<p>
+	<b>Founder genome equivalents</b> (the <b>FG</b> value on the
+	<b>Summary</b> tab) is likewise an <em>estimate</em> from the same
+	gene-drop simulation, so it too is reported with a sampling
+	<b>standard error</b> -- the <b>+/-</b> shown next to FG. As with
+	genome uniqueness, running more iterations makes that +/- smaller (it
+	shrinks roughly in proportion to one over the square root of the number
+	of iterations). At a small number of iterations the FG estimate also
+	carries a slight bias that the +/- does not capture, so prefer more
+	iterations when the precision of FG matters.
+</p>
+
+<p>
+	<b>Gene diversity and effective population size.</b> The <b>Summary</b> tab
+	also reports gene diversity (GD) and two effective population size estimates
+	-- a demographic sex-ratio effective size and a variance effective size,
+	both over the current living breeders. These, with their formulas and
+	idealizing assumptions, are defined in the <b>Population Genetics Terms</b>
+	reference panel on the <b>Summary Statistics</b> tab.
+</p>
+
+<p>
+	Keep two ideas separate. The +/- tells you how
+	<em>precise the genome uniqueness number</em> is. What actually decides
+	which animals are chosen for breeding is the <em>order</em> in which
+	animals are ranked. A small +/- does not by itself mean the ranking has
+	settled. The package provides a tool for exactly this check -- the
+	<b>gvaConvergence()</b> function recomputes the ranking across a range of
+	iteration counts and reports the smallest number of gene-drop iterations
+	at which the selection order for your pedigree stops changing.
+</p>
+
+<p>
 	For a full description of the algorithm, see the <b>Genetic Value Analysis and Breeding Group Description</b> tab.
+</p>
+
+<p>
+	<b>Kinship overrides.</b> If you upload outside-information kinship
+	values on this tab, they replace the pedigree-derived kinship for the
+	listed pairs and feed the rankings, breeding groups, and summary
+	statistics regardless of tab order. They change the kinship
+	<em>value</em> only: in the Summary Statistics relationship table the
+	relationship label stays pedigree-derived, so a label and its
+	overridden value can disagree. The iteration-convergence check above
+	(<b>gvaConvergence()</b>) applies these overrides as well, ranking on the
+	overridden kinship. For an animal missing one parent, an override only
+	refines that pair's kinship value; the unknown-parent correction is kept
+	for every such animal. Mean kinship for an animal missing a parent is an
+	estimate that tends to underestimate relatedness, because the unknown
+	parent's relatives are unrecorded (Vinson &amp; Raboin 2015).
 </p>

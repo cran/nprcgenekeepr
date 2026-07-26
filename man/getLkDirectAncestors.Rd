@@ -7,7 +7,7 @@
 getLkDirectAncestors(ids)
 }
 \arguments{
-\item{ids}{character vector with Ids.}
+\item{ids}{character vector of animal IDs}
 }
 \value{
 data.frame with pedigree structure having all of the direct ancestors
@@ -18,7 +18,7 @@ Gets direct ancestors from labkey \code{study} schema and \code{demographics}
 table.
 }
 \examples{
-\donttest{
+\dontrun{
 # Requires LabKey connection
 library(nprcgenekeepr)
 ## Have to a vector of focal animals
@@ -26,3 +26,10 @@ focalAnimals <- c("1X2701", "1X0101")
 suppressWarnings(getLkDirectAncestors(ids = focalAnimals))
 }
 }
+\seealso{
+Other direct relatives:
+\code{\link[=getFileDirectRelatives]{getFileDirectRelatives()}},
+\code{\link[=getLkDirectRelatives]{getLkDirectRelatives()}},
+\code{\link[=getPedDirectRelatives]{getPedDirectRelatives()}}
+}
+\concept{direct relatives}

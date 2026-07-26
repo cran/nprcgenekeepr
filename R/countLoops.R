@@ -1,7 +1,8 @@
-#' Count the number of loops in a pedigree tree.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Count the number of loops in a pedigree tree
+#'
 #' Part of Pedigree Sampling
 #' From PedigreeSampling.R
 #' 2016-01-28
@@ -18,15 +19,15 @@
 #' Uses the \code{loops} data structure and the list of all ancestors for
 #' each individual to calculate the number of loops for each individual.
 #'
-#' @return A list indexed with each ID in the pedigree tree (\code{ptree})
-#' containing the number of loops for each individual.
-#'
 #' @param loops a named list of logical values where each named element is
 #' named with an \code{id} from \code{ptree}. The value of the list element
 #' is set to \code{TRUE} if the \code{id} has a loop in the pedigree.
 #' Loops occur when an animal's sire and dam have a common ancestor.
 #' @param ptree a list of lists forming a pedigree tree as constructed by
 #' \code{createPedTree(ped)} where \code{ped} is a standard pedigree dataframe.
+#' @return A list indexed with each ID in the pedigree tree (\code{ptree})
+#' containing the number of loops for each individual.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

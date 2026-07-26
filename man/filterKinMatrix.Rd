@@ -2,7 +2,7 @@
 % Please edit documentation in R/filterKinMatrix.R
 \name{filterKinMatrix}
 \alias{filterKinMatrix}
-\title{Filters a kinship matrix to include only the egos listed in 'ids'}
+\title{Filter a kinship matrix to selected IDs}
 \usage{
 filterKinMatrix(ids, kmat)
 }
@@ -11,14 +11,14 @@ filterKinMatrix(ids, kmat)
 The kinship matrix should be reduced to only include these rows and columns.}
 
 \item{kmat}{a numeric matrix of pairwise kinship coefficients.
-Rows and columns should be named with IDs.}
+Animal IDs are the row and column names.}
 }
 \value{
 A numeric matrix that is the reduced kinship matrix with named
 rows and columns (row and col names are 'ids').
 }
 \description{
-Filters a kinship matrix to include only the egos listed in 'ids'
+Filter a kinship matrix to selected IDs
 }
 \examples{
 library(nprcgenekeepr)

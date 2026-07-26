@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcRetention.R
 \name{calcRetention}
 \alias{calcRetention}
-\title{Calculates Allelic Retention}
+\title{Calculate allelic retention}
 \usage{
 calcRetention(ped, alleles)
 }
@@ -30,3 +30,22 @@ ped <- lacy1989Ped
 alleles <- lacy1989PedAlleles
 retention <- calcRetention(ped, alleles)
 }
+\references{
+Lacy RC. 1989. Analysis of founder representation in
+pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+8:111-123.
+}
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcA]{calcA()}},
+\code{\link[=calcFE]{calcFE()}},
+\code{\link[=calcFEFG]{calcFEFG()}},
+\code{\link[=calcFG]{calcFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGU]{calcGU()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}}
+}
+\concept{genetic value analysis}

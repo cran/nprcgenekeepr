@@ -1,18 +1,24 @@
-#' Calculates the mean kinship for each animal in a kinship matrix
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Calculate mean kinship for each animal in a kinship matrix
+#'
 #' Part of Genetic Value Analysis
 #'
 #' The mean kinship of animal \emph{i} is \deqn{MK_i = \Sigma f_ij / N},
 #' in which the summation is over all animals, \emph{j}, including the kinship
 #' of animal \emph{i} to itself.
 #'
+#' @param kmat a numeric matrix of pairwise kinship coefficients.
+#' Animal IDs are the row and column names.
 #' @return A named numeric vector of average kinship coefficients for each
 #' animal ID. Elements are named with the IDs from the columns of kmat.
 #'
-#' @param kmat a numeric matrix of pairwise kinship coefficients.
-#' Animal IDs are the row and column names.
+#' @references Ballou JD, Lacy RC.  1995. Identifying genetically important
+#' individuals for management of genetic variation in pedigreed populations,
+#' p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors. Population
+#' management for survival and recovery. New York (NY): Columbia University
+#' Press.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

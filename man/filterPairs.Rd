@@ -2,18 +2,22 @@
 % Please edit documentation in R/filterPairs.R
 \name{filterPairs}
 \alias{filterPairs}
-\title{Filters kinship values from a long-format kinship table based on the sexes
-of the two animals involved.}
+\title{Filter kinship pairs by the animals' sexes}
 \usage{
-filterPairs(kin, ped, ignore = list(c("F", "F")))
+filterPairs(
+  kin,
+  ped,
+  ignore = list(c(sexCodes[["female"]], sexCodes[["female"]]))
+)
 }
 \arguments{
 \item{kin}{a dataframe with columns \code{id1}, \code{id2}, and
 \code{kinship}. This is the kinship data reformatted from a matrix,
 to a long-format table.}
 
-\item{ped}{Dataframe of pedigree information including the IDs listed in
-\code{candidates}.}
+\item{ped}{Dataframe of pedigree information that must contain an
+\code{id} column and a \code{sex} column. The \code{id} values should
+include the animals referenced in \code{kin}.}
 
 \item{ignore}{a list containing zero or more character vectors of length 2
 indicating which sex pairs should be ignored with regard to kinship.

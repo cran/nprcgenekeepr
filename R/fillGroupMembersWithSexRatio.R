@@ -1,12 +1,10 @@
-#' Forms breeding group(s) with an effort to match a specified sex ratio
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' @description The sex ratio is the ratio of females to males.
+
+#' Form breeding groups to match a target sex ratio
 #'
-#' @return A list containing one character vector of animal IDs such that the
-#'         sex ratio of the group is as close as possible to the ratio
-#'         specified by \code{sexRatio}.
+#' The sex ratio is the ratio of females to males.
+#'
 #' @param candidates character vector of IDs of the animals available for
 #' use in the group.
 #' @param groupMembers list initialized and ready to receive groups with the
@@ -15,8 +13,7 @@
 #' vector of \code{1:numGp}.
 #' @param kin list of animals and those animals who are related above a
 #' threshold value.
-#' @param ped dataframe that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
+#' @inheritParams getPotentialSires
 #' @param minAge integer value indicating the minimum age to consider in group
 #' formation. Pairwise kinships involving an animal of this age or younger will
 #'  be ignored. Default is 1 year.
@@ -24,6 +21,9 @@
 #' formed from the list of IDs. Default is 1.
 #' @param sexRatio numeric value indicating the ratio of females to males x
 #' from 0.5 to 20 by increments of 0.5.
+#' @return A list containing one character vector of animal IDs such that the
+#'         sex ratio of the group is as close as possible to the ratio
+#'         specified by \code{sexRatio}.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -65,7 +65,7 @@
 #'   minAge = minAge
 #' )
 #' groupMembersStart <- groupMembers
-#' grpNum <- nprcgenekeepr::makeGrpNum(numGp)
+#' grpNum <- nprcgenekeepr::makeGroupNum(numGp)
 #'
 #' groupMembers <- fillGroupMembersWithSexRatio(
 #'   candidates, groupMembers, grpNum, kin, ped, minAge, numGp,
@@ -97,22 +97,20 @@ fillGroupMembersWithSexRatio <-
         id <- sample(availableFemales[[i]], 1L)
         availableFemales <-
           removeSelectedAnimalFromAvailableAnimals(availableFemales, id, numGp)
-      } else { # may need male # nolint unnecessary_nesting_linter
-        if (abs(sexRatio - calculateSexRatio(groupMembers[[i]], ped,
-          additionalMales = 1L
-        )) <
-          abs(sexRatio - calculateSexRatio(groupMembers[[i]], ped,
-            additionalFemales = 1L
-          ))) {
-          id <- sample(availableMales[[i]], 1L)
-          availableMales <-
-            removeSelectedAnimalFromAvailableAnimals(availableMales, id, numGp)
-        } else {
-          id <- sample(availableFemales[[i]], 1L)
-          availableFemales <-
-            removeSelectedAnimalFromAvailableAnimals(availableFemales, id,
-                                                     numGp)
-        }
+      } else if (abs(sexRatio - calculateSexRatio(groupMembers[[i]], ped,
+        additionalMales = 1L
+      )) <
+        abs(sexRatio - calculateSexRatio(groupMembers[[i]], ped,
+          additionalFemales = 1L
+        ))) { # may need male
+        id <- sample(availableMales[[i]], 1L)
+        availableMales <-
+          removeSelectedAnimalFromAvailableAnimals(availableMales, id, numGp)
+      } else {
+        id <- sample(availableFemales[[i]], 1L)
+        availableFemales <-
+          removeSelectedAnimalFromAvailableAnimals(availableFemales, id,
+                                                   numGp)
       }
       groupMembers[[i]] <- c(groupMembers[[i]], id)
       # Remove all relatives from consideration for the group it was added to

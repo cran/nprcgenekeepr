@@ -1,15 +1,13 @@
-#' obfuscatePed takes a pedigree object and creates aliases for all IDs and
-#' adjusts all date within a specified amount.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Obfuscate a pedigree by aliasing IDs and shifting dates
 #'
 #' User provides a pedigree object (\code{ped}), the number of characters to be
 #' used for alias IDs (\code{size}), and the maximum number of days that the
 #' birthdate can be shifted (\code{maxDelta}).
 #'
-#' @return An obfuscated pedigree
-#'
-#' @param ped pedigree object
+#' @inheritParams reportGV
 #' @param size integer value indicating number of characters in alias IDs
 #' @param maxDelta integer value indicating maximum number of days that
 #' the birthdate can be shifted
@@ -17,7 +15,10 @@
 #' @param map logical if \code{TRUE} a list object is returned with the new
 #' pedigree and a named character vector with the names being the original IDs
 #' and the values being the new alias values. Defaults to \code{FALSE}.
+#' @return An obfuscated pedigree
+#'
 #' @importFrom lubridate is.Date
+#' @family obfuscation
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

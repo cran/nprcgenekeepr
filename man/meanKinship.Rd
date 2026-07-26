@@ -2,7 +2,7 @@
 % Please edit documentation in R/meanKinship.R
 \name{meanKinship}
 \alias{meanKinship}
-\title{Calculates the mean kinship for each animal in a kinship matrix}
+\title{Calculate mean kinship for each animal in a kinship matrix}
 \usage{
 meanKinship(kmat)
 }
@@ -27,4 +27,11 @@ library(nprcgenekeepr)
 ped <- nprcgenekeepr::qcPed
 kmat <- kinship(ped$id, ped$sire, ped$dam, ped$gen)
 head(meanKinship(kmat))
+}
+\references{
+Ballou JD, Lacy RC.  1995. Identifying genetically important
+individuals for management of genetic variation in pedigreed populations,
+p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors. Population
+management for survival and recovery. New York (NY): Columbia University
+Press.
 }

@@ -1,17 +1,19 @@
-#' Determines the generation number for each id.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' One of Pedigree Curation functions
+
+#' Determine the pedigree number for each ID
 #'
-#' @return Integer vector indicating generation numbers for each id,
-#' starting at 0 for individuals lacking IDs for both parents.
+#' One of Pedigree Curation functions
 #'
 #' @param id character vector with unique identifier for an individual
 #' @param sire character vector with unique identifier for an
 #' individual's father (\code{NA} if unknown).
 #' @param dam character vector with unique identifier for an
 #' individual's mother (\code{NA} if unknown).
+#' @return Integer vector indicating the pedigree (family group) number for
+#' each id. Ids that are connected through parent-offspring links share the
+#' same number; numbering starts at 1.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

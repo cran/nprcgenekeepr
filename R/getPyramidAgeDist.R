@@ -1,10 +1,12 @@
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
 #' Get the age distribution for the pedigree
 #'
-## Copyright(c) 2017-2024 R. Mark Sharp
-## This file is part of nprcgenekeepr
-#' Forms a dataframe with columns \code{id}, \code{birth}, \code{sex},
-#' and \code{age} for those animals with a status of \code{Alive} in the
-#' pedigree.
+#' Returns the pedigree with all animals, adding a \code{status} column
+#' describing each animal as \code{ALIVE} or \code{DECEASED} and a
+#' computed \code{age} column (age at exit for deceased animals). All
+#' animals are returned, not only living ones.
 #'
 #' The lubridate package is used here because of the way the modern Gregorian
 #' calendar is constructed, there is no straightforward arithmetic method
@@ -12,12 +14,12 @@
 #' usage meaning that a person’s age should always be an integer that
 #' increases exactly on a birthday.
 #'
+#' @inheritParams reportGV
 #' @return A pedigree with \code{status} column added, which describes the
 #' animal as \code{ALIVE} or \code{DECEASED} and a \code{age} column added,
 #' which has the animal's age in years or \code{NA} if it cannot be calculated.
 #' The \code{exit} column values have been remapped to valid dates or \code{NA}.
 #'
-#' @param ped dataframe with pedigree
 #' @importFrom anytime anytime
 #' @importFrom lubridate interval duration
 #' @importFrom utils read.csv

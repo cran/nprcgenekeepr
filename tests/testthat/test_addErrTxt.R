@@ -1,6 +1,5 @@
-#' Copyright(c) 2017-2024 R. Mark Sharp
-#' This file is part of nprcgenekeepr
-context("addErrTxt")
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
 
 test_that("addErrTxt adds correct text", {
   expect_identical(

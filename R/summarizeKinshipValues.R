@@ -1,8 +1,14 @@
-#' Summary statistics for imputed kinship values
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Summarize imputed kinship values
 #'
 #' Makes a data.frame object containing simulated kinship summary statistics
 #' using the counts of kinship values list from \code{countKinshipValues}.
 #'
+#' @param countedKValues list object from countKinshipValues function that
+#' containes the lists \code{kIds}, \code{kValues},
+#' and \code{kCounts}.
 #' @return a data.frame with one row of summary statistics for each imputed
 #' kinship value. The columns are as follows:
 #'  \code{id_1},
@@ -15,9 +21,12 @@
 #'  \code{max}, and
 #'  \code{sd}.
 #'
-#' @param countedKValues list object from countKinshipValues function that
-#' containes the lists \code{kinshipIds}, \code{kinshipValues},
-#' and \code{kinshipCounts}.
+#'  The five-number-summary columns are taken from
+#'  \code{\link[stats]{fivenum}}: \code{secondQuartile} is the lower hinge
+#'  (\code{fivenum()[2]}, approximately the first quartile) and
+#'  \code{thirdQuartile} is the upper hinge (\code{fivenum()[4]}, approximately
+#'  the third quartile).
+#'
 #' @importFrom stats fivenum sd
 #' @export
 #' @examples
@@ -85,31 +94,36 @@ summarizeKinshipValues <- function(countedKValues) {
   )))) {
     stop("summarizeKinshipValues received wrong object", call. = TRUE)
   }
-  stats <- data.frame()
+  rows <- vector("list", length(countedKValues$kIds))
 
   for (i in seq_along(countedKValues$kIds)) {
     numbers <- rep(
       unlist(countedKValues$kValues[i]),
       unlist(countedKValues$kCounts[i])
     )
+    # Skip entries with NA values
     if (any(is.na(numbers), is.na(mean(numbers)))) {
-      cat(paste0("i = ", i))
+      next
     }
     tukeys <- fivenum(numbers)
-    stats <- rbind(
-      stats,
-      data.frame(
-        id_1 = countedKValues$kIds[[i]][1L],
-        id_2 = countedKValues$kIds[[i]][2L],
-        min = tukeys[1L],
-        secondQuartile = tukeys[1L],
-        mean = mean(numbers),
-        median = tukeys[3L],
-        thirdQuartile = tukeys[4L],
-        max = tukeys[5L],
-        sd = sd(numbers)
-      )
+    rows[[i]] <- data.frame(
+      id_1 = countedKValues$kIds[[i]][1L],
+      id_2 = countedKValues$kIds[[i]][2L],
+      min = tukeys[1L],
+      secondQuartile = tukeys[2L],
+      mean = mean(numbers),
+      median = tukeys[3L],
+      thirdQuartile = tukeys[4L],
+      max = tukeys[5L],
+      sd = sd(numbers)
     )
+  }
+  # Bind once (O(n) instead of the previous O(n^2) rbind-in-loop). rbind()
+  # drops the NULL entries left by skipped (NA) rows; an all-skipped input
+  # yields NULL, which we restore to the empty-data.frame() contract.
+  stats <- do.call(rbind, rows)
+  if (is.null(stats)) {
+    stats <- data.frame()
   }
   stats
 }

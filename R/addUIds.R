@@ -1,15 +1,22 @@
-#' Eliminates partial parentage situations by adding unique placeholder
-#' IDs for the unknown parent.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Add placeholder IDs for unknown parents
 #'
 #' This must be run prior to \code{addParents} since the IDs made herein are
 #' used by \code{addParents}
 #'
+#' The generated placeholder IDs default to the form \code{Unnnn} (a leading
+#' "U" plus a zero-padded integer), so they are alphanumeric and never contain a
+#' period ("."), honoring the ID rule enforced at data input by
+#' \code{\link{qcStudbook}}. The format is configurable via
+#' \code{\link{setAutoIdFormat}} (default \code{"U\%04d"}).
+#'
+#' @inheritParams trimPedigree
+#' @param format \code{sprintf} template for the generated placeholder IDs;
+#' defaults to \code{\link{getAutoIdFormat}()} (\code{"U\%04d"}).
 #' @return The updated pedigree with partial parentage removed.
 #'
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information. The fields \code{sire} and \code{dam} are required.
 #' @export
 #' @examples
 #' pedTwo <- data.frame(
@@ -31,7 +38,7 @@
 #'   )
 #' newPed <- addUIds(pedThree)
 #' newPed[newPed$id == "s1", ]
-addUIds <- function(ped) {
+addUIds <- function(ped, format = getAutoIdFormat()) {
   s <- which(is.na(ped$sire) & !is.na(ped$dam))
   d <- which(!is.na(ped$sire) & is.na(ped$dam))
 
@@ -39,14 +46,14 @@ addUIds <- function(ped) {
     k <- 0L
   } else {
     k <- length(s)
-    sireIds <- paste0("U", sprintf("%04d", 1L:k))
+    sireIds <- sprintf(format, 1L:k)
     ped[s, "sire"] <- sireIds
   }
 
   if (!identical(d, integer(0L))) {
     m <- k + 1L
     n <- k + length(d)
-    damIds <- paste0("U", sprintf("%04d", m:n))
+    damIds <- sprintf(format, m:n)
     ped[d, "dam"] <- damIds
   }
 

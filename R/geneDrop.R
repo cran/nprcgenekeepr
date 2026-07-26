@@ -1,7 +1,8 @@
-#' Gene drop simulation based on the provided pedigree information
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Simulate gene dropping through a pedigree
+#'
 #' Part of Genetic Value Analysis
 #'
 #' The gene dropping method from \emph{Pedigree analysis by computer simulation}
@@ -21,14 +22,24 @@
 #' Adding additional columns to \code{genotype} does not significantly affect
 #' the time require. Thus, it is convenient to add the corresponding haplotype
 #' names to the dataframe using \code{first_name} and \code{second_name}.
-
-#' @return A data.frame \code{id, parent, V1 ... Vn}
-#' A data.frame providing the maternal and paternal alleles for an animal
-#' for each iteration. The first two columns provide the animal's ID and
-#' whether the allele came from the sire or dam. These are followed by
-#' \code{n} columns indicating the allele for that iteration.
 #'
-#' @param ids A character vector of IDs for a set of animals.
+#' Animal IDs (\code{ids}) must not contain a period ("."). A period is
+#' disallowed because it causes problems across software environments (R
+#' column-name and formula parsing, file-name extensions, programming-language
+#' namespaces, and regular expressions); \code{geneDrop} additionally relies on
+#' the period internally to recover the id and parent of each allele row, so a
+#' period-bearing id would silently corrupt the result. IDs containing a period
+#' are therefore rejected with an error. The same rule is enforced at data
+#' input by \code{\link{qcStudbook}} and honored by all automatically generated
+#' IDs.
+#'
+#' Animal IDs (\code{ids}) must also be unique. \code{geneDrop} indexes each
+#' animal's parents and accumulates its simulated alleles by id, so duplicate
+#' ids are rejected with an error. This invariant is established upstream by
+#' \code{\link{qcStudbook}} (via \code{\link{removeDuplicates}}) and by
+#' \code{\link{kinship}}, both of which require unique ids.
+#'
+#' @param ids A character vector of unique IDs for a set of animals.
 #' @param sires A character vector with IDS of the sires for the set of
 #'  animals. \code{NA} is used for missing sires.
 #' @param dams A character vector with IDS of the dams for the set of
@@ -40,14 +51,21 @@
 #' columns contain the integers indicating the observed genotypes.
 #'
 #' @param n integer indicating the number of iterations to simulate.
-#' Default is 5000.
+#' Default is 1000.
 #' @param updateProgress function or NULL. If this function is defined, it
 #' will be called during each iteration to update a
 #' \code{shiny::Progress} object.
 #'
+#' @return A data.frame \code{V1 ... Vn, id, parent}
+#' A data.frame providing the maternal and paternal alleles for an animal
+#' for each iteration. The first \code{n} columns indicate the allele for
+#' each iteration. These are followed by two columns: \code{id}, the
+#' animal's ID, and \code{parent}, whether the allele came from the sire
+#' or dam.
+#'
 #' @export
 #' @examples
-#' ## We usually defined `n` to be >= 5000
+#' ## We usually define `n` to be >= 1000
 #' library(nprcgenekeepr)
 #' ped <- nprcgenekeepr::lacy1989Ped
 #' allelesNew <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,
@@ -71,8 +89,18 @@
 #'   genotype = pedGenotype,
 #'   n = 5, updateProgress = NULL
 #' )
-geneDrop <- function(ids, sires, dams, gen, genotype = NULL, n = 5000L,
+geneDrop <- function(ids, sires, dams, gen, genotype = NULL, n = 1000L,
                      updateProgress = NULL) {
+  badIds <- hasInvalidIdChar(as.character(ids))
+  if (any(badIds)) {
+    stop("geneDrop(): animal IDs must not contain a period ('.'); ",
+         "offending id(s): ", toString(unique(as.character(ids)[badIds])))
+  }
+  dupIds <- duplicated(as.character(ids))
+  if (any(dupIds)) {
+    stop("geneDrop(): animal IDs must be unique; ",
+         "duplicated id(s): ", toString(unique(as.character(ids)[dupIds])))
+  }
   ## Sort the IDs by generation so older generations are first
   ped <- data.frame(
     id = ids, sire = sires, dam = dams, gen,
@@ -124,7 +152,7 @@ geneDrop <- function(ids, sires, dams, gen, genotype = NULL, n = 5000L,
 
   id <- character(0L)
   parent <- character(0L)
-  for (i in seq_len(length(keys))) {
+  for (i in seq_along(keys)) {
     key <- keys[[i]]
     id <- c(id, key[1L])
     parent <- c(parent, key[2L])
@@ -133,5 +161,5 @@ geneDrop <- function(ids, sires, dams, gen, genotype = NULL, n = 5000L,
   alleles$id <- id
   alleles$parent <- parent
   rownames(alleles) <- seq_len(nrow(alleles))
-  return(alleles)
+  alleles
 }

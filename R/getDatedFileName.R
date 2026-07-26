@@ -1,12 +1,12 @@
-#' Returns a character vector with an file name having the date prepended.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Prepend the date and time to a file name
 #'
+#' @param filename character vector with name to use in file name
 #' @return A character string with a file name prepended with the date and time
 #' in YYYY-MM-DD_hh_mm_ss_basename format.
 #'
-#' @param filename character vector with name to use in file name
 #' @importFrom lubridate now
 #' @importFrom stringi stri_c stri_replace_all_fixed
 #' @export

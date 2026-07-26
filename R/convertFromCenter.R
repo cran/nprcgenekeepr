@@ -1,15 +1,16 @@
-#' Converts the fromCenter information to a standardized code
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Convert from-center information to a logical value
+#'
 #' Part of Pedigree Curation
 #'
 #'
+#' @param fromCenter character or logical vector or NA indicating whether or
+#' not the animal is from the center.
 #' @return A logical vector specifying TRUE if an animal
 #' is from the center otherwise FALSE.
 #'
-#' @param fromCenter character or logical vector or NA indicating whether or
-#' not the animal is from the center.
 #' @importFrom stringi stri_c stri_detect_fixed
 #' @export
 #' @examples
@@ -41,10 +42,9 @@ convertFromCenter <- function(fromCenter) {
           (fromCenterTrue == fromCenterFalse)
         ])
       )
-    } else {
-      fromCenterTrue[is.na(fromCenter)] <- NA
-      fromCenter <- fromCenterTrue
     }
+    fromCenterTrue[is.na(fromCenter)] <- NA
+    fromCenter <- fromCenterTrue
   }
   fromCenter
 }

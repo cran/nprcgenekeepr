@@ -1,13 +1,13 @@
-#' Get pedigree based on list of focal animals
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A pedigree file compatible with others in this package.
+
+#' Get pedigree based on list of focal animals
 #'
 #' @param fileName character vector of temporary file path.
 #' @param sep column separator in CSV file
-#' @import futile.logger
+#' @return A pedigree file compatible with others in this package.
+#'
+#' @importFrom futile.logger flog.debug
 #' @importFrom readxl excel_format
 #' @importFrom utils read.table
 #' @export
@@ -33,28 +33,7 @@ getFocalAnimalPed <- function(fileName, sep = ",") {
   flog.debug(paste0("in getFocalAnimalPed\n"),
     name = "nprcgenekeepr"
   )
-  if (excel_format(fileName) %in% c("xls", "xlsx")) {
-    focalAnimals <- readExcelPOSIXToCharacter(fileName)
-    flog.debug(paste0(
-      "in getFocalAnimalPed after readxl, ",
-      "nrow(focalAnimals) = ",
-      nrow(focalAnimals), "\n"
-    ), name = "nprcgenekeepr")
-  } else {
-    focalAnimals <- read.csv(fileName,
-      header = TRUE,
-      sep = sep,
-      stringsAsFactors = FALSE,
-      na.strings = c("", "NA"),
-      check.names = FALSE
-    )
-    flog.debug(paste0(
-      "in getFocalAnimalPed after read.csv, ",
-      "nrow(focalAnimals) = ",
-      nrow(focalAnimals), "\n"
-    ), name = "nprcgenekeepr")
-  }
-  focalAnimals <- as.character(focalAnimals[, 1L])
+  focalAnimals <- readFocalAnimalIds(fileName, sep = sep)
   ped <- getLkDirectRelatives(ids = focalAnimals)
   if (is.null(ped)) {
     flog.debug(paste0(

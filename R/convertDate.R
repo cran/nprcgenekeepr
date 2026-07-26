@@ -1,15 +1,12 @@
-#' Converts date columns formatted as characters to be of type datetime
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Convert character date columns to Date type
+#'
 #' Part of Pedigree Curation
 #'
 ## ##  rmsutilityr get_and_or_list
 ## ##  rmsutilityr is_valid_date_str
-#'
-#' @return A dataframe with an updated table with date columns converted from
-#' \code{character} data type to \code{Date} data type. Values that do not
-#' conform to the format %Y%m%d are set to NA. NA values are left as NA.
 #'
 #' @param ped a dataframe of pedigree information that may contain birth,
 #' death, departure, or exit dates. The fields are optional, but will be used
@@ -18,6 +15,10 @@
 #' @param reportErrors logical value if TRUE will scan the entire file and
 #' make a list of all errors found. The errors will be returned in a
 #' list of list where each sublist is a type of error found.
+#' @return A dataframe with an updated table with date columns converted from
+#' \code{character} data type to \code{Date} data type. Values that do not
+#' conform to the format %Y%m%d are set to NA. NA values are left as NA.
+#'
 #' @importFrom stringi stri_trim_both stri_c
 #' @export
 #' @examples
@@ -159,12 +160,12 @@ convertDate <- function(ped, timeOrigin = as.Date("1970-01-01"),
     if (!is.null(invalid_date_rows)) {
       invalid_date_rows <- as.character(sort(invalid_date_rows))
     }
-    return(invalid_date_rows)
+    invalid_date_rows
   } else {
     ## Add back records of unknown parents
     if (any("recordStatus" %in% names(ped))) {
       ped <- rbind(ped, addedPed)
     }
-    return(ped)
+    ped
   }
 }

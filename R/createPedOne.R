@@ -1,12 +1,12 @@
-#' createPedOne makes the pedOne data object
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A specific pedigree object used for testing and examples.
+
+#' Make the pedOne data object
 #'
 #' @param savePed logical value if TRUE the pedigree is saved into the
 #' packages \code{data} directory
+#' @return A specific pedigree object used for testing and examples.
+#'
 #' @importFrom lubridate mdy
 #' @importFrom stringi stri_c
 #' @noRd
@@ -14,7 +14,7 @@ createPedOne <- function(savePed = TRUE) {
   set_seed(10L)
   pedOne <- data.frame(
     ego_id = c("s1", "d1", "s2", "d2", "o1", "o2", "o3", "o4"),
-    `si re` = c(NA, NA, NA, NA, "s1", "s1", "s2", "s2"),
+    sire.id = c(NA, NA, NA, NA, "s1", "s1", "s2", "s2"),
     dam_id = c(NA, NA, NA, NA, "d1", "d2", "d2", "d2"),
     sex = c("F", "M", "M", "F", "F", "F", "F", "M"),
     birth_date = mdy(paste0(

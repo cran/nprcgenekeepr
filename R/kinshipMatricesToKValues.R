@@ -1,18 +1,22 @@
-#' Forms kValue matrix from list of kinship matrices
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Build a kValue table from a list of kinship matrices
 #'
-#' A `kValue` matrix has one row for each pair of individuals in the kinship
-#' matrix and one column for each kinship matrix.
-#' A `kValue` matrix has one row for each pair of individuals in the kinship
+#' A \code{kValue} matrix has one row for each pair of individuals in the
+#' kinship matrix and one column for each kinship matrix. A
+#' \code{kValue} matrix has one row for each pair of individuals in the kinship
 #' matrix and one column for each kinship matrix. Thus, in a kinship matrix with
 #' 20 individuals the kinship matrix will have 20 rows by 20 columns but only
-#' the upper or lower triangle has unique information as the diagonal values are
-#' by definition all 1.0 and the upper triangle has the same values as the
-#' lower triangle. The `kValue` table will have 210 rows. The calculation for
-#' the number or row in the `kValue` table is  \eqn{20 + (20 * 19) / 2}
+#' the upper or lower triangle has unique information as the diagonal values
+#' are the self-kinship coefficients, \eqn{(1 + F) / 2} (0.5 for a non-inbred
+#' animal), and the upper triangle has the same values as the lower
+#' triangle. The \code{kValue} table will have 210 rows. The calculation for
+#' the number or row in the \code{kValue} table is  \eqn{20 + (20 * 19) / 2}
 #' rows with the 20 values from the kinship coeficient matrix diagonal and
 #' \eqn{(20 * 19) / 2} elements from one of either of the two triangles.
 #'
-#' The `kValue` matrix for 1
+#' The \code{kValue} matrix for 1
 #' kinship matrix for 20 individuals will have 210 rows and 3 columns. The
 #' first two columns are dedicated to the ID pairs and the third column contains
 #' the pair's kinship coefficient.
@@ -20,7 +24,9 @@
 #' Thus, the number of rows in the kValues matrix will
 #'  be \eqn{n + n(n-1) / 2} and the number of columns will be 2 plus one
 #'  additional column for each kinship matrix (\eqn{2 + n}).
-#
+#'
+#' @param kinshipMatrices list of square matrices of kinship values. May or
+#' may not have named rows and columns.
 #' @return Dataframe object with columns \code{id_1}, \code{id_2}, and one
 #' \code{kinship} column for each kinship matrix in \code{kinshipMatricies}
 #' where the first two columns contain the IDs of the
@@ -29,8 +35,6 @@
 #' In contrast to the kinship matrix. Each possible pairing of IDs appears
 #' once.
 #'
-#' @param kinshipMatrices list of square matrices of kinship values. May or
-#' may not have named rows and columns.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

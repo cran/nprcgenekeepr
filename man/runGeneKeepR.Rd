@@ -2,22 +2,45 @@
 % Please edit documentation in R/runGenekeepr.R
 \name{runGeneKeepR}
 \alias{runGeneKeepR}
-\title{Allows running \code{shiny} application with
-\code{nprcgenekeepr::runGeneKeepR()}}
+\title{Run the GeneKeepR Shiny Application}
 \usage{
-runGeneKeepR()
+runGeneKeepR(port = 6013L, launch.browser = TRUE)
+}
+\arguments{
+\item{port}{Integer port number for the Shiny server (default 6013)}
+
+\item{launch.browser}{Logical; whether to launch browser (default TRUE)}
 }
 \value{
 Returns the error condition of the Shiny application when it
 terminates.
 }
 \description{
-Allows running \code{shiny} application with
-\code{nprcgenekeepr::runGeneKeepR()}
+Launches the GeneKeepR Shiny application. It uses a module-based
+architecture with a Home tab and improved UI components.
+}
+\details{
+The application includes:
+\itemize{
+\item Home tab with navigation buttons
+\item Input tab with enhanced QC display
+\item Dynamic error and changed columns tabs
+\item Enhanced Pedigree Browser with focal animal support
+\item Genetic Value Analysis with visualizations
+\item Summary Statistics with popovers
+\item Breeding Groups with group panels
+\item Age-Sex Pyramid with enhanced controls
+}
+
+\code{\link{runModularApp}} is a soft-deprecated alias for this function.
 }
 \examples{
-if (interactive()) {
-  library(nprcgenekeepr)
-  runGeneKeepR()
+\dontrun{
+library(nprcgenekeepr)
+runGeneKeepR()
 }
+}
+\seealso{
+\code{\link{runModularApp}}, a soft-deprecated alias for this
+function.
 }

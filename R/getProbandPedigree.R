@@ -1,19 +1,19 @@
-#' Gets pedigree to ancestors of provided group leaving uninformative ancestors.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Reduce a pedigree to probands and their ancestors
+#'
 #' Filters a pedigree down to only the ancestors of the provided group,
 #' removing unnecessary individuals from the studbook. This version builds
 #' the pedigree back in time starting from a group of probands. This will
 #' include all ancestors of the probands, even ones that might be
 #' uninformative.
 #'
-#' @return A reduced pedigree.
-#'
 #' @param probands a character vector with the list of animals whose ancestors
 #' should be included in the final pedigree.
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information. The fields \code{sire} and \code{dam} are required.
+#' @inheritParams trimPedigree
+#' @return A reduced pedigree.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

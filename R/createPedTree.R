@@ -1,7 +1,8 @@
-#' Create a pedigree tree (PedTree).
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Create a pedigree tree (PedTree)
+#'
 #' The PedTree is a list containing sire and dam information for an individual.
 #'
 #' Part of Pedigree Sampling
@@ -19,14 +20,11 @@
 #'
 #' This function uses only \code{id}, \code{sire}, and \code{dam} columns.
 #'
+#' @inheritParams getDescendantPedigree
 #' @return A list of named lists forming a pedigree tree (PedTree or ptree).
 #' Each sublist represents an ID in the pedigree and contains the sire ID and
 #' the dam ID as named elements.
 #'
-#' @param ped dataframe of pedigree and demographic information potentially
-#' containing columns indicating the birth and death dates of an individual.
-#' The table may also contain dates of sale (departure). Optional columns
-#' are \code{birth}, \code{death}, \code{departure}.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

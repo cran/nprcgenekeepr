@@ -2,18 +2,17 @@
 % Please edit documentation in R/getAnimalsWithHighKinship.R
 \name{getAnimalsWithHighKinship}
 \alias{getAnimalsWithHighKinship}
-\title{Forms a list of animal Ids and animals related to them}
+\title{List each animal's high-kinship relatives}
 \usage{
 getAnimalsWithHighKinship(kmat, ped, threshold, currentGroups, ignore, minAge)
 }
 \arguments{
-\item{kmat}{numeric matrix of pairwise kinship values. Rows and columns
-are named with animal IDs.}
+\item{kmat}{a numeric matrix of pairwise kinship coefficients.
+Animal IDs are the row and column names.}
 
-\item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+\item{ped}{The pedigree information in data.frame format}
 
-\item{threshold}{numeric value indicating the minimum kinship level to be
+\item{threshold}{numeric value representing the minimum kinship level to be
 considered in group formation. Pairwise kinship below this level will be
 ignored.}
 
@@ -36,7 +35,7 @@ and the character vectors are made up of animals sharing a kinship value
 greater than our equal to the \code{threshold} value.
 }
 \description{
-Forms a list of animal Ids and animals related to them
+List each animal's high-kinship relatives
 }
 \examples{
 qcPed <- nprcgenekeepr::qcPed

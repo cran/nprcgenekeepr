@@ -7,7 +7,7 @@
 getPyramidAgeDist(ped = NULL)
 }
 \arguments{
-\item{ped}{dataframe with pedigree}
+\item{ped}{The pedigree information in data.frame format}
 }
 \value{
 A pedigree with \code{status} column added, which describes the
@@ -16,9 +16,10 @@ which has the animal's age in years or \code{NA} if it cannot be calculated.
 The \code{exit} column values have been remapped to valid dates or \code{NA}.
 }
 \description{
-Forms a dataframe with columns \code{id}, \code{birth}, \code{sex},
-and \code{age} for those animals with a status of \code{Alive} in the
-pedigree.
+Returns the pedigree with all animals, adding a \code{status} column
+describing each animal as \code{ALIVE} or \code{DECEASED} and a
+computed \code{age} column (age at exit for deceased animals). All
+animals are returned, not only living ones.
 }
 \details{
 The lubridate package is used here because of the way the modern Gregorian

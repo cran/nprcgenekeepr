@@ -2,23 +2,26 @@
 % Please edit documentation in R/addSexAndAgeToGroup.R
 \name{addSexAndAgeToGroup}
 \alias{addSexAndAgeToGroup}
-\title{Forms a dataframe with Id, Sex, and current Age given a list of Ids and a
-pedigree}
+\title{Build a group data frame with ID, sex, and age}
 \usage{
 addSexAndAgeToGroup(ids, ped)
 }
 \arguments{
-\item{ids}{character vector of animal Ids}
+\item{ids}{character vector of animal IDs}
 
-\item{ped}{datatable that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+\item{ped}{The pedigree information in data.frame format}
 }
 \value{
 Dataframe with Id, Sex, and Current Age
 }
 \description{
-Forms a dataframe with Id, Sex, and current Age given a list of Ids and a
-pedigree
+Build a group data frame with ID, sex, and age
+}
+\details{
+An empty \code{ids} vector yields a zero-row data frame that still
+contains all three columns (\code{ids}, \code{sex}, \code{age}), with
+\code{sex} an empty factor, so the returned schema does not depend on the
+number of ids supplied.
 }
 \examples{
 library(nprcgenekeepr)

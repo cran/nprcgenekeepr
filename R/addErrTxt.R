@@ -1,16 +1,17 @@
-#' Concatenates any errors from nprcgenekeeprErr into narrative form
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 
-#' @return Error from nprcgenekeepr
+#' Concatenate any errors from nprcgenekeeprErr into narrative form
 #'
+
 #' @param txt character string with initial error description value
 #' @param err ve from errorLst
 #' @param singularTxt character string with text used when the
 #' length of err is 1
 #' @param pluralTxt character string with text used when the
 #' length of err is greater than 1.
+#' @return Error from nprcgenekeepr
+#'
 #' @importFrom stringi stri_c stri_detect_fixed
 #' @noRd
 addErrTxt <- function(txt, err, singularTxt, pluralTxt) {

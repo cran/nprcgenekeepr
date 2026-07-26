@@ -1,11 +1,14 @@
-#' Sets sex for animals listed as either a sire or dam.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Correct the sex of animals listed as a sire or dam
+#'
 #' Part of Pedigree Curation
 #'
-#' @return A factor with levels: "M", "F", "H", and "U"
-#' representing the sex codes for the ids provided
+#' @details Only true female-sires (\code{"F"}) and male-dams (\code{"M"}) are
+#' corrected (to \code{"M"} and \code{"F"} respectively). Parents recorded as
+#' hermaphrodite (\code{"H"}) or unknown (\code{"U"}) sex are left unchanged,
+#' consistent with \code{reportErrors = TRUE} mode, which does not flag them.
 #'
 #' @param id character vector with unique identifier for an individual
 #' @param sire character vector with unique identifier for an
@@ -20,6 +23,13 @@
 #' @param recordStatus character vector with value of \code{"added"} or
 #' \code{"original"}, which indicates whether an animal was added or an
 #' original animal.
+#' @return When \code{reportErrors = FALSE}, a factor (or character
+#' vector) of corrected sex codes with levels \code{"M"}, \code{"F"},
+#' \code{"H"}, and \code{"U"} for the ids provided. When
+#' \code{reportErrors = TRUE}, a named list of error vectors with
+#' elements \code{sireAndDam}, \code{femaleSires}, and \code{maleDams}
+#' (each \code{NULL} when no such errors are found).
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -67,28 +77,30 @@ correctParentSex <- function(id, sire, dam, sex, recordStatus,
   if ((length(sireAndDam) > 0L) && !reportErrors) {
     stop(sireAndDam, " : Subject(s) listed as both sire and dam")
   }
-  if (reportErrors) {
-    femaleSires <- id[(id %in% sires) & (!sex %in% c("H", "U", "M")) &
-      recordStatus == "original"]
-    maleDams <- id[(id %in% dams) & (!sex %in% c("H", "U", "F")) &
-      recordStatus == "original"]
-    if (length(femaleSires) == 0L) {
-      femaleSires <- NULL
-    }
-    if (length(maleDams) == 0L) {
-      maleDams <- NULL
-    }
-    if (length(sireAndDam) == 0L) {
-      sireAndDam <- NULL
-    }
-    list(
-      sireAndDam = sireAndDam, femaleSires = femaleSires,
-      maleDams = maleDams
-    )
-  } else {
-    # Update gender for sires and dams
-    sex[((id %in% sires) & (sex != "M"))] <- "M"
-    sex[((id %in% dams) & (sex != "F"))] <- "F"
+  if (!reportErrors) {
+    # Update gender for sires and dams. Mirror the report branch below
+    # (which exempts H/U via `!sex %in% c("H", "U", "M")`): only correct true
+    # female-sires (F -> M) and male-dams (M -> F). Hermaphrodite ("H") and
+    # unknown-sex ("U") parents keep their recorded sex (NEW-37).
+    sex[((id %in% sires) & !(sex %in% c("H", "U", "M")))] <- "M"
+    sex[((id %in% dams) & !(sex %in% c("H", "U", "F")))] <- "F"
     return(sex)
   }
+  femaleSires <- id[(id %in% sires) & (!sex %in% c("H", "U", "M")) &
+    recordStatus == "original"]
+  maleDams <- id[(id %in% dams) & (!sex %in% c("H", "U", "F")) &
+    recordStatus == "original"]
+  if (length(femaleSires) == 0L) {
+    femaleSires <- NULL
+  }
+  if (length(maleDams) == 0L) {
+    maleDams <- NULL
+  }
+  if (length(sireAndDam) == 0L) {
+    sireAndDam <- NULL
+  }
+  list(
+    sireAndDam = sireAndDam, femaleSires = femaleSires,
+    maleDams = maleDams
+  )
 }

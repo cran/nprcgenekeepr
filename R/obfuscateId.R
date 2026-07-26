@@ -1,19 +1,23 @@
-#' obfucateId creates a vector of ID aliases of specified length
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Create ID aliases of a specified length
+#'
 #' ID aliases are pseudorandom sequences of alphanumeric upper case characters
 #' where the letter "O" is not included for readability..
 #' User has the option of providing a character vector of aliases to avoid
 #' using.
-#'
-#' @return A named character vector of aliases where the name is the original
-#' ID value.
+#' Because aliases are alphanumeric, they never contain a period ("."),
+#' honoring the ID rule enforced at data input by \code{qcStudbook}.
 #'
 #' @param id character vector of IDs to be obfuscated (alias creation).
 #' @param size character length of each alias
 #' @param existingIds character vector of existing aliases to avoid duplication.
+#' @return A named character vector of aliases where the name is the original
+#' ID value.
+#'
 #' @importFrom stringi stri_c
+#' @family obfuscation
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -27,15 +31,16 @@ obfuscateId <- function(id, size = 10L, existingIds = character(0L)) {
     "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
     "Z"
   )
+  prefix <- getAutoIdPrefix()
   existingIds <- c(character(length(id)), existingIds)
   obfuscatedId <- character(length(id))
   for (i in seq_along(id)) {
     counter <- 0L
     repeat {
-      if (grepl("^U", id[i], ignore.case = TRUE)) {
+      if (isGeneratedUnknownId(id[i])) {
         obfuscatedId[i] <- stri_c(
-          c("U", sample(c(noOInLetters, stri_c(0L:9L)),
-            size = size - 1L, replace = TRUE
+          c(prefix, sample(c(noOInLetters, stri_c(0L:9L)),
+            size = size - nchar(prefix), replace = TRUE
           )),
           collapse = ""
         )
@@ -45,10 +50,10 @@ obfuscateId <- function(id, size = 10L, existingIds = character(0L)) {
           replace = TRUE
         ), collapse = "")
       }
-      ## grepl is ensuring both IDs are Unknown or known
+      ## ensure the alias and source are both auto-generated or both not
       if (!any(obfuscatedId[i] %in% existingIds) &&
-        (grepl("^U", obfuscatedId[i], ignore.case = TRUE) ==
-          grepl("^U", id[i], ignore.case = TRUE))) {
+        (isGeneratedUnknownId(obfuscatedId[i]) ==
+          isGeneratedUnknownId(id[i]))) {
         break
       }
       counter <- counter + 1L

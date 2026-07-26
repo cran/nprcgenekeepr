@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeGroupMembers.R
 \name{makeGroupMembers}
 \alias{makeGroupMembers}
-\title{Convenience function to make the initial groupMembers animal list}
+\title{Make the initial groupMembers animal list}
 \usage{
 makeGroupMembers(numGp, currentGroups, candidates, ped, harem, minAge)
 }
@@ -18,7 +18,7 @@ existent.}
 use in the group.}
 
 \item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+information including the IDs listed in \code{ids}.}
 
 \item{harem}{logical variable when set to \code{TRUE}, the formed groups
 have a single male at least \code{minAge} old.}
@@ -31,5 +31,25 @@ be ignored. Default is 1 year.}
 Initial groupMembers list
 }
 \description{
-Convenience function to make the initial groupMembers animal list
+Make the initial groupMembers animal list
+}
+\examples{
+library(nprcgenekeepr)
+ped <- nprcgenekeepr::qcPed
+candidates <- nprcgenekeepr::qcBreeders
+## Non-harem: pre-seed group 1 with animals already assigned; a
+## second, empty group is initialized ready to be filled.
+currentGroups <- list(candidates[1L:3L])
+groupMembers <- makeGroupMembers(
+  numGp = 2L, currentGroups = currentGroups, candidates = candidates,
+  ped = ped, harem = FALSE, minAge = 1L
+)
+groupMembers
+## Harem: each group is seeded with one available male (uses sample()).
+set.seed(1L)
+haremMembers <- makeGroupMembers(
+  numGp = 2L, currentGroups = list(), candidates = candidates,
+  ped = ped, harem = TRUE, minAge = 1L
+)
+haremMembers
 }

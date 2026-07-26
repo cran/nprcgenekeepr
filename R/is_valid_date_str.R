@@ -1,17 +1,20 @@
-#' Returns TRUE if the string is a valid date.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Test whether a string is a valid date
+#'
 #' Taken from github.com/rmsharp/rmsutilityr
 #'
+#' @param date_str character vector with 0 or more dates
+#' @param format character vector of length one. Retained for backward
+#' compatibility; the current implementation validates dates with
+#' \code{anytime()} and does not use \code{format}.
+#' @param optional logical value indicating that NA should be returned
+#' instead of \code{FALSE} for strings that are not valid dates.
+#' Defaults to FALSE.
 #' @return A logical value or \code{NA} indicating whether or not the provided
 #' character vector represented a valid date string.
 #'
-#' @param date_str character vector with 0 or more dates
-#' @param format character vector of length one having the date format
-#' @param optional parameter to \code{as.Date}. Logical value indicating
-#' to return NA (instead of signaling an error) if the format guessing does not
-#' succeed. Defaults to FALSE.
 #' @importFrom anytime anytime
 #' @export
 #' @examples

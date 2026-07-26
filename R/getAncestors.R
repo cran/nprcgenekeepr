@@ -1,7 +1,8 @@
-#' Recursively create a character vector of ancestors for an individual ID.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Recursively collect an individual's ancestors
+#'
 #' Part of Pedigree Sampling
 #' From PedigreeSampling.R
 #' 2016-01-28
@@ -14,11 +15,11 @@
 #' amount of time required to perform calculations with
 #' SIMWALK2 or similar programs.
 #'
-#' @return A character vector of ancestors for an individual ID.
-#'
 #' @param id character vector of length 1 having the ID of interest
 #' @param ptree a list of lists forming a pedigree tree as constructed by
 #' \code{createPedTree(ped)} where \code{ped} is a standard pedigree dataframe.
+#'
+#' @return A character vector of ancestors for an individual ID.
 #'
 #' @export
 #' @examples

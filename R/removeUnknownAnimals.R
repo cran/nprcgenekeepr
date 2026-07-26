@@ -1,11 +1,11 @@
-#' removeUnknownAnimals Removes unknown animals added to pedigree that serve as
-#' placeholders for unknown parents.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Remove placeholder animals added for unknown parents
 #'
+#' @inheritParams reportGV
 #' @return Pedigree with unknown animals removed
 #'
-#' @param ped pedigree dataframe
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

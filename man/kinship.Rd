@@ -2,7 +2,7 @@
 % Please edit documentation in R/kinship.R
 \name{kinship}
 \alias{kinship}
-\title{Generates a kinship matrix.}
+\title{Generate a kinship matrix}
 \usage{
 kinship(id, father.id, mother.id, pdepth, sparse = FALSE)
 }
@@ -26,23 +26,21 @@ used to make a unit square matrix.}
 A kinship square matrix
 }
 \description{
-\{Kinship Matrix Functions\} \{
-The code for the kinship function was written by Terry Therneau
-at the Mayo clinic and taken from his website. This function is part of a
-package written in S (and later ported to R) for calculating kinship and
-other statistics.
-\}
-}
-\details{
 The function previously had an internal call to the kindepth function in
 order to provide the parameter pdepth (the generation number). This version
 requires the generation number to be calculated elsewhere and passed into
 the function.
-
+}
+\details{
 The rows (cols) of founders are just 0.5 * identity matrix, no further
 processing is needed for them.
 Parents must be processed before their children, and then a child's
 kinship is just a sum of the kinship's for his or her parents.
+
+The code for the kinship function was written by Terry Therneau
+at the Mayo clinic and taken from his website. This function is part of a
+package written in S (and later ported to R) for calculating kinship and
+other statistics.
 }
 \examples{
 library(nprcgenekeepr)
@@ -53,26 +51,23 @@ ped
 kmat
 }
 \references{
-\{S-Plus/R Function Page\}
-\emph{www.mayo.edu/research/departments-divisions/department-health-sciences-research/division-biomedical-statistics-informatics/software/}
-@description \{s-plus-r-functions\} \{Downloaded 2014-08-26\}
-This page address is now (2019-10-03) stale.
-
-All of the code on the S-Plus page was stated to be released under the
-GNU General Public License (version 2 or later).
-
-The R version became the kinship2 package available on CRAN:
-
 \url{https://cran.r-project.org/package=kinship2}
 
 $Id: kinship.s,v 1.5 2003/01/04 19:07:53 therneau Exp $
 
-\{Create the kinship matrix, using the algorithm of K Lange,
+Create the kinship matrix, using the algorithm of K Lange,
 Mathematical and Statistical Methods for Genetic Analysis,
-Springer, 1997, p 71-72.\}
+Springer, 1997, p 71-72.
 }
 \author{
-\{Terry M. Therneau, Mayo Clinic (mayo.edu), original version\}
+Terry M. Therneau, Mayo Clinic (mayo.edu), original version
 
-\{as modified by, M Raboin, 2014-09-08 14:44:26\}
+All of the code on the original S-Plus kinship function (originally
+hosted on Terry Therneau's Mayo Clinic software page, offline since at
+least 2019) was stated to be released under the GNU General Public
+License (version 2 or later).
+
+The R version became the kinship2 package available on CRAN:
+
+as modified by M Raboin, 2014-09-08 14:44:26
 }

@@ -1,14 +1,15 @@
-#' Converts status indicators to a Standardized code
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Part of Pedigree Curation
+
+#' Convert status indicators to a standardized code
 #'
-#' @return A factor vector of the standardized status codes with levels:
-#' `ALIVE`, `DECEASED`, `SHIPPED`, and `UNKNOWN`.
+#' Part of Pedigree Curation
 #'
 #' @param status character vector or NA. Flag indicating an individual's
 #' status as alive, dead, sold, etc.
+#' @return A factor vector of the standardized status codes with levels:
+#' \code{ALIVE}, \code{DECEASED}, \code{SHIPPED}, and \code{UNKNOWN}.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

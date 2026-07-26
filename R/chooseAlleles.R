@@ -1,15 +1,15 @@
-#' Combines two vectors of alleles by randomly selecting one allele
-#' or the other at each position.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return An integer vector with the result of sampling from \code{a1}
-#' and \code{a2} according to Mendelian inheritance.
+
+#' Combine two allele vectors by Mendelian sampling
 #'
 #' @param a1 integer vector with first allele for each individual
 #' @param a2 integer vector with second allele for each individual
 #' \code{a1} and \code{a2} are equal length vectors of alleles for one
 #' individual
+#' @return An integer vector with the result of sampling from \code{a1}
+#' and \code{a2} according to Mendelian inheritance.
+#'
 #' @export
 #' @examples
 #' chooseAlleles(0L:4L, 5L:9L)

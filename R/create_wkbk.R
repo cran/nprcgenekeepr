@@ -1,17 +1,17 @@
-#' Creates an Excel workbook with worksheets.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return TRUE if the Excel file was successfully created. FALSE if any errors
-#' occurred.
+
+#' Create an Excel workbook with worksheets
 #'
 #' @param file filename of workbook to be created
 #' @param df_list list of data frames to be added as worksheets to workbook
 #' @param sheetnames character vector of worksheet names
 #' @param replace Specifies if the file should be replaced if it
 #' already exist (default is FALSE).
-#' @importFrom WriteXLS WriteXLS
+#' @return TRUE if the Excel file was successfully created. FALSE if any errors
+#' occurred.
+#'
+#' @importFrom openxlsx write.xlsx
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -52,19 +52,31 @@ create_wkbk <- function(file, df_list, sheetnames, replace = FALSE) {
   }
 
   if (file.exists(file)) {
-    if (replace) {
-      file.remove(file)
-    } else {
+    if (!replace) {
       warning("File, ", file, " exists and was not overwritten.")
       return(FALSE)
     }
+    file.remove(file)
   }
-  WriteXLS(
+  names(df_list) <- sheetnames
+  ## Write Date/POSIXct columns as literal text (matching the prior WriteXLS
+  ## backend's behavior) rather than openxlsx's native numeric-with-date-
+  ## format cells: readxl::read_excel(col_types = "text") -- this package's
+  ## own read path (readExcelPOSIXToCharacter()) -- returns a date-formatted
+  ## numeric cell's raw serial number as text, not its rendered date string.
+  df_list <- lapply(df_list, function(df) {
+    isDateCol <- vapply(
+      df, function(col) inherits(col, "Date") || inherits(col, "POSIXct"),
+      logical(1L)
+    )
+    df[isDateCol] <- lapply(df[isDateCol], as.character)
+    df
+  })
+  write.xlsx(
     x = df_list,
-    ExcelFileName = file,
-    SheetNames = sheetnames,
-    Encoding = "UTF-8",
-    col.names = TRUE,
-    AdjWidth = TRUE
+    file = file,
+    colNames = TRUE,
+    colWidths = "auto"
   )
+  TRUE
 }

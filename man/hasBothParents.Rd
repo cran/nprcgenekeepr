@@ -2,20 +2,20 @@
 % Please edit documentation in R/hasBothParents.R
 \name{hasBothParents}
 \alias{hasBothParents}
-\title{hasBothParents checks to see if both parents are identified.}
+\title{Check whether an animal has both parents}
 \usage{
 hasBothParents(id, ped)
 }
 \arguments{
 \item{id}{character vector of IDs to examine for parents}
 
-\item{ped}{a pedigree}
+\item{ped}{The pedigree information in data.frame format}
 }
 \value{
 TRUE if ID has both sire and dam identified in \code{ped}.
 }
 \description{
-hasBothParents checks to see if both parents are identified.
+Check whether an animal has both parents
 }
 \examples{
 library(nprcgenekeepr)

@@ -2,12 +2,12 @@
 % Please edit documentation in R/getGVPopulation.R
 \name{getGVPopulation}
 \alias{getGVPopulation}
-\title{Get the population of interest for the Genetic Value analysis.}
+\title{Get the population of interest for the Genetic Value analysis}
 \usage{
 getGVPopulation(ped, pop)
 }
 \arguments{
-\item{ped}{the pedigree information in datatable format}
+\item{ped}{The pedigree information in data.frame format}
 
 \item{pop}{character vector with animal IDs to consider as the population of
 interest. The default is NULL.}

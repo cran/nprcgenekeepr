@@ -2,12 +2,12 @@
 % Please edit documentation in R/getGVGenotype.R
 \name{getGVGenotype}
 \alias{getGVGenotype}
-\title{Get Genetic Value Genotype data structure for reportGV function.}
+\title{Extract genotype data for a genetic value report}
 \usage{
 getGVGenotype(ped)
 }
 \arguments{
-\item{ped}{the pedigree information in datatable format}
+\item{ped}{The pedigree information in data.frame format}
 }
 \value{
 A data.frame with the columns \code{id}, \code{first}, and
@@ -20,7 +20,7 @@ returned.
 Extracts genotype data if available otherwise NULL is returned.
 }
 \examples{
-## We usually defined `n` to be >= 5000
+## We usually define `n` to be >= 1000
 library(nprcgenekeepr)
 ped <- nprcgenekeepr::lacy1989Ped
 allelesNew <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,

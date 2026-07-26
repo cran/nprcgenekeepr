@@ -1,23 +1,22 @@
-#' Converts pairwise kinship values to a relationship category descriptor.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Convert pairwise kinship values to relationship categories
+#'
 #' Part of Relations
 #'
-#' @return A dataframe with columns \code{id1}, \code{id2}, \code{kinship},
-#' \code{relation}. It is a long-form table of pairwise kinships, with
-#' relationship categories included for each pair.
-#'
-#' @param kmat a numeric matrix of pairwise kinship coefficients.
-#' Rows and columns should be named with IDs.
-#' @param ped the pedigree information in datatable format with required
-#' colnames \code{id}, \code{sire}, and \code{dam}.
+#' @inheritParams meanKinship
+#' @inheritParams getDescendantPedigree
 #' @param ids character vector of IDs or NULL to which the analysis should be
 #' restricted. If provided, only relationships between these IDs will be
 #' converted to relationships.
 #' @param updateProgress function or NULL. If this function is defined, it
 #' will be called during each iteration to update a
 #' \code{shiny::Progress} object.
+#' @return A dataframe with columns \code{id1}, \code{id2}, \code{kinship},
+#' \code{relation}. It is a long-form table of pairwise kinships, with
+#' relationship categories included for each pair.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -97,5 +96,5 @@ convertRelationships <- function(kmat, ped, ids = NULL, updateProgress = NULL) {
     }
   }
   kin["relation"] <- r
-  return(kin)
+  kin
 }

@@ -2,17 +2,35 @@
 % Please edit documentation in R/checkParentAge.R
 \name{checkParentAge}
 \alias{checkParentAge}
-\title{Check parent ages to be at least \code{minParentAge}}
+\title{Check parent ages against a minimum age}
 \usage{
-checkParentAge(sb, minParentAge = 2L, reportErrors = FALSE)
+checkParentAge(
+  sb,
+  minSireAge = NULL,
+  minDamAge = NULL,
+  minParentAge = lifecycle::deprecated(),
+  reportErrors = FALSE
+)
 }
 \arguments{
 \item{sb}{A dataframe containing a table of pedigree and demographic
 information.}
 
-\item{minParentAge}{numeric values to set the minimum age in years for
-an animal to have an offspring. Defaults to 2 years. The check is not
-performed for animals with missing birth dates.}
+\item{minSireAge}{numeric minimum age in years for a male to have sired an
+offspring. \code{NULL} (default) looks up the floor for each sire's species
+via \code{\link{getSpeciesMinBreedingAge}} (falling back to 2 years when the
+species is missing or unknown); a supplied value overrides that floor for
+all sires. The check is not performed for animals with missing birth dates.}
+
+\item{minDamAge}{numeric minimum age in years for a female to have borne an
+offspring. \code{NULL} (default) looks up the floor for each dam's species
+via \code{\link{getSpeciesMinBreedingAge}} (falling back to 2 years when the
+species is missing or unknown); a supplied value overrides that floor for
+all dams.}
+
+\item{minParentAge}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Deprecated scalar
+minimum parent age. Supplying it sets both \code{minSireAge} and
+\code{minDamAge}; use those sex-specific parameters instead.}
 
 \item{reportErrors}{logical value if TRUE will scan the entire file and
 make a list of all errors found. The errors will be returned in a
@@ -23,11 +41,12 @@ A dataframe containing rows for each animal where one or more
 parent was less than \code{minParentAge}. It contains all of the columns
 in the original \code{sb} dataframe with the following added columns:
 \enumerate{
-\item \{sireBirth\} \{sire's birth date\}
-\item\{sireAge\} \{age of sire in years on the date indicated by
-\code{birth}.\}
-\item\{damBirth\} \{dam's birth date\}
-\code{damAge} \{age of dam in years on the date indicated by \code{birth}.\}
+\item \code{sireBirth} -- sire's birth date
+\item \code{sireAge} -- age of sire in years on the date indicated by
+\code{birth}.
+\item \code{damBirth} -- dam's birth date
+\item \code{damAge} -- age of dam in years on the date indicated by
+\code{birth}.
 }
 }
 \description{
@@ -36,9 +55,9 @@ Ensure parents are sufficiently older than offspring
 \examples{
 library(nprcgenekeepr)
 qcPed <- nprcgenekeepr::qcPed
-checkParentAge(qcPed, minParentAge = 2L)
-checkParentAge(qcPed, minParentAge = 3L)
-checkParentAge(qcPed, minParentAge = 5L)
-checkParentAge(qcPed, minParentAge = 6L)
-head(checkParentAge(qcPed, minParentAge = 10L))
+checkParentAge(qcPed, minSireAge = 2L, minDamAge = 2L)
+checkParentAge(qcPed, minSireAge = 3L, minDamAge = 3L)
+checkParentAge(qcPed, minSireAge = 5L, minDamAge = 5L)
+checkParentAge(qcPed, minSireAge = 6L, minDamAge = 6L)
+head(checkParentAge(qcPed, minSireAge = 10L, minDamAge = 10L))
 }

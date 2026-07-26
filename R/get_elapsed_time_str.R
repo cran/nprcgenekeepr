@@ -1,13 +1,15 @@
-#' Returns the elapsed time since start_time.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Format the elapsed time since a start time
+#'
 #' Taken from github.com/rmsharp/rmsutilityr
 #'
+#' @param start_time a \code{proc_time} object as returned by
+#' \code{proc.time()}
 #' @return A character vector describing the passage of time in hours, minutes,
 #' and seconds.
 #'
-#' @param start_time a POSIXct time object
 #' @importFrom stringi stri_c
 #' @export
 #' @examples
@@ -15,10 +17,9 @@
 #' ## do something
 #' elapsed_time <- get_elapsed_time_str(start_time)
 get_elapsed_time_str <- function(start_time) {
-  # To use: collect the start_time at the beginning of the script with
-  # start_time <- proc.time()
-  # At the end call this function using start_time as the sole argument
-  # elapsed_time <- get_elapsed_time_str(start_time)
+  # To use: collect start_time at the beginning of the script with proc.time(),
+  # then at the end call this function with start_time as its sole argument
+  # (see the examples in the function documentation).
   total_seconds <- (proc.time()[[3L]] - start_time[[3L]])
   total_minutes <- total_seconds / 60L
   hours <- floor(total_minutes / 60L)

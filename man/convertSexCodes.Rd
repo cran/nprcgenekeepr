@@ -2,7 +2,7 @@
 % Please edit documentation in R/convertSexCodes.R
 \name{convertSexCodes}
 \alias{convertSexCodes}
-\title{Converts sex indicator for an individual to a standardized codes.}
+\title{Convert a sex indicator to a standardized code}
 \usage{
 convertSexCodes(sex, ignoreHerm = TRUE)
 }
@@ -23,11 +23,14 @@ Part of Pedigree Curation
 \details{
 Standard sex codes are
 \itemize{
-\item\{F\} \{-- replacing "FEMALE" or "2"\}
-\item\{M\} \{-- replacing "MALE" or "1"\}
-\item\{H\} \{-- replacing "HERMAPHRODITE" or "4", if ignore.herm == FALSE\}
-\item\{U\} \{-- replacing "HERMAPHRODITE" or "4", if ignore.herm == TRUE\}
-\item\{U\} \{-- replacing "UNKNOWN" or "3"\}}
+\item \code{F} -- replacing "FEMALE" or "2"
+\item \code{M} -- replacing "MALE" or "1"
+\item \code{H} -- replacing "HERMAPHRODITE" or "4", if
+\code{ignoreHerm} == FALSE
+\item \code{U} -- replacing "HERMAPHRODITE" or "4", if
+\code{ignoreHerm} == TRUE
+\item \code{U} -- replacing "UNKNOWN" or "3"
+}
 }
 \examples{
 library(nprcgenekeepr)

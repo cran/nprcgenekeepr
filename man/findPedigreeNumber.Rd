@@ -2,7 +2,7 @@
 % Please edit documentation in R/findPedigreeNumber.R
 \name{findPedigreeNumber}
 \alias{findPedigreeNumber}
-\title{Determines the generation number for each id.}
+\title{Determine the pedigree number for each ID}
 \usage{
 findPedigreeNumber(id, sire, dam)
 }
@@ -16,8 +16,9 @@ individual's father (\code{NA} if unknown).}
 individual's mother (\code{NA} if unknown).}
 }
 \value{
-Integer vector indicating generation numbers for each id,
-starting at 0 for individuals lacking IDs for both parents.
+Integer vector indicating the pedigree (family group) number for
+each id. Ids that are connected through parent-offspring links share the
+same number; numbering starts at 1.
 }
 \description{
 One of Pedigree Curation functions

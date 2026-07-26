@@ -1,8 +1,7 @@
-#' Counts the number of occurrences of each kinship value seen for a pair of
-#' individuals in a series of simulated pedigrees.
-#'
-#' @return A list of three lists named \code{kIds} (kinship IDs), \code{kValues}
-#'         (kinship values), and \code{kCounts} (kinship counts).
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Count kinship-value occurrences across simulated pedigrees
 #'
 #' @param kinshipValues matrix of kinship values from simulated pedigrees where
 #'  each row represents a pair of individuals in the pedigree and each column
@@ -10,6 +9,9 @@
 #'  pedigree.
 #' @param accummulatedKValueCounts list object with same structure as that
 #'  returned by this function.
+#'
+#' @return A list of three lists named \code{kIds} (kinship IDs), \code{kValues}
+#'         (kinship values), and \code{kCounts} (kinship counts).
 #'
 #' @export
 #' @examples
@@ -129,8 +131,9 @@ countKinshipValues <- function(kinshipValues,
           c(accummulatedKValueCounts$kValues[[index]], valueDiffs)
 
         countDiffs <- integer(length(valueDiffs))
-        for (value in valueDiffs) {
-          countDiffs[index] <- kCounts[[index]][kValues[[index]] == value]
+        for (i in seq_along(valueDiffs)) {
+          countDiffs[i] <-
+            kCounts[[index]][kValues[[index]] == valueDiffs[i]]
         }
 
         accummulatedKValueCounts$kCounts[[index]] <-

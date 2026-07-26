@@ -1,6 +1,5 @@
-#' Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 # This file is part of nprcgenekeepr
-context("obfuscateId")
 library(testthat)
 library(stringi)
 
@@ -25,9 +24,21 @@ test_that("obfuscateId fails when duplicates cannot be avoided", {
   id <- stri_c(1L:10000L)
   expect_error(obfuscateId(id, size = 2L))
 })
-test_that("obfuscateId replaces unknown ID with unknown IDs (start with 'U'", {
+test_that("obfuscateId is case-sensitive: only uppercase-U ids get U-aliases", {
+  # #44 reconciliation: detection is case-sensitive (matches generation's
+  # uppercase prefix). Uppercase-U inputs are auto-generated unknowns and get
+  # U-prefixed aliases; lowercase "u001" is now treated as a real ID.
   id <- c("U0001", "U123", "u001", "abc")
   alias <- obfuscateId(id, size = 4L)
-  expect_true(all(stri_detect_regex(alias[1L:3L], "^U")))
+  expect_true(all(stri_detect_regex(alias[1L:2L], "^U")))
+  expect_false(stri_detect_regex(alias[3L], "^U")) # u001 -> real ID, not U-aliased
   expect_false(stri_detect_regex(alias[4L], "^U"))
+})
+
+## NEW-45 guarantee: obfuscated (de-identified) IDs must never contain a
+## period ('.'). obfuscateId samples letters + digits only, so this holds on
+## current code and must continue to hold (characterization guard).
+test_that("obfuscateId generates period-free IDs (NEW-45 guarantee)", {
+  ids <- obfuscateId(c("abc123", "george", "autumn"), size = 6L)
+  expect_false(any(grepl(".", ids, fixed = TRUE)))
 })

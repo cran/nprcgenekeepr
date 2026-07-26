@@ -2,19 +2,24 @@
 % Please edit documentation in R/addAnimalsWithNoRelative.R
 \name{addAnimalsWithNoRelative}
 \alias{addAnimalsWithNoRelative}
-\title{Adds an NA value for all animals without a relative}
+\title{Add an NA value for animals with no relative}
 \usage{
 addAnimalsWithNoRelative(kin, candidates)
 }
 \arguments{
-\item{kin}{dataframe with kinship values}
+\item{kin}{named list of high-kinship relatives, as produced by
+\code{getAnimalsWithHighKinship}, where each name is an animal Id and
+each value is a character vector of the Ids sharing a kinship value at
+or above the threshold.}
 
 \item{candidates}{character vector of IDs of the animals available for
 use in the group.}
 }
 \value{
-A dataframe with kinships in long form after adding a row for each
-animal without a relative.
+The named list of high-kinship relatives (one element per
+animal Id, each value a character vector of that Id's high-kinship
+relatives) with an added element set to \code{NA} for each candidate
+that has no relative.
 }
 \description{
 This allows \code{kin} to be used with \code{setdiff} when there are no
@@ -23,7 +28,7 @@ relatives otherwise an error would occur because
 following: in \strong{groupAddAssign}
 }
 \details{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\code{available[[i]] <- setdiff(available[[i]], kin[[id]])}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{available[[i]] <- setdiff(available[[i]], kin[[id]])
 }\if{html}{\out{</div>}}
 }
 \examples{

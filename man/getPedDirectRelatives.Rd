@@ -2,32 +2,39 @@
 % Please edit documentation in R/getPedDirectRelatives.R
 \name{getPedDirectRelatives}
 \alias{getPedDirectRelatives}
-\title{Get the direct ancestors of selected animals from supplied pedigree.}
+\title{Get the direct relatives of selected animals from a pedigree}
 \usage{
 getPedDirectRelatives(ids, ped, unrelatedParents = FALSE)
 }
 \arguments{
-\item{ids}{character vector with Ids.}
+\item{ids}{character vector of animal IDs}
 
 \item{ped}{pedigree dataframe object that is used as the source of
 pedigree information.}
 
 \item{unrelatedParents}{logical vector when \code{FALSE} the unrelated
-parents of offspring do not get a record as an ego; when \code{TRUE}
-a place holder record where parent (\code{sire},
+parents of offspring do not get a record as an ego; when \code{TRUE} they
+get a place holder record as an ego in which the parent (\code{sire},
 \code{dam}) IDs are set to \code{NA}.}
 }
 \value{
-A data.frame with pedigree structure having all of the direct
-ancestors for the Ids provided.
+A data.frame of pedigree records for the selected animals and
+their direct relatives (ancestors and descendants) in \code{ped}.
 }
 \description{
-Gets direct ancestors from labkey \code{study} schema and \code{demographics}
-table.
+Gets the direct relatives (ancestors and descendants) of the selected
+animals from the supplied pedigree (\code{ped}).
 }
 \examples{
 library(nprcgenekeepr)
-## Have to a vector of focal animals
-focalAnimals <- c("1X2701", "1X0101")
-suppressWarnings(getLkDirectRelatives(ids = focalAnimals))
+## A pedigree to search and a focal animal whose direct relatives we want
+ped <- nprcgenekeepr::lacy1989Ped
+getPedDirectRelatives(ids = "E", ped = ped)
 }
+\seealso{
+Other direct relatives:
+\code{\link[=getFileDirectRelatives]{getFileDirectRelatives()}},
+\code{\link[=getLkDirectAncestors]{getLkDirectAncestors()}},
+\code{\link[=getLkDirectRelatives]{getLkDirectRelatives()}}
+}
+\concept{direct relatives}

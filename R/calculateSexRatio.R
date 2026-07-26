@@ -1,25 +1,24 @@
-#' Calculates the sex ratio (number of non-males / number of males) given
-#' animal Ids and their pedigree
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Calculate the sex ratio of a set of animals
 #'
-#' @description The Males are counted when the \code{ped$sex} value is
+#' The Males are counted when the \code{ped$sex} value is
 #' \code{"M"}.
 #' Females are counted when the \code{ped$sex} value is not
 #' \code{"M"}. This means animals with ambiguous sex are counted with the
 #' females.
 #'
-#' @return Numeric value of sex ratio of the animals provided.
-#'
-#' @param ids character vector of animal Ids
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
+#' @inheritParams getParents
+#' @inheritParams getPotentialSires
 #' @param additionalMales Integer value of males to add to those within the
 #' group when calculating the ratio. Ignored if calculated ratio is 0 or Inf.
 #' Default is 0.
 #' @param additionalFemales Integer value of females to add to those within the
 #' group when calculating the ratio. Ignored if calculated ratio is 0 or Inf.
 #' Default is 0.
+#' @return Numeric value of sex ratio of the animals provided.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -78,7 +77,8 @@ calculateSexRatio <- function(ids, ped, additionalMales = 0L,
         ratio <- 0.0
       }
     }
-  } else if (length(ped$sex[ped$id %in% ids & ped$sex == "M"]) == 0L) {#no males
+  } else if (length(ped$sex[ped$id %in% ids &
+    ped$sex == sexCodes[["male"]]]) == 0L) {#no males
     if (additionalMales > 0L) {
       ratio <- getSexRatioWithAdditions(
         ids, ped, additionalMales,

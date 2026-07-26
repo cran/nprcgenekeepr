@@ -1,14 +1,19 @@
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
 #' Get demographic data
 #'
-## Copyright(c) 2017-2024 R. Mark Sharp
-## This file is part of nprcgenekeepr
 #' This is a thin wrapper around \code{labkey.selectRows()}.
 #'
+#' @param colSelect (optional) a vector of comma separated strings specifying
+#' which columns of a dataset or view to import
 #' @return A data.frame containing LabKey demographic data with the columns
 #' specified in the single parameter provided.
 #'
+#' @importFrom Rlabkey labkey.selectRows
+#' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ## Needs a connection to a LabKey server
 #' library(nprcgenekeepr)
 #' siteInfo <- getSiteInfo()
@@ -30,12 +35,9 @@
 #' )
 #' }
 #'
-#' @param colSelect (optional) a vector of comma separated strings specifying
-#' which columns of a dataset or view to import
-#' @importFrom Rlabkey labkey.selectRows
-#' @export
 getDemographics <- function(colSelect = NULL) {
   siteInfo <- getSiteInfo()
+  setLabKeyDefaults(siteInfo)
   demoDf <- labkey.selectRows(
     baseUrl = siteInfo$baseUrl, folderPath = siteInfo$folderPath,
     schemaName = siteInfo$schemaName, queryName = siteInfo$queryName,

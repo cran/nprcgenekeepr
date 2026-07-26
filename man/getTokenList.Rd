@@ -2,7 +2,7 @@
 % Please edit documentation in R/getTokenList.R
 \name{getTokenList}
 \alias{getTokenList}
-\title{Gets tokens from character vector of lines}
+\title{Get tokens from a character vector of lines}
 \usage{
 getTokenList(lines)
 }
@@ -10,11 +10,12 @@ getTokenList(lines)
 \item{lines}{character vector with text from configuration file}
 }
 \value{
-First right and left space trimmed token from first character vector
-element.
+A list with two elements: \code{param}, a character vector of
+parameter names, and \code{tokenVec}, a list of the token vectors parsed
+for each parameter.
 }
 \description{
-Gets tokens from character vector of lines
+Get tokens from a character vector of lines
 }
 \examples{
 lines <- c(

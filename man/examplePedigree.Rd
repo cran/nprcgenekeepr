@@ -3,30 +3,31 @@
 \docType{data}
 \name{examplePedigree}
 \alias{examplePedigree}
-\title{examplePedigree is a pedigree object created by \code{qcStudbook}}
+\title{Example pedigree object (from ExamplePedigree.csv)}
 \format{
-An object of class \code{data.frame} with 3694 rows and 12 columns.
+An object of class \code{data.frame} with 3694 rows and 13 columns.
 }
 \usage{
-examplePedigree
+data(examplePedigree)
 }
 \description{
+A pedigree object created by \code{qcStudbook}.
 Represents pedigree from \emph{ExamplePedigree.csv}.
 \describe{
 \item{id}{-- character column of animal IDs}
 \item{sire}{-- the male parent of the animal indicated by the \code{id}
 column. Unknown sires are indicated with \code{NA}}
 \item{dam}{-- the female parent of the animal indicated by the \code{id}
-column.Unknown dams are indicated with \code{NA}}
-\item{sex}{-- factor with levels: "M", "F", "U". Sex specifier for an
+column. Unknown dams are indicated with \code{NA}}
+\item{sex}{-- factor with levels: "F", "M", "H", "U". Sex specifier for an
 individual.}
 \item{gen}{-- generation number (integers beginning with 0 for the founder
 generation) of the animal indicated by the \code{id} column.}
 \item{birth}{-- Date vector of birth dates}
 \item{exit}{-- Date vector of exit dates}
 \item{age}{-- numerical vector of age in years}
-\item{ancestry}{-- character vector or NA with free-form text providing
-information about the geographic population of origin.}
+\item{ancestry}{-- factor with levels: INDIAN, CHINESE, HYBRID, JAPANESE,
+OTHER, UNKNOWN indicating the geographic population of origin.}
 \item{origin}{-- character vector or \code{NA} (optional) that indicates
 the name of the facility that the individual was imported from if other than
 local.}
@@ -35,8 +36,17 @@ status as alive, dead, sold, etc. Transformed to
 factor \{levels: ALIVE, DECEASED, SHIPPED, UNKNOWN\}. Vector of
 standardized status codes with the possible values
 ALIVE, DECEASED, SHIPPED, or UNKNOWN}
-\item{recordStats}{-- character vector with value of \code{"added"} or
+\item{recordStatus}{-- character vector with value of \code{"added"} or
 \code{"original"}.}
+\item{fromCenter}{-- logical vector indicating whether the animal was
+born at the local center (colony-origin), derived from \code{origin} and
+\code{recordStatus}: \code{TRUE} when \code{origin} is blank and
+\code{recordStatus} is \code{"original"}; \code{FALSE} for animals
+imported from elsewhere (non-blank \code{origin}) or for synthetic
+placeholder second-parent rows (\code{recordStatus == "added"}) whose
+true origin is not confirmed. Required by
+\code{\link{getPotentialParents}} to identify in-colony candidate
+parents.}
 }
 }
 \examples{

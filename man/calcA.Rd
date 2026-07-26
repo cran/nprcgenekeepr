@@ -2,16 +2,15 @@
 % Please edit documentation in R/calcA.R
 \name{calcA}
 \alias{calcA}
-\title{Calculates \code{a}, the number of an individual's alleles that are rare in
-each simulation.}
+\title{Count each individual's rare alleles per simulation}
 \usage{
 calcA(alleles, threshold = 1L, byID = FALSE)
 }
 \arguments{
-\item{alleles}{a matrix with \{id, parent, V1 ... Vn\} providing the alleles
+\item{alleles}{a matrix with \{V1 ... Vn, id, parent\} providing the alleles
 an animal received during each simulation.
-The first 2 columns provide the animal ID and the parent the allele came
-from. Remaining columns provide alleles.}
+The first n columns provide the alleles; the final two columns provide the
+animal ID and the parent the allele came from.}
 
 \item{threshold}{an integer indicating the maximum number of copies of an
 allele that can be present in the population for it to be considered rare.
@@ -34,3 +33,27 @@ Part of Genetic Value Analysis
 library(nprcgenekeepr)
 rare <- calcA(nprcgenekeepr::ped1Alleles, threshold = 3, byID = FALSE)
 }
+\references{
+Ballou JD, Lacy RC.  1995. Identifying genetically important
+individuals for management of genetic variation in pedigreed populations,
+p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors.
+Population management for survival and recovery. New York (NY):
+Columbia University Press.
+
+MacCluer JW, et al. 1986. Pedigree analysis by computer
+simulation. Zoo Biology 5:147-160.
+}
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcFE]{calcFE()}},
+\code{\link[=calcFEFG]{calcFEFG()}},
+\code{\link[=calcFG]{calcFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGU]{calcGU()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}},
+\code{\link[=calcRetention]{calcRetention()}}
+}
+\concept{genetic value analysis}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneDrop.R
 \name{geneDrop}
 \alias{geneDrop}
-\title{Gene drop simulation based on the provided pedigree information}
+\title{Simulate gene dropping through a pedigree}
 \usage{
 geneDrop(
   ids,
@@ -10,12 +10,12 @@ geneDrop(
   dams,
   gen,
   genotype = NULL,
-  n = 5000L,
+  n = 1000L,
   updateProgress = NULL
 )
 }
 \arguments{
-\item{ids}{A character vector of IDs for a set of animals.}
+\item{ids}{A character vector of unique IDs for a set of animals.}
 
 \item{sires}{A character vector with IDS of the sires for the set of
 animals. \code{NA} is used for missing sires.}
@@ -31,18 +31,19 @@ columns:  \code{id}, \code{first}, and \code{second}. The second and third
 columns contain the integers indicating the observed genotypes.}
 
 \item{n}{integer indicating the number of iterations to simulate.
-Default is 5000.}
+Default is 1000.}
 
 \item{updateProgress}{function or NULL. If this function is defined, it
 will be called during each iteration to update a
 \code{shiny::Progress} object.}
 }
 \value{
-A data.frame \code{id, parent, V1 ... Vn}
+A data.frame \code{V1 ... Vn, id, parent}
 A data.frame providing the maternal and paternal alleles for an animal
-for each iteration. The first two columns provide the animal's ID and
-whether the allele came from the sire or dam. These are followed by
-\code{n} columns indicating the allele for that iteration.
+for each iteration. The first \code{n} columns indicate the allele for
+each iteration. These are followed by two columns: \code{id}, the
+animal's ID, and \code{parent}, whether the allele came from the sire
+or dam.
 }
 \description{
 Part of Genetic Value Analysis
@@ -65,9 +66,25 @@ to take 20-35 times longer to perform.
 Adding additional columns to \code{genotype} does not significantly affect
 the time require. Thus, it is convenient to add the corresponding haplotype
 names to the dataframe using \code{first_name} and \code{second_name}.
+
+Animal IDs (\code{ids}) must not contain a period ("."). A period is
+disallowed because it causes problems across software environments (R
+column-name and formula parsing, file-name extensions, programming-language
+namespaces, and regular expressions); \code{geneDrop} additionally relies on
+the period internally to recover the id and parent of each allele row, so a
+period-bearing id would silently corrupt the result. IDs containing a period
+are therefore rejected with an error. The same rule is enforced at data
+input by \code{\link{qcStudbook}} and honored by all automatically generated
+IDs.
+
+Animal IDs (\code{ids}) must also be unique. \code{geneDrop} indexes each
+animal's parents and accumulates its simulated alleles by id, so duplicate
+ids are rejected with an error. This invariant is established upstream by
+\code{\link{qcStudbook}} (via \code{\link{removeDuplicates}}) and by
+\code{\link{kinship}}, both of which require unique ids.
 }
 \examples{
-## We usually defined `n` to be >= 5000
+## We usually define `n` to be >= 1000
 library(nprcgenekeepr)
 ped <- nprcgenekeepr::lacy1989Ped
 allelesNew <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,

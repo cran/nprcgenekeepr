@@ -1,7 +1,8 @@
-#' Get possible column names for a studbook.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Get possible column names for a studbook
+#'
 #' Pedigree curation function
 #'
 #' @return A character vector of the possible columns that can be in a
@@ -13,10 +14,14 @@
 #' individual's mother (\code{NA} if unknown).}
 #' \item{sex}{ -- factor (levels: "M", "F", "U") Sex specifier for an
 #' individual}
+#' \item{species}{ -- character vector or \code{NA} (optional) naming the
+#' species of the individual (e.g. "rhesus"). Recognized as a first-class
+#' column rather than retained as an unrecognized novel column.}
 #' \item{gen}{ -- integer vector with the generation number of the
 #' individual}
-#' \item{birth}{ -- Date or \code{N} (optional) with the individual's birth
-#' date}
+#' \item{birth}{ -- Date or \code{NA} with the individual's birth date. This
+#' is one of the required columns (see \code{\link{getRequiredCols}}); the
+#' date value itself may be \code{NA} if unknown.}
 #' \item{exit}{ -- Date or \code{NA} (optional) with the individual's exit
 #'  date
 #' (death, or departure if applicable)}
@@ -46,10 +51,5 @@
 #' library(nprcgenekeepr)
 #' getPossibleCols()
 getPossibleCols <- function() {
-  c(
-    "id", "sire", "dam", "sex", "gen", "birth", "exit", "death", "age",
-    "ancestry", "population", "origin", "status", "condition", "departure",
-    "spf", "vasxOvx", "pedNum", "first", "second", "first_name",
-    "second_name", "recordStatus"
-  )
+  .nprcColumnSchema$possible
 }

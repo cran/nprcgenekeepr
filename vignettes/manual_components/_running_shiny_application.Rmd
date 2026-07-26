@@ -23,3 +23,6 @@ that can be started with:
 library(nprcgenekeepr) # nolint: undesirable_function_linter
 runGeneKeepR()
 ```
+
+(`runModularApp()` also still launches the application but is deprecated in
+favor of `runGeneKeepR()`.)

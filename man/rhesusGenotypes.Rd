@@ -3,19 +3,21 @@
 \docType{data}
 \name{rhesusGenotypes}
 \alias{rhesusGenotypes}
-\title{rhesusGenotypes is a dataframe with two haplotypes per animal}
+\title{Rhesus genotypes (two haplotypes per animal)}
 \format{
 An object of class \code{data.frame} with 31 rows and 3 columns.
 }
 \usage{
-rhesusGenotypes
+data(rhesusGenotypes)
 }
 \description{
-There are  object.
+A dataframe with two haplotypes per animal.
 }
 \details{
+There are 31 rows and 3 columns.
+
 Represents 31 animals that are also in the obfuscated \code{rhesusPedigree}
-pedigree from \emph{rhesusGenotypes.csv}.
+pedigree from \emph{obfuscated_rhesus_mhc_breeder_genotypes.csv}.
 \describe{
 \item{id}{-- character column of animal IDs}
 \item{first_name}{-- a generic name for the first haplotype}

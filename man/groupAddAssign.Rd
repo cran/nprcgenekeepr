@@ -2,7 +2,7 @@
 % Please edit documentation in R/groupAddAssign.R
 \name{groupAddAssign}
 \alias{groupAddAssign}
-\title{Add animals to an existing breeding group or forms groups:}
+\title{Add animals to a breeding group or form new groups}
 \usage{
 groupAddAssign(
   candidates,
@@ -25,11 +25,11 @@ groupAddAssign(
 use in forming the groups. The animals that may be present in
 \code{currentGroups} are not included within \code{candidates}.}
 
-\item{kmat}{Numeric matrix of pairwise kinship values. Rows and columns
-are named with animal IDs.}
+\item{kmat}{a numeric matrix of pairwise kinship coefficients.
+Animal IDs are the row and column names.}
 
-\item{ped}{Dataframe that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+\item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
+information including the IDs listed in \code{ids}.}
 
 \item{currentGroups}{List of character vectors of IDs of animals currently
 assigned to groups.
@@ -80,7 +80,9 @@ The list item \code{groupKin} contains the subset of the kinship matrix
 that is specific for each group formed.
 }
 \description{
-{
+Part of Group Formation
+}
+\details{
 \code{groupAddAssign} finds the largest group that can be formed by adding
 unrelated animals from a set of candidate IDs to an existing group, to a new
 group it has formed from a set of candidate IDs or if more than 1 group
@@ -93,10 +95,6 @@ combinations of animals. Since this could be very time consuming, this
 algorithm produces a random sample of the possible MISs, and selects from
 these. The size of the random sample is determined by the specified number
 of iterations.
-}
-}
-\details{
-Part of Group Formation
 }
 \examples{
 library(nprcgenekeepr)
@@ -149,4 +147,11 @@ sexRatioGrp <- groupAddAssign(
   sexRatio = 9.0
 )
 sexRatioGrp$group
+}
+\references{
+Vinson, A. and Raboin, M.J. (2015) "A Practical Approach for
+Designing Breeding Groups to Maximize Genetic Diversity in a Large Colony
+of Captive Rhesus Macaques (\emph{Macaca mulatta})" \emph{Journal of the
+American Association for Laboratory Animal Science}, 2015 Nov, Vol.54(6),
+pp.700-707.
 }

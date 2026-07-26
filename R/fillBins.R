@@ -1,14 +1,18 @@
-#' fillBins Fill bins represented by list of two lists \code{males} and
-#' \code{females}.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
 
-#' @return  A list with two TODO: RMS provide description
+#' Fill bins represented by lists of male and female counts
+
 #' @param ageDist dataframe with \code{sex} and \code{age} columns
 #' @param lowerAges integer vector of lower age boundaries; must be the same
 #' length as \code{upperAges}
 #' @param upperAges integer vector of upper age boundaries; must be the same
 #' length as \code{lowerAges}
+#' @return A list with two elements:
+#' \describe{
+#'   \item{males}{Integer vector of male counts per age bin}
+#'   \item{females}{Integer vector of female counts per age bin}
+#' }
 #' @noRd
 fillBins <- function(ageDist, lowerAges, upperAges = NULL) {
   if (any(names(ageDist) == "exit")) {
@@ -20,11 +24,13 @@ fillBins <- function(ageDist, lowerAges, upperAges = NULL) {
   maleBins <- integer(0L)
   femaleBins <- integer(0L)
   for (bin in seq_along(lowerAges)) {
-    maleBins <- c(maleBins, nrow(ageDist[ageDist$sex == "M" &
+    maleBins <- c(maleBins, nrow(ageDist[
+      ageDist$sex == sexCodes[["male"]] &
       ageDist$age >= lowerAges[bin] &
       ageDist$age < upperAges[bin] &
       !is.na(ageDist$age), ]))
-    femaleBins <- c(femaleBins, nrow(ageDist[ageDist$sex == "F" &
+    femaleBins <- c(femaleBins, nrow(ageDist[
+      ageDist$sex == sexCodes[["female"]] &
       ageDist$age >= lowerAges[bin] &
       ageDist$age < upperAges[bin] &
       !is.na(ageDist$age), ]))

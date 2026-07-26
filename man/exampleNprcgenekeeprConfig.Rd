@@ -3,17 +3,18 @@
 \docType{data}
 \name{exampleNprcgenekeeprConfig}
 \alias{exampleNprcgenekeeprConfig}
-\title{exampleNprcgenekeeprConfig is a loadable version of the example
-configuration file \code{example_nprcgenekeepr_config}}
+\title{Example nprcgenekeepr configuration file (loadable)}
 \format{
 An object of class \code{character} of length 34.
 }
 \usage{
-exampleNprcgenekeeprConfig
+data(exampleNprcgenekeeprConfig)
 }
 \description{
+A loadable version of the example
+configuration file \code{example_nprcgenekeepr_config}.
 It contains a working version of a \strong{nprcgenekeepr} configuration
-file created the SNPRC.
+file created at the SNPRC.
 Users of LabKey's EHR can adapt it to their systems and put it
 in their home directory. Instructions are embedded as comments
 within the file.

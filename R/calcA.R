@@ -1,25 +1,31 @@
-#' Calculates \code{a}, the number of an individual's alleles that are rare in
-#' each simulation.
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Count each individual's rare alleles per simulation
 #'
 #' Part of Genetic Value Analysis
 #'
-#' @return A matrix with named rows indicating the number of unique alleles
-#'   an animal had during each round of simulation (indicated in columns).
-#'
-#' @param alleles a matrix with \{id, parent, V1 ... Vn\} providing the alleles
+#' @param alleles a matrix with \{V1 ... Vn, id, parent\} providing the alleles
 #' an animal received during each simulation.
-#' The first 2 columns provide the animal ID and the parent the allele came
-#' from. Remaining columns provide alleles.
-#' @param threshold an integer indicating the maximum number of copies of an
-#'  allele that can be present in the population for it to be considered rare.
-#'  Default is 1.
+#' The first n columns provide the alleles; the final two columns provide the
+#' animal ID and the parent the allele came from.
+#' @inheritParams calcGU
 #' @param byID logical variable of length 1 that is passed through to
 #' eventually be used by \code{alleleFreq()}, which calculates the count of each
 #'  allele in the provided vector. If \code{byID} is TRUE and ids are provided,
 #'  the function will only count the unique alleles for an individual
 #'   (homozygous alleles will be counted as 1).
+#' @return A matrix with named rows indicating the number of unique alleles
+#'   an animal had during each round of simulation (indicated in columns).
+#'
+#' @references Ballou JD, Lacy RC.  1995. Identifying genetically important
+#' individuals for management of genetic variation in pedigreed populations,
+#' p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors.
+#' Population management for survival and recovery. New York (NY):
+#' Columbia University Press.
+#' @references MacCluer JW, et al. 1986. Pedigree analysis by computer
+#' simulation. Zoo Biology 5:147-160.
+#' @family genetic value analysis
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -39,5 +45,5 @@ calcA <- function(alleles, threshold = 1L, byID = FALSE) {
     tapply(a, ids, sum)
   }
 
-  return(apply(alleles, 2L, countRare))
+  apply(alleles, 2L, countRare)
 }

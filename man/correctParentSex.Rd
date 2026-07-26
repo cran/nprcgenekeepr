@@ -2,7 +2,7 @@
 % Please edit documentation in R/correctParentSex.R
 \name{correctParentSex}
 \alias{correctParentSex}
-\title{Sets sex for animals listed as either a sire or dam.}
+\title{Correct the sex of animals listed as a sire or dam}
 \usage{
 correctParentSex(id, sire, dam, sex, recordStatus, reportErrors = FALSE)
 }
@@ -27,11 +27,21 @@ make a list of all errors found. The errors will be returned in a
 list of list where each sublist is a type of error found.}
 }
 \value{
-A factor with levels: "M", "F", "H", and "U"
-representing the sex codes for the ids provided
+When \code{reportErrors = FALSE}, a factor (or character
+vector) of corrected sex codes with levels \code{"M"}, \code{"F"},
+\code{"H"}, and \code{"U"} for the ids provided. When
+\code{reportErrors = TRUE}, a named list of error vectors with
+elements \code{sireAndDam}, \code{femaleSires}, and \code{maleDams}
+(each \code{NULL} when no such errors are found).
 }
 \description{
 Part of Pedigree Curation
+}
+\details{
+Only true female-sires (\code{"F"}) and male-dams (\code{"M"}) are
+corrected (to \code{"M"} and \code{"F"} respectively). Parents recorded as
+hermaphrodite (\code{"H"}) or unknown (\code{"U"}) sex are left unchanged,
+consistent with \code{reportErrors = TRUE} mode, which does not flag them.
 }
 \examples{
 library(nprcgenekeepr)

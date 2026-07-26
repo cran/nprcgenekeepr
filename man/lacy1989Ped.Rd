@@ -3,7 +3,7 @@
 \docType{data}
 \name{lacy1989Ped}
 \alias{lacy1989Ped}
-\title{lacy1989Ped small hypothetical pedigree}
+\title{Small hypothetical pedigree (Lacy 1989)}
 \format{
 An object of class \code{data.frame} with 7 rows and 5 columns.
 }
@@ -21,16 +21,16 @@ assumed to have independent ancestries.
 \item{sire}{the male parent of the animal indicated by the \code{id} column.
 Unknown sires are indicated with \code{NA}}
 \item{dam}{the female parent of the animal indicated by the \code{id}
-column.Unknown dams are indicated with \code{NA}}
+column. Unknown dams are indicated with \code{NA}}
 \item{gen}{generation number (integers beginning with 0 for the founder
 generation) of the animal indicated by the \code{id} column.}
 \item{population}{logical vector with all values set TRUE}
 }
 }
 \usage{
-lacy1989Ped
+data(lacy1989Ped)
 }
 \description{
-lacy1989Ped small hypothetical pedigree
+Small hypothetical pedigree (Lacy 1989)
 }
 \keyword{datasets}

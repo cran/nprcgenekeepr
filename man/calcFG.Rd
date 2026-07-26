@@ -2,23 +2,31 @@
 % Please edit documentation in R/calcFG.R
 \name{calcFG}
 \alias{calcFG}
-\title{Calculates Founder Genome Equivalents}
+\title{Calculate founder genome equivalents}
 \usage{
 calcFG(ped, alleles)
 }
 \arguments{
 \item{ped}{the pedigree information in datatable format.  Pedigree
 (req. fields: id, sire, dam, gen, population).
-It is assumed that the pedigree has no partial parentage}
+The pedigree must have no partial parentage (every animal has both parents
+known or both unknown); \code{calcFG} stops with an error otherwise.}
 
 \item{alleles}{dataframe contains an \code{AlleleTable}. This is a
 table of allele information produced by \code{geneDrop()}.}
 }
 \value{
 The founder genome equivalents,
-\code{FG = 1 / sum( (p ^ 2) / r} where \code{p} is average number of
-descendants and \code{r} is the mean number of founder alleles retained
-in the gene dropping experiment.
+\code{FG = 1 / sum( (p ^ 2) / r)} where \code{p} is the vector of founder
+mean contributions to the current descendants and \code{r} is the mean
+number of founder alleles retained in the gene dropping experiment.
+
+Returns \code{NA} with a warning when a contributing founder
+(\code{p > 0}) is retained in zero of the gene-drop iterations
+(\code{r == 0}): that term is \code{p^2 / 0 = Inf}, which would
+otherwise collapse \code{FG} silently to 0. Raise the number of
+iterations. See \code{\link{calcFGSE}} for the sampling standard error
+of \code{FG}.
 }
 \description{
 Part of the Genetic Value Analysis
@@ -50,13 +58,32 @@ pedFactors["gen"] <- findGeneration(
 pedFactors$population <- getGVPopulation(pedFactors, NULL)
 alleles <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,
   genotype = NULL,
-  n = 5000, updateProgress = NULL
+  n = 1000, updateProgress = NULL
 )
 allelesFactors <- geneDrop(pedFactors$id, pedFactors$sire, pedFactors$dam,
   pedFactors$gen,
-  genotype = NULL, n = 5000,
+  genotype = NULL, n = 1000,
   updateProgress = NULL
 )
 fg <- calcFG(ped, alleles)
 fgFactors <- calcFG(pedFactors, allelesFactors)
 }
+\references{
+Lacy RC. 1989. Analysis of founder representation in
+pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+8:111-123.
+}
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcA]{calcA()}},
+\code{\link[=calcFE]{calcFE()}},
+\code{\link[=calcFEFG]{calcFEFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGU]{calcGU()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}},
+\code{\link[=calcRetention]{calcRetention()}}
+}
+\concept{genetic value analysis}

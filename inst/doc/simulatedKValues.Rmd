@@ -16,7 +16,7 @@ vignette: >
 
 This vignette provides a quick example of how to estimate kinship coefficients
 using simulation. One simulation uses 100 iterations and the other uses the 
-same setup with 1000 simulations to illustrate the type of kinship coefficient
+same setup with 500 simulations to illustrate the type of kinship coefficient
 estimate variance you can expect with a simple pedigree exhibiting partial 
 parentage for some of the members.
 
@@ -41,12 +41,12 @@ methods for identifying potential parents.
 
 <!-- RMS TODO: Add a link to a tutorial on this topic. -->
 
-Capabilities to be address with resolution of Issue #28[^issue28] will provide
-users the ability to fully automate the identification of potential parents. 
+Planned capabilities[^location] will provide
+users the ability to fully automate the identification of potential parents.
 However, prior to that capability being available, users can use other methods
 to identify potential parents.
 
-[^issue28]: Add ability to use timestamped transactional location data to identify potential parents for animals with a missing parent.
+[^location]: A planned capability will use timestamped transactional location data to identify potential parents for animals with a missing parent.
 
 ### Creation of example pedigree[^not-realistic]
 
@@ -78,7 +78,6 @@ Animals \code{E}, \code{J}, and \code{N}
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 library(kableExtra) # nolint: undesirable_function_linter
-library(magrittr) # nolint: undesirable_function_linter
 library(nprcgenekeepr) # nolint: undesirable_function_linter
 library(stringi) # nolint: undesirable_function_linter
 
@@ -162,7 +161,7 @@ counts$kinshipCounts[1L:3L]
 stats_10 <- summarizeKinshipValues(counts)
 nrow(stats_10[stats_10$sd > 0.0, ])
 
-kable(stats_10[stats_10$sd > 0.0, ], longtable = TRUE) %>%
+kable(stats_10[stats_10$sd > 0.0, ], longtable = TRUE) |>
   kable_styling(
     latex_options = c("striped", "repeat_header"),
     repeat_header_method = "replace",
@@ -185,7 +184,7 @@ counts$kinshipCounts[1L:3L]
 stats_100 <- summarizeKinshipValues(counts)
 nrow(stats_100[stats_100$sd > 0.0, ])
 
-kable(stats_100[stats_100$sd > 0.0, ], longtable = TRUE) %>%
+kable(stats_100[stats_100$sd > 0.0, ], longtable = TRUE) |>
   kable_styling(
     latex_options = c("striped", "repeat_header"),
     repeat_header_method = "replace",
@@ -198,7 +197,7 @@ A much larger simulation
 
 ```{r much-larger-simulation}
 set.seed(1L)
-n <- 1000L
+n <- 500L
 simKinships <- createSimKinships(ped, allSimParents, pop = ped$id, n = n)
 kValues <- kinshipMatricesToKValues(simKinships)
 extractKValue(kValues, id1 = "A", id2 = "F", simulation = 1L:10L)
@@ -207,10 +206,10 @@ counts$kinshipIds[1L:3L]
 counts$kinshipValues[1L:3L]
 counts$kinshipCounts[1L:3L]
 
-stats_1000 <- summarizeKinshipValues(counts)
-nrow(stats_1000[stats_1000$sd > 0.0, ])
+stats_500 <- summarizeKinshipValues(counts)
+nrow(stats_500[stats_500$sd > 0.0, ])
 
-kable(stats_1000[stats_1000$sd > 0.0, ], longtable = TRUE) %>%
+kable(stats_500[stats_500$sd > 0.0, ], longtable = TRUE) |>
   kable_styling(
     latex_options = c("striped", "repeat_header"),
     repeat_header_method = "replace",
@@ -223,22 +222,23 @@ Comparing the values and variation found for the various kinship values:
 
 ```{r comparison-10-1000}
 stats_short <- stats_10[stats_10$sd > 0.0, ]
-stats_long <- stats_1000[stats_1000$sd > 0.0, ]
+stats_long <- stats_500[stats_500$sd > 0.0, ]
 
-if (any(stats_short$id_1 != stats_long$id_1) ||
-  any(stats_short$id_2 != stats_long$id_2)) {
-  cat("At least one row represents a different animal pair")
-}
+## Align the short and long summaries by animal pair: the sd > 0 sets can
+## differ in size between simulation lengths, so join on the ID pair rather
+## than by row position.
+merged <- merge(stats_short, stats_long, by = c("id_1", "id_2"),
+                suffixes = c("_short", "_long"))
 
 comprison <- data.frame(
-  id_1 = stats_short$id_1,
-  id_2 = stats_short$id_2,
-  meanKin_short = stats_short$mean,
-  meanKin_long = stats_long$mean,
-  meanKinDelta = abs(stats_short$mean - stats_long$mean),
-  sdKin_short = stats_short$sd,
-  sdKin_long = stats_long$sd,
-  sdKinDelta = abs(stats_short$sd - stats_long$sd)
+  id_1 = merged$id_1,
+  id_2 = merged$id_2,
+  meanKin_short = merged$mean_short,
+  meanKin_long = merged$mean_long,
+  meanKinDelta = abs(merged$mean_short - merged$mean_long),
+  sdKin_short = merged$sd_short,
+  sdKin_long = merged$sd_long,
+  sdKinDelta = abs(merged$sd_short - merged$sd_long)
 )
 
 kable(comprison,
@@ -246,9 +246,9 @@ kable(comprison,
   digits = c(0L, 0L, 4L, 4L, 4L, 4L, 4L, 4L),
   caption = stri_c(
     "Comparision of estimated kinships between simulations ",
-    "of 10 (short) and 1000 (long)"
+    "of 10 (short) and 500 (long)"
   )
-) %>%
+) |>
   kable_styling(
     latex_options = c("striped", "repeat_header"),
     repeat_header_method = "replace",
@@ -259,22 +259,23 @@ kable(comprison,
 
 ```{r comparison-100-1000}
 stats_short <- stats_100[stats_100$sd > 0.0, ]
-stats_long <- stats_1000[stats_1000$sd > 0.0, ]
+stats_long <- stats_500[stats_500$sd > 0.0, ]
 
-if (any(stats_short$id_1 != stats_long$id_1) ||
-  any(stats_short$id_2 != stats_long$id_2)) {
-  cat("At least one row represents a different animal pair")
-}
+## Align the short and long summaries by animal pair: the sd > 0 sets can
+## differ in size between simulation lengths, so join on the ID pair rather
+## than by row position.
+merged <- merge(stats_short, stats_long, by = c("id_1", "id_2"),
+                suffixes = c("_short", "_long"))
 
 comprison <- data.frame(
-  id_1 = stats_short$id_1,
-  id_2 = stats_short$id_2,
-  meanKin_short = stats_short$mean,
-  meanKin_long = stats_long$mean,
-  meanKinDelta = abs(stats_short$mean - stats_long$mean),
-  sdKin_short = stats_short$sd,
-  sdKin_long = stats_long$sd,
-  sdKinDelta = abs(stats_short$sd - stats_long$sd)
+  id_1 = merged$id_1,
+  id_2 = merged$id_2,
+  meanKin_short = merged$mean_short,
+  meanKin_long = merged$mean_long,
+  meanKinDelta = abs(merged$mean_short - merged$mean_long),
+  sdKin_short = merged$sd_short,
+  sdKin_long = merged$sd_long,
+  sdKinDelta = abs(merged$sd_short - merged$sd_long)
 )
 
 kable(comprison,
@@ -282,9 +283,9 @@ kable(comprison,
   digits = c(0L, 0L, 4L, 4L, 4L, 4L, 4L, 4L),
   caption = stri_c(
     "Comparision of estimated kinships between simulations ",
-    "of 100 (short) and 1000 (long)"
+    "of 100 (short) and 500 (long)"
   )
-) %>%
+) |>
   kable_styling(
     latex_options = c("striped", "repeat_header"),
     repeat_header_method = "replace",

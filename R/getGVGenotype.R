@@ -1,19 +1,20 @@
-#' Get Genetic Value Genotype data structure for reportGV function.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Extract genotype data for a genetic value report
+#'
 #' Extracts genotype data if available otherwise NULL is returned.
 #'
+#' @inheritParams reportGV
 #' @return A data.frame with the columns \code{id}, \code{first}, and
 #' \code{second} extracted from a pedigree object (a data.frame) containing
 #' genotypic data.
 #' If the pedigree object does not contain genotypic data the \code{NULL} is
 #' returned.
 #'
-#' @param ped the pedigree information in datatable format
 #' @export
 #' @examples
-#' ## We usually defined `n` to be >= 5000
+#' ## We usually define `n` to be >= 1000
 #' library(nprcgenekeepr)
 #' ped <- nprcgenekeepr::lacy1989Ped
 #' allelesNew <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,

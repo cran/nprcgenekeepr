@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkChangedColsLst.R
 \name{checkChangedColsLst}
 \alias{checkChangedColsLst}
-\title{checkChangedColsLst examines list for non-empty fields}
+\title{Check a changed-columns list for non-empty fields}
 \usage{
 checkChangedColsLst(changedCols)
 }
@@ -11,11 +11,11 @@ checkChangedColsLst(changedCols)
 \code{qcStudbook}.}
 }
 \value{
-Returns \code{NULL} if all fields are empty
-else the entire list is returned.
+Returns \code{TRUE} if any changed-columns field is
+non-empty, otherwise \code{FALSE}.
 }
 \description{
-checkChangedColsLst examines list for non-empty fields
+Check a changed-columns list for non-empty fields
 }
 \examples{
 library(nprcgenekeepr)

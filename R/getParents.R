@@ -1,14 +1,14 @@
-#' Get parents to corresponding animal IDs provided
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A character vector with the IDs of the parents of the provided ID
-#' list.
+
+#' Get parents to corresponding animal IDs provided
 #'
 #' @param pedSourceDf dataframe with pedigree structure having at least the
 #' columns id, sire, and dam.
 #' @param ids character vector of animal IDs
+#' @return A character vector with the IDs of the parents of the provided ID
+#' list.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

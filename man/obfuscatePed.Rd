@@ -2,8 +2,7 @@
 % Please edit documentation in R/obfuscatePed.R
 \name{obfuscatePed}
 \alias{obfuscatePed}
-\title{obfuscatePed takes a pedigree object and creates aliases for all IDs and
-adjusts all date within a specified amount.}
+\title{Obfuscate a pedigree by aliasing IDs and shifting dates}
 \usage{
 obfuscatePed(
   ped,
@@ -14,7 +13,7 @@ obfuscatePed(
 )
 }
 \arguments{
-\item{ped}{pedigree object}
+\item{ped}{The pedigree information in data.frame format}
 
 \item{size}{integer value indicating number of characters in alias IDs}
 
@@ -42,3 +41,10 @@ obfuscatedPed <- obfuscatePed(ped)
 ped
 obfuscatedPed
 }
+\seealso{
+Other obfuscation:
+\code{\link[=mapIdsToObfuscated]{mapIdsToObfuscated()}},
+\code{\link[=obfuscateDate]{obfuscateDate()}},
+\code{\link[=obfuscateId]{obfuscateId()}}
+}
+\concept{obfuscation}

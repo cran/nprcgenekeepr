@@ -1,25 +1,25 @@
-#' Count first-order relatives.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Count first-order relatives
+#'
 #' Part of Relations
 #'
 #' Tallies the number of first-order relatives for each member of the provided
 #' pedigree. If 'ids' is provided, the analysis is restricted to only the
 #' specified subset.
 #'
-#' @return A dataframe with column \code{id}, \code{parents}, \code{offspring},
-#' \code{siblings}, and \code{total}. A table of first-order relationship
-#' counts, broken down to indicate the number of parents, offspring, and
-#' siblings that are part of the subset under consideration.
-#'
-#' @param ped : `Pedigree`
-#'   Standardized pedigree information in a table.
+#' @inheritParams reportGV
 #' @param ids character vector of IDs or NULL
 #'   These are the IDs to which the analysis should be restricted. First-order
 #'   relationships will only be tallied for the listed IDs and will only
 #'   consider relationships within the subset. If NULL, the analysis will
 #'   include all IDs in the pedigree.
+#' @return A dataframe with column \code{id}, \code{parents}, \code{offspring},
+#' \code{siblings}, and \code{total}. A table of first-order relationship
+#' counts, broken down to indicate the number of parents, offspring, and
+#' siblings that are part of the subset under consideration.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -61,5 +61,5 @@ countFirstOrder <- function(ped, ids = NULL) {
   ped["siblings"] <- siblings
   ped["total"] <- total
 
-  return(ped[, c("id", "parents", "offspring", "siblings", "total")])
+  ped[, c("id", "parents", "offspring", "siblings", "total")]
 }

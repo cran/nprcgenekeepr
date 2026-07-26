@@ -1,13 +1,12 @@
-#' insertChangedColsTab insert a list of changed columns found by
-#' \code{qcStudbook} in the pedigree file
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return Text of the error list formatted as an HTML page
+
+#' Insert a list of changed columns found by qcStudbook in the pedigree file
 #'
 #' @param errorLst list of errors and changes made by \code{qcStudbook}
 #' @param pedigreeFileName name of file provided by user on Input tab
+#' @return Text of the error list formatted as an HTML page
+#'
 #' @importFrom stringi stri_c
 #' @importFrom stringi stri_split_regex stri_trim_both
 #' @noRd

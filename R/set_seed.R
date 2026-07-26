@@ -1,17 +1,18 @@
-#' Work around for unit tests using sample() among various versions of R
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' The change in how `set.seed` works in R 3.6 prompted the creation of this
-#' R version agnostic replacement to get unit test code to work on multiple
+
+#' Set a reproducible RNG seed across R versions
+#'
+#' The change in how \code{set.seed} works in R 3.6 prompted the creation of
+#' this R version agnostic replacement to get unit test code to work on multiple
 #' versions of R in a CICD test build.
 #'
 #' It seems \code{RNGkind(sample.kind="Rounding")} does not work prior to
 #' version 3.6 so I resorted to using version dependent construction of the
-#' argument list to set.seed() in do.call().#'
+#' argument list to set.seed() in do.call().
+#' @param seed argument to \code{set.seed}
 #' @return NULL, invisibly.
 #'
-#' @param seed argument to \code{set.seed}
 #' @export
 #' @examples
 #' set_seed(1)
@@ -26,9 +27,25 @@ set_seed <- function(seed = 1L) {
   }
   suppressMessages(suppressWarnings(do.call(set.seed, arguments)))
 }
-#' Wrapper for R.Version
+#' Apply a gated RNG seed for reproducible E2E testing
 #'
-#' @returns R.Version() output
+#' Reads \code{optionName} (env-var \code{envName} as fallback). When set,
+#' pins the RNG via [set_seed()] so the genetic-value / breeding-group module
+#' servers give reproducible stochastic output under shinytest2; a no-op
+#' otherwise (=> NA).
+#'
+#' @param optionName Option name, e.g. \code{"nprcgenekeepr.gva_seed"}.
+#' @param envName Environment-variable fallback, e.g. \code{"NPRC_GVA_SEED"}.
+#' @return NULL, invisibly.
+#' @noRd
+gatedSeed <- function(optionName, envName) {
+  seed <- getOption(optionName, as.integer(Sys.getenv(envName, NA)))
+  if (!is.na(seed)) set_seed(seed)
+  invisible(NULL)
+}
+#' Wrap R.Version
+#'
+#' @return R.Version() output
 #' @noRd
 R_version <- function() { # nolint: object_name_linter.
   R.Version()

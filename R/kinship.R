@@ -1,7 +1,7 @@
-#' Generates a kinship matrix.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Generate a kinship matrix
 #'
 #' The function previously had an internal call to the kindepth function in
 #' order to provide the parameter pdepth (the generation number). This version
@@ -13,7 +13,10 @@
 #' Parents must be processed before their children, and then a child's
 #'    kinship is just a sum of the kinship's for his or her parents.
 #'
-#' @return A kinship square matrix
+#' @details The code for the kinship function was written by Terry Therneau
+#' at the Mayo clinic and taken from his website. This function is part of a
+#' package written in S (and later ported to R) for calculating kinship and
+#' other statistics.
 #'
 #' @param id character vector of IDs for a set of animals.
 #' @param father.id character vector or NA for the IDs of the sires for the set
@@ -26,36 +29,26 @@
 #' used to make a unit diagonal matrix. If \code{FALSE}, \code{base::diag()} is
 #' used to make a unit square matrix.
 #'
-#' @description \{Kinship Matrix Functions\} \{
-#' The code for the kinship function was written by Terry Therneau
-#' at the Mayo clinic and taken from his website. This function is part of a
-#' package written in S (and later ported to R) for calculating kinship and
-#' other statistics.
-#' \}
+#' @return A kinship square matrix
 #'
-#' @author \{Terry M. Therneau, Mayo Clinic (mayo.edu), original version\}
+#' @author Terry M. Therneau, Mayo Clinic (mayo.edu), original version
 #'
 #'
-#' @references \{S-Plus/R Function Page\}
-# nolint start: line_length_linter
-#' \emph{www.mayo.edu/research/departments-divisions/department-health-sciences-research/division-biomedical-statistics-informatics/software/}
-# nolint end: line_length_linter
-#'  @description \{s-plus-r-functions\} \{Downloaded 2014-08-26\}
-#'  This page address is now (2019-10-03) stale.
-#'
-#' All of the code on the S-Plus page was stated to be released under the
-#' GNU General Public License (version 2 or later).
+#' All of the code on the original S-Plus kinship function (originally
+#' hosted on Terry Therneau's Mayo Clinic software page, offline since at
+#' least 2019) was stated to be released under the GNU General Public
+#' License (version 2 or later).
 #'
 #' The R version became the kinship2 package available on CRAN:
 #' @references \url{https://cran.r-project.org/package=kinship2}
 #'
 #' $Id: kinship.s,v 1.5 2003/01/04 19:07:53 therneau Exp $
 #'
-#' @references \{Create the kinship matrix, using the algorithm of K Lange,
+#' @references Create the kinship matrix, using the algorithm of K Lange,
 #'  Mathematical and Statistical Methods for Genetic Analysis,
-#'  Springer, 1997, p 71-72.\}
+#'  Springer, 1997, p 71-72.
 #'
-#' @author \{as modified by, M Raboin, 2014-09-08 14:44:26\}
+#' @author as modified by M Raboin, 2014-09-08 14:44:26
 #'
 #' @import Matrix
 #' @export
@@ -72,6 +65,8 @@ kinship <- function(id, father.id, mother.id, pdepth, sparse = FALSE) { # nolint
   if (anyDuplicated(id)) {
     stop("All id values must be unique")
   }
+  ## Mendelian 1/2: a non-inbred animal's self-kinship is 1/2, so kmat starts
+  ## as one-half of the identity matrix (each founder's self-kinship is 0.5).
   if (sparse) {
     kmat <- Diagonal(n + 1L) / 2L
   } else {
@@ -95,6 +90,9 @@ kinship <- function(id, father.id, mother.id, pdepth, sparse = FALSE) { # nolint
     for (i in indx) {
       mom <- mrow[i]
       dad <- drow[i]
+      ## Mendelian 1/2: i's kinship with any j is the average of its two
+      ## parents' kinships with j; i's self-kinship is half of one plus its
+      ## own inbreeding coefficient (the kinship between its two parents).
       kmat[i, ] <- kmat[, i] <- (kmat[mom, ] + kmat[dad, ]) / 2L
       kmat[i, i] <- (1L + kmat[mom, dad]) / 2L
     }

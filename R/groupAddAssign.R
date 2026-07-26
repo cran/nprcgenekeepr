@@ -1,10 +1,10 @@
-#' Add animals to an existing breeding group or forms groups:
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Add animals to a breeding group or form new groups
+#'
 #' Part of Group Formation
 #'
-#' @description{
 #' \code{groupAddAssign} finds the largest group that can be formed by adding
 #' unrelated animals from a set of candidate IDs to an existing group, to a new
 #' group it has formed from a set of candidate IDs or if more than 1 group
@@ -17,15 +17,6 @@
 #' algorithm produces a random sample of the possible MISs, and selects from
 #' these. The size of the random sample is determined by the specified number
 #' of iterations.
-#' }
-#'
-#' @return A list with list items \code{group}, \code{score} and optionally
-#' \code{groupKin}.
-#' The list item \code{group} contains a list of the best group(s) produced
-#' during the simulation.
-#' The list item \code{score} provides the score associated with the group(s).
-#' The list item \code{groupKin} contains the subset of the kinship matrix
-#' that is specific for each group formed.
 #'
 #' @param candidates Character vector of IDs of the animals available for
 #' use in forming the groups. The animals that may be present in
@@ -34,10 +25,8 @@
 #' assigned to groups.
 #' Defaults to a list with character(0) in each sublist element (one for each
 #' group being formed) assuming no groups are prepopulated.
-#' @param kmat Numeric matrix of pairwise kinship values. Rows and columns
-#' are named with animal IDs.
-#' @param ped Dataframe that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
+#' @inheritParams meanKinship
+#' @inheritParams getPotentialSires
 #' @param threshold Numeric value indicating the minimum kinship level to be
 #' considered in group formation. Pairwise kinship below this level will be
 #' ignored. The default value is 0.015625.
@@ -64,6 +53,19 @@
 #' will be called during each iteration to update a
 #' \code{shiny::Progress} object.
 #'
+#' @return A list with list items \code{group}, \code{score} and optionally
+#' \code{groupKin}.
+#' The list item \code{group} contains a list of the best group(s) produced
+#' during the simulation.
+#' The list item \code{score} provides the score associated with the group(s).
+#' The list item \code{groupKin} contains the subset of the kinship matrix
+#' that is specific for each group formed.
+#'
+#' @references Vinson, A. and Raboin, M.J. (2015) "A Practical Approach for
+#' Designing Breeding Groups to Maximize Genetic Diversity in a Large Colony
+#' of Captive Rhesus Macaques (\emph{Macaca mulatta})" \emph{Journal of the
+#' American Association for Laboratory Animal Science}, 2015 Nov, Vol.54(6),
+#' pp.700-707.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

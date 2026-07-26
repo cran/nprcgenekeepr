@@ -1,11 +1,9 @@
-#' dataframe2string converts a data.frame object to a character vector
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Adapted from print.data.frame
+
+#' Convert a data frame to a character vector
 #'
-#' @return A character vector representation of the data.frame provided to the
-#' function.
+#' Adapted from print.data.frame
 #'
 #' @param object dataframe
 #' @param ... optional arguments to print or plot methods.
@@ -13,6 +11,9 @@
 #' see print.default.
 #' @param addRowNames	logical (or character vector), indicating whether
 #'  (or what) row names should be printed.
+#' @return A character vector representation of the data.frame provided to the
+#' function.
+#'
 #' @importFrom stringi stri_length
 #' @importFrom stringi stri_pad_both
 #' @export
@@ -22,7 +23,7 @@
 dataframe2string <- function(object, ..., digits = NULL, addRowNames = TRUE) {
   nRows <- length(row.names(object))
   if (length(object) == 0L) {
-    return(paste0(
+    paste0(
       sprintf(
         ngettext(
           nRows, "data frame with 0 columns and %d row",
@@ -31,9 +32,9 @@ dataframe2string <- function(object, ..., digits = NULL, addRowNames = TRUE) {
         nRows
       ),
       "\\n"
-    ))
+    )
   } else if (nRows == 0L) {
-    return(gettext("<0 rows> (or 0-length row names)\\n"))
+    gettext("<0 rows> (or 0-length row names)\\n")
   } else {
     # get text-formatted version of the data.frame
     m <- as.matrix(format.data.frame(object,
@@ -43,10 +44,6 @@ dataframe2string <- function(object, ..., digits = NULL, addRowNames = TRUE) {
     # define rowNames (if required)
     if (isTRUE(addRowNames)) {
       rowNames <- dimnames(object)[[1L]]
-      if (is.null(rowNames)) {
-        # no row header available -> use row numbers
-        rowNames <- as.character(seq_len(NROW(m)))
-      }
       # add empty header (used with column headers)
       rowNames <- c("", rowNames)
     }
@@ -69,6 +66,6 @@ dataframe2string <- function(object, ..., digits = NULL, addRowNames = TRUE) {
     # merge columns
     m <- apply(m, 1L, paste, collapse = "")
     # merge rows (and return)
-    return(paste(m, collapse = "\n"))
+    paste(m, collapse = "\n")
   }
 }

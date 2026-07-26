@@ -2,8 +2,7 @@
 % Please edit documentation in R/filterThreshold.R
 \name{filterThreshold}
 \alias{filterThreshold}
-\title{Filters kinship to remove rows with kinship values less than the specified
-threshold}
+\title{Filter out kinship pairs below a threshold}
 \usage{
 filterThreshold(kin, threshold = 0.015625)
 }
@@ -17,8 +16,8 @@ considered in group formation. Pairwise kinship below this level will be
 ignored.}
 }
 \value{
-The kinship matrix with all kinship relationships below the
-threshold value removed.
+The filtered long-format kinship table (a data.frame) with all
+kinship relationships below the threshold value removed.
 }
 \description{
 Part of Group Formation

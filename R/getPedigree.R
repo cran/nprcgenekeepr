@@ -1,13 +1,13 @@
-#' Get pedigree from file
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A pedigree file compatible with others in this package.
+
+#' Get pedigree from file
 #'
 #' @param fileName character vector of temporary file path.
 #' @param sep column separator in CSV file
-#' @import futile.logger
+#' @return A pedigree file compatible with others in this package.
+#'
+#' @importFrom futile.logger flog.debug
 #' @importFrom readxl excel_format
 #' @importFrom utils read.table
 #' @export
@@ -27,13 +27,13 @@ getPedigree <- function(fileName, sep = ",") {
       nrow(pedigree), "\n"
     ), name = "nprcgenekeepr")
   } else {
-    pedigree <- read.table(fileName,
+    pedigree <- muffleIncompleteFinalLine(read.table(fileName,
       header = TRUE,
       sep = sep,
       stringsAsFactors = FALSE,
       na.strings = c("", "NA"),
       check.names = FALSE
-    )
+    ))
     flog.debug(paste0(
       "in getPedigree after read.csv, nrow(pedigree) = ",
       nrow(pedigree), "\n"

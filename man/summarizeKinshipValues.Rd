@@ -2,14 +2,14 @@
 % Please edit documentation in R/summarizeKinshipValues.R
 \name{summarizeKinshipValues}
 \alias{summarizeKinshipValues}
-\title{Summary statistics for imputed kinship values}
+\title{Summarize imputed kinship values}
 \usage{
 summarizeKinshipValues(countedKValues)
 }
 \arguments{
 \item{countedKValues}{list object from countKinshipValues function that
-containes the lists \code{kinshipIds}, \code{kinshipValues},
-and \code{kinshipCounts}.}
+containes the lists \code{kIds}, \code{kValues},
+and \code{kCounts}.}
 }
 \value{
 a data.frame with one row of summary statistics for each imputed
@@ -23,6 +23,12 @@ kinship value. The columns are as follows:
 \code{thirdQuartile},
 \code{max}, and
 \code{sd}.
+
+The five-number-summary columns are taken from
+\code{\link[stats]{fivenum}}: \code{secondQuartile} is the lower hinge
+(\code{fivenum()[2]}, approximately the first quartile) and
+\code{thirdQuartile} is the upper hinge (\code{fivenum()[4]}, approximately
+the third quartile).
 }
 \description{
 Makes a data.frame object containing simulated kinship summary statistics

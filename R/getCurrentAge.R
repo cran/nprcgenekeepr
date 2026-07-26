@@ -1,13 +1,13 @@
-#' Age in years using the provided birthdate.
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Calculate current age in years from a birth date
 #'
 #' Assumes current date for calculating age.
 #'
-## Copyright(c) 2017-2024 R. Mark Sharp
-## This file is part of nprcgenekeepr
-#'
+#' @param birth birth date(s)
 #' @return Age in years using the provided birthdate.
 #'
-#' @param birth birth date(s)
 #' @importFrom lubridate duration interval today
 #' @export
 #' @examples

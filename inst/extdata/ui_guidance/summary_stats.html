@@ -12,4 +12,34 @@
 	a founder. Calculations of <em>f<sub>e</sub></em> and
 	<em>f<sub>g</sub></em> may be changed at some point
 	in the future to try to correct for this situation.
+	<br>
+	<b>Note:</b> founder genome equivalents (<em>f<sub>g</sub></em>) is a
+	gene-drop estimate, so it is shown with a sampling standard error (the
+	<b>+/-</b> next to FG) that shrinks as the number of iterations grows;
+	founder equivalents (<em>f<sub>e</sub></em>) is deterministic and has none.
+</p>
+
+<p>
+	<b>Gene diversity and effective population size.</b> The founder table also
+	reports <b>Gene Diversity (GD)</b> beside FG -- the expected heterozygosity
+	still retained from the founding gene pool, over the same analysis set. The
+	separate <b>Effective Population Size</b> block reports two effective sizes
+	(Sex-Ratio Ne and Variance Ne) over the <em>current living breeders</em> --
+	the living animals that appear as a sire or dam -- which is a different
+	(usually smaller) population than the analysis set summarized by the founder
+	statistics. Each is defined, with its formula and its idealizing
+	assumptions, in the <b>Population Genetics Terms</b> reference panel at the
+	bottom of this tab.
+</p>
+
+<p>
+	<b>Kinship overrides.</b> If you uploaded outside-information kinship
+	overrides on the Genetic Value tab, the relationship table and the
+	kinship CSV export on this page show the overridden kinship
+	<em>value</em>, but the relationship label stays pedigree-derived (it
+	is computed from pedigree structure, not from the kinship value). A
+	pair can therefore show a relationship label that does not match its
+	overridden value. Such pairs are flagged with an
+	<em>overridden</em> column in the exported relationships table, so you
+	can see which rows carry an outside-information value.
 </p>

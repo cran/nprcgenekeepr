@@ -1,19 +1,19 @@
-#' Sets the exit date, if there is no exit column in the table
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Set the exit date when no exit column exists
 #'
 #' Part of Pedigree Curation
 #'
-#'
-#' @return A dataframe with an updated pedigree with exit dates specified based
-#' on date information that was available.
 #'
 #' @param ped dataframe of pedigree and demographic information potentially
 #' containing columns indicating the birth and death dates of an individual.
 #' The table may also contain dates of sale (departure). Optional columns
 #' are \code{birth}, \code{death}, and \code{departure}.
 #' @param timeOrigin date object used by \code{as.Date} to set \code{origin}.
+#' @return A dataframe with an updated pedigree with exit dates specified based
+#' on date information that was available.
+#'
 #' @export
 #' @examples
 #' library(lubridate)
@@ -48,12 +48,10 @@ setExit <- function(ped, timeOrigin = as.Date("1970-01-01")) {
   }
   if (("birth" %in% headers) && !("exit" %in% headers)) {
     if (any("death" %in% headers) && any("departure" %in% headers)) {
-      # mapply simplifies results by default
-      # mapply would return a list, but simplification coerces this to a vector
-      # consequently, the simplification also coerces Date columns to Numeric
-      # as.Date("1970-01-01") is used to counter this and maintain Dates
-      # properly
-      ped$exit <- as.Date(mapply(chooseDate, ped$death, ped$departure),
+      # Map returns a list of single dates; unlist flattens it (as mapply's
+      # default SIMPLIFY = TRUE would), which coerces the Date class to numeric,
+      # so as.Date(..., origin = timeOrigin) restores proper Date values.
+      ped$exit <- as.Date(unlist(Map(chooseDate, ped$death, ped$departure)),
         origin = timeOrigin
       )
     } else if ("death" %in% headers) {
@@ -64,5 +62,5 @@ setExit <- function(ped, timeOrigin = as.Date("1970-01-01")) {
       ped$exit <- as.Date(NA, origin = timeOrigin)
     }
   }
-  return(ped)
+  ped
 }

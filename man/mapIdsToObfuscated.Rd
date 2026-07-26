@@ -13,7 +13,7 @@ mapIdsToObfuscated(ids, map)
 and the vector of names (\code{names(map)}) is the vector of original names.}
 }
 \value{
-A dataframe or vector with original IDs replaced by their obfuscated
+A character vector with original IDs replaced by their obfuscated
 counterparts.
 }
 \description{
@@ -26,3 +26,10 @@ obfuscated <- obfuscatePed(ped, map = TRUE)
 someIds <- c("s1", "s2", "d1", "d1")
 mapIdsToObfuscated(someIds, obfuscated$map)
 }
+\seealso{
+Other obfuscation:
+\code{\link[=obfuscateDate]{obfuscateDate()}},
+\code{\link[=obfuscateId]{obfuscateId()}},
+\code{\link[=obfuscatePed]{obfuscatePed()}}
+}
+\concept{obfuscation}

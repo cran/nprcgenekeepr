@@ -1,17 +1,18 @@
-#' Make relation classes table from \code{kin} dataframe.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Make a relation classes table from kinship pairs
+#'
 #' From Relations
 #'
+#' @param kin a dataframe with columns \code{id1}, \code{id2}, \code{kinship},
+#' and \code{relation}. It is a long-form table of pairwise kinships, with
+#' relationship categories included for each pair.
 #' @return A data.frame with the number of instances of following relationship
 #' classes: Parent-Offspring, Full-Siblings, Half-Siblings,
 #' Grandparent-Grandchild, Full-Cousins, Cousin - Other, Full-Avuncular,
 #' Avuncular - Other, Other, and No Relation.
 #'
-#' @param kin a dataframe with columns \code{id1}, \code{id2}, \code{kinship},
-#' and \code{relation}. It is a long-form table of pairwise kinships, with
-#' relationship categories included for each pair.
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -26,8 +27,8 @@
 #' relClasses <- makeRelationClassesTable(kin)
 #' relClasses$`Relationship Class` <-
 #'   as.character(relClasses$`Relationship Class`)
-#' relClassTbl <- kin[!kin$relation == "Self", ] %>%
-#'   group_by(relation) %>%
+#' relClassTbl <- kin[!kin$relation == "Self", ] |>
+#'   group_by(relation) |>
 #'   summarise(count = n())
 #' relClassTbl
 makeRelationClassesTable <- function(kin) {

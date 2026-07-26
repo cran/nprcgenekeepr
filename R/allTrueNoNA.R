@@ -1,12 +1,13 @@
-#' Returns \code{TRUE} if every member of the vector is \code{TRUE}.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Return TRUE if every member of the vector is TRUE
+#'
 #' Part of Relations
+#' @param v logical vector
 #' @return \code{TRUE} if every member of the vector is \code{TRUE} else it
 #' returns \code{FALSE}.
 #' Considers NA values the same as false
-#' @param v logical vector
 #' @noRd
 allTrueNoNA <- function(v) {
   # nolint start: commented_code_linter.

@@ -1,10 +1,11 @@
-#' getVersion Get the version number of nprcgenekeepr
-#'
-## Copyright(c) 2017-2021 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Get the version number of nprcgenekeepr
+#'
+#' @param date A logical value when TRUE (default) a date in YYYY-MM-DD
+#' (ISO) format within parentheses is appended.
 #' @return Current Version
-#' @param date A logical value when TRUE (default) a date in YYYYMMDD format
-#' within parentheses is appended.
 #' @importFrom utils packageVersion
 #' @importFrom sessioninfo package_info
 #' @export

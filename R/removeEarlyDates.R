@@ -1,19 +1,20 @@
-#' removeEarlyDates removes dates before a specified year
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Remove dates before a specified year
+#'
 #' Dates before a specified year are set to NA. This is often used for dates
 #' formed from malformed character representations such as a date in
 #' %m-%d-%Y format being read by %Y-%m-%d format
 #'
 #' NA values are ignored and not changed.
 #'
-#' @return A vector of dates after the year indicated by the numeric value of
-#' \code{firstYear}.
-#'
 #' @param dates vector of dates
 #' @param firstYear integer value of first (earliest) year in the allowed
 #' date range.
+#' @return A vector of dates after the year indicated by the numeric value of
+#' \code{firstYear}.
+#'
 #' @importFrom lubridate year
 #' @export
 #' @examples

@@ -3,12 +3,12 @@
 \docType{data}
 \name{qcBreeders}
 \alias{qcBreeders}
-\title{qcBreeders is a list of 29 baboon IDs that are potential breeders}
+\title{Potential breeder IDs (29 baboons)}
 \format{
 An object of class \code{character} of length 29.
 }
 \source{
-qcBreeders is a list of 3 males and 26 females from
+qcBreeders is a character vector of 3 males and 26 females from
 the \code{qcPed} data set.
 
 \describe{
@@ -17,9 +17,9 @@ They were initially selected for having low kinship coefficients.
 }
 }
 \usage{
-qcBreeders
+data(qcBreeders)
 }
 \description{
-qcBreeders is a list of 29 baboon IDs that are potential breeders
+A character vector of 29 baboon IDs that are potential breeders.
 }
 \keyword{datasets}

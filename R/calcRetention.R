@@ -1,11 +1,9 @@
-#' Calculates Allelic Retention
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Part of Genetic Value Analysis
+
+#' Calculate allelic retention
 #'
-#' @return A vector of the mean number of founder alleles retained in the
-#' gene dropping simulation.
+#' Part of Genetic Value Analysis
 #'
 #' @param ped the pedigree information in datatable format.  Pedigree
 #' (req. fields: id, sire, dam, gen, population).
@@ -13,6 +11,13 @@
 #' It is assumed that the pedigree has no partial parentage
 #' @param alleles dataframe of containing an \code{AlleleTable}. This is a
 #' table of allele information produced by \code{geneDrop()}.
+#' @return A vector of the mean number of founder alleles retained in the
+#' gene dropping simulation.
+#'
+#' @references Lacy RC. 1989. Analysis of founder representation in
+#' pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+#' 8:111-123.
+#' @family genetic value analysis
 #' @export
 #' @examples
 #' library(nprcgenekeepr)
@@ -23,7 +28,7 @@
 #' retention <- calcRetention(ped, alleles)
 calcRetention <- function(ped, alleles) {
   # ASSUME: Pedigree has no partial parentage
-  founders <- ped$id[is.na(ped$sire) & is.na(ped$dam)]
+  founders <- getFounders(ped)
   descendants <- ped$id[ped$population & !(ped$id %in% founders)]
 
   founders <- alleles[(alleles$id %in% founders), c("id", "V1")]

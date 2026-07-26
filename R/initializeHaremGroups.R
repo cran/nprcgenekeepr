@@ -1,9 +1,7 @@
-#' Make the initial groupMembers animal list
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return Initial groupMembers list
+
+#' Make the initial groupMembers animal list
 #'
 #' @param numGp integer value indicating the number of groups that should be
 #' formed from the list of IDs. Default is 1.
@@ -12,17 +10,18 @@
 #' existent.
 #' @param candidates character vector of IDs of the animals available for
 #' use in the group.
-#' @param ped dataframe that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
+#' @inheritParams getPotentialSires
 #' @param minAge integer value indicating the minimum age to consider in group
 #' formation. Pairwise kinships involving an animal of this age or younger will
 #'  be ignored. Default is 1 year.
+#' @return Initial groupMembers list
+#'
 #' @noRd
 initializeHaremGroups <- function(numGp, currentGroups, candidates, ped,
                                   minAge) {
   groupMembers <- list()
   if (length(currentGroups) > 0L) {
-    for (i in seq_len(length(currentGroups))) {
+    for (i in seq_along(currentGroups)) {
       currentGroup <- currentGroups[[i]]
       if (length(getPotentialSires(currentGroup, ped, minAge)) > 1L) {
         stop(
@@ -55,7 +54,7 @@ initializeHaremGroups <- function(numGp, currentGroups, candidates, ped,
     }
   }
   if (length(currentGroups) > 0L) {
-    for (i in seq_len(length(currentGroups))) {
+    for (i in seq_along(currentGroups)) {
       currentGroup <- currentGroups[[i]]
       if (length(currentGroup) > 0L) {
         if (length(getPotentialSires(currentGroup, ped, minAge)) > 0L) {

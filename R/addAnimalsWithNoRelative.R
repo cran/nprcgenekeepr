@@ -1,21 +1,26 @@
-#' Adds an NA value for all animals without a relative
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Add an NA value for animals with no relative
 #'
 #' This allows \code{kin} to be used with \code{setdiff} when there are no
 #' relatives otherwise an error would occur because
 #' \code{kin[['animal_with_no_relative']]} would not be found. See the
 #' following: in \strong{groupAddAssign}
 #'
-#'     \code{available[[i]] <- setdiff(available[[i]], kin[[id]])}
+#'     available[[i]] <- setdiff(available[[i]], kin[[id]])
 #'
-#' @return A dataframe with kinships in long form after adding a row for each
-#' animal without a relative.
-#'
-#' @param kin dataframe with kinship values
+#' @param kin named list of high-kinship relatives, as produced by
+#' \code{getAnimalsWithHighKinship}, where each name is an animal Id and
+#' each value is a character vector of the Ids sharing a kinship value at
+#' or above the threshold.
 #' @param candidates character vector of IDs of the animals available for
 #' use in the group.
+#' @return The named list of high-kinship relatives (one element per
+#' animal Id, each value a character vector of that Id's high-kinship
+#' relatives) with an added element set to \code{NA} for each candidate
+#' that has no relative.
+#'
 #' @export
 #' @examples
 #' library(nprcgenekeepr)

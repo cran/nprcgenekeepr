@@ -1,13 +1,13 @@
-#' Get genotypes from file
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A genotype file compatible with others in this package.
+
+#' Get genotypes from file
 #'
 #' @param fileName character vector of temporary file path.
 #' @param sep column separator in CSV file
-#' @import futile.logger
+#' @return A genotype file compatible with others in this package.
+#'
+#' @importFrom futile.logger flog.debug
 #' @importFrom readxl excel_format
 #' @importFrom utils read.table
 #' @export
@@ -27,13 +27,13 @@ getGenotypes <- function(fileName, sep = ",") {
       nrow(genotypes), "\n"
     ), name = "nprcgenekeepr")
   } else {
-    genotypes <- read.table(fileName,
+    genotypes <- muffleIncompleteFinalLine(read.table(fileName,
       header = TRUE,
       sep = sep,
       stringsAsFactors = FALSE,
       na.strings = c("", "NA"),
       check.names = FALSE
-    )
+    ))
     flog.debug(paste0(
       "in getGenotypes after read.csv, nrow(genotypes) = ",
       nrow(genotypes), "\n"

@@ -1,19 +1,32 @@
-#' Calculates Founder Genome Equivalents
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#' Part of the Genetic Value Analysis
+
+#' Calculate founder genome equivalents
 #'
-#' @return The founder genome equivalents,
-#' \code{FG = 1 / sum( (p ^ 2) / r} where \code{p} is average number of
-#' descendants and \code{r} is the mean number of founder alleles retained
-#' in the gene dropping experiment.
+#' Part of the Genetic Value Analysis
 #'
 #' @param ped the pedigree information in datatable format.  Pedigree
 #' (req. fields: id, sire, dam, gen, population).
-#' It is assumed that the pedigree has no partial parentage
+#' The pedigree must have no partial parentage (every animal has both parents
+#' known or both unknown); \code{calcFG} stops with an error otherwise.
 #' @param alleles dataframe contains an \code{AlleleTable}. This is a
 #' table of allele information produced by \code{geneDrop()}.
+#' @return The founder genome equivalents,
+#' \code{FG = 1 / sum( (p ^ 2) / r)} where \code{p} is the vector of founder
+#' mean contributions to the current descendants and \code{r} is the mean
+#' number of founder alleles retained in the gene dropping experiment.
+#'
+#' Returns \code{NA} with a warning when a contributing founder
+#' (\code{p > 0}) is retained in zero of the gene-drop iterations
+#' (\code{r == 0}): that term is \code{p^2 / 0 = Inf}, which would
+#' otherwise collapse \code{FG} silently to 0. Raise the number of
+#' iterations. See \code{\link{calcFGSE}} for the sampling standard error
+#' of \code{FG}.
+#'
+#' @references Lacy RC. 1989. Analysis of founder representation in
+#' pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+#' 8:111-123.
+#' @family genetic value analysis
 #' @export
 #' @examples
 #' ## Example from Analysis of Founder Representation in Pedigrees: Founder
@@ -42,52 +55,31 @@
 #' pedFactors$population <- getGVPopulation(pedFactors, NULL)
 #' alleles <- geneDrop(ped$id, ped$sire, ped$dam, ped$gen,
 #'   genotype = NULL,
-#'   n = 5000, updateProgress = NULL
+#'   n = 1000, updateProgress = NULL
 #' )
 #' allelesFactors <- geneDrop(pedFactors$id, pedFactors$sire, pedFactors$dam,
 #'   pedFactors$gen,
-#'   genotype = NULL, n = 5000,
+#'   genotype = NULL, n = 1000,
 #'   updateProgress = NULL
 #' )
 #' fg <- calcFG(ped, alleles)
 #' fgFactors <- calcFG(pedFactors, allelesFactors)
 calcFG <- function(ped, alleles) {
-  ped <- toCharacter(ped, headers = c("id", "sire", "dam"))
-  founders <- ped$id[is.na(ped$sire) & is.na(ped$dam)]
-  # nolint start: commented_code_linter.
-  ## UID.founders <- founders[grepl("^U", founders, ignore.case = TRUE)]
-  # nolint end: commented_code_linter.
-  ## UID.founders is not used; It may be a mistake, but it could be vestiges of
-  ## something planned that was not done.
-  descendants <- ped$id[!(ped$id %in% founders)]
-
-  d <- matrix(0L, nrow = length(descendants), ncol = length(founders))
-  colnames(d) <- founders
-  rownames(d) <- descendants
-
-  founderMatrix <- diag(length(founders))
-  colnames(founderMatrix) <- rownames(founderMatrix) <- founders
-
-  d <- rbind(founderMatrix, d)
-  founderMatrix <- NULL
-  ## Note: skips generation 0.
-  ## The references inside matrix d do not work if ped$sire and ped$dam and
-  ## thus gen$sire and gen$dam are factors. See test_calcFE.R
-  for (i in seq_len(max(ped$gen))) {
-    gen <- ped[(ped$gen == i), ]
-
-    for (j in seq_len(nrow(gen))) {
-      ego <- gen$id[j]
-      sire <- gen$sire[j]
-      dam <- gen$dam[j]
-      d[ego, ] <- (d[sire, ] + d[dam, ]) / 2L
-    }
+  ## Founder-contribution algorithm + partial-parentage guard are shared with
+  ## calcFE()/calcFEFG() via calcFounderContributions() (NEW-13/NEW-23). fc$ped
+  ## is the toCharacter()-coerced pedigree, fed to calcRetention() as before.
+  fc <- calcFounderContributions(ped, "calcFG") # nolint: object_usage_linter
+  r <- calcRetention(fc$ped, alleles)
+  ## Align retention to contributions by NAME before dividing (issue #86,
+  ## Dragon D-3): calcRetention() returns r id-sorted (tapply) while fc$p is in
+  ## getFounders() pedigree-row order, so a positional p^2 / r pairs the wrong
+  ## founders -- a silently wrong FG (e.g. a collapse to 0) on any pedigree
+  ## whose founders are not already in sorted id order.
+  r <- r[names(fc$p)]
+  ## Hard-fail (NA + warning) the silent FG collapse when a contributing founder
+  ## is retained in zero drops; the point estimate is unchanged otherwise.
+  if (checkFgDegeneracy(fc$p, r)) {
+    return(NA_real_)
   }
-
-  currentDesc <- ped$id[ped$population & !(ped$id %in% founders)]
-  d <- d[currentDesc, ]
-  p <- colMeans(d)
-
-  r <- calcRetention(ped, alleles)
-  1L / sum((p^2L) / r, na.rm = TRUE)
+  1L / sum((fc$p^2L) / r, na.rm = TRUE)
 }

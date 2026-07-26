@@ -1,9 +1,7 @@
-#' Forms and fills list of animals groups based on provided constraints
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
-#'
-#' @return A list of animal groups and their member animals
+
+#' Form and fill a list of animal groups based on provided constraints
 #'
 #' @param candidates character vector of IDs of the animals available for
 #' use in the group.
@@ -12,8 +10,7 @@
 #' to the group. Defaults to character(0) assuming no groups are existent.
 #' @param kin list of animals and those animals who are related above a
 #' threshold value.
-#' @param ped dataframe that is the `Pedigree`. It contains pedigree
-#' information including the IDs listed in \code{candidates}.
+#' @inheritParams getPotentialSires
 #' @param harem logical variable when set to \code{TRUE}, the formed groups
 #' have a single male at least \code{minAge} old.
 #' @param minAge integer value indicating the minimum age to consider in group
@@ -24,6 +21,8 @@
 #' @param sexRatio numeric value indicating the ratio of females to males x
 #' (from 0.5 to 20 by increments of 0.5 within the accompanying Shiny
 #' application. A sex ratio of 0 ignores sex in making up groups.
+#' @return A list of animal groups and their member animals
+#'
 #' @noRd
 fillGroupMembers <- function(candidates,
                              currentGroups,
@@ -37,7 +36,7 @@ fillGroupMembers <- function(candidates,
     numGp, currentGroups, candidates, ped,
     harem, minAge
   )
-  grpNum <- makeGrpNum(numGp)
+  grpNum <- makeGroupNum(numGp)
 
   if (harem) {
     # Sires were added to groupMembers
@@ -55,9 +54,8 @@ fillGroupMembers <- function(candidates,
       sexRatio
     )
     return(groupMembers)
-  } else {
-    available <- makeAvailable(candidates, numGp)
   }
+  available <- makeAvailable(candidates, numGp)
 
   repeat {
     if (isEmpty(grpNum)) {

@@ -2,25 +2,25 @@
 % Please edit documentation in R/removePotentialSires.R
 \name{removePotentialSires}
 \alias{removePotentialSires}
-\title{Removes potential sires from list of Ids}
+\title{Remove potential sires from a list of IDs}
 \usage{
 removePotentialSires(ids, minAge, ped)
 }
 \arguments{
-\item{ids}{character vector of IDs of the animals}
+\item{ids}{character vector of animal IDs}
 
-\item{minAge}{integer value indicating the minimum age to consider in group
-formation. Pairwise kinships involving an animal of this age or younger will
-be ignored. Default is 1 year.}
+\item{minAge}{integer value giving the inclusive minimum current age (in
+years) a male must have to be listed as a potential sire. Default is 1
+year.}
 
 \item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+information including the IDs listed in \code{ids}.}
 }
 \value{
 character vector of Ids with any potential sire Ids removed.
 }
 \description{
-Removes potential sires from list of Ids
+Remove potential sires from a list of IDs
 }
 \examples{
 library(nprcgenekeepr)

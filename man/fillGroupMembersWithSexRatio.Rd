@@ -2,7 +2,7 @@
 % Please edit documentation in R/fillGroupMembersWithSexRatio.R
 \name{fillGroupMembersWithSexRatio}
 \alias{fillGroupMembersWithSexRatio}
-\title{Forms breeding group(s) with an effort to match a specified sex ratio}
+\title{Form breeding groups to match a target sex ratio}
 \usage{
 fillGroupMembersWithSexRatio(
   candidates,
@@ -29,7 +29,7 @@ vector of \code{1:numGp}.}
 threshold value.}
 
 \item{ped}{dataframe that is the \code{Pedigree}. It contains pedigree
-information including the IDs listed in \code{candidates}.}
+information including the IDs listed in \code{ids}.}
 
 \item{minAge}{integer value indicating the minimum age to consider in group
 formation. Pairwise kinships involving an animal of this age or younger will
@@ -89,7 +89,7 @@ groupMembers <- nprcgenekeepr::makeGroupMembers(numGp,
   minAge = minAge
 )
 groupMembersStart <- groupMembers
-grpNum <- nprcgenekeepr::makeGrpNum(numGp)
+grpNum <- nprcgenekeepr::makeGroupNum(numGp)
 
 groupMembers <- fillGroupMembersWithSexRatio(
   candidates, groupMembers, grpNum, kin, ped, minAge, numGp,

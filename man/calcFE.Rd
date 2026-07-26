@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcFE.R
 \name{calcFE}
 \alias{calcFE}
-\title{Calculates founder Equivalents}
+\title{Calculate founder equivalents}
 \usage{
 calcFE(ped)
 }
@@ -12,14 +12,14 @@ calcFE(ped)
 }
 \value{
 The founder equivalents \code{FE = 1 / sum(p ^ 2)}, where \code{p}
-is average number of descendants and \code{r} is the mean number of founder
-alleles retained in the gene dropping experiment.
+is the vector of founder mean contributions to the current descendants.
 }
 \description{
 Part of the Genetic Value Analysis
 }
 \details{
-It is assumed that the pedigree has no partial parentage
+The pedigree must have no partial parentage (every animal has both parents
+known or both unknown); \code{calcFE} stops with an error otherwise.
 }
 \examples{
 ## Example from Analysis of Founder Representation in Pedigrees: Founder
@@ -48,3 +48,22 @@ pedFactors$population <- getGVPopulation(pedFactors, NULL)
 fe <- calcFE(ped)
 feFactors <- calcFE(pedFactors)
 }
+\references{
+Lacy RC. 1989. Analysis of founder representation in
+pedigrees: founder equivalents and founder genome equivalents. Zoo Biol
+8:111-123.
+}
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcA]{calcA()}},
+\code{\link[=calcFEFG]{calcFEFG()}},
+\code{\link[=calcFG]{calcFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGU]{calcGU()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}},
+\code{\link[=calcRetention]{calcRetention()}}
+}
+\concept{genetic value analysis}

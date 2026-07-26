@@ -1,13 +1,12 @@
-#' Add to count the number of occurrences of a kinship value seen for a pair of
-#' individuals in one or more simulated pedigrees.
+## Copyright(c) 2017-2026 R. Mark Sharp
+## This file is part of nprcgenekeepr
+
+#' Add to count the number of occurrences of a kinship value seen for a pair
+#' of individuals in one or more simulated pedigrees
 #'
 #' Order of the mating pairs of individual is assumed to be identical among the
 #' three lists \code{cKVC}, \code{kValues}, and
 #' \code{kCounts}.
-#'
-#' @return Integer value of the number of occurrences of a specific kinship
-#'         value seen for a pair of individuals in one or more simulated
-#'         pedigrees.
 #'
 #' @param cKVC list object of cummulated Kinship Value Counts with same
 #' structure as that returned by this function.
@@ -20,6 +19,10 @@
 #' \code{kValues}, and \code{kCounts}.
 #' @param value one element of vector of unique kinship values at position
 #' \code{index} within \code{cKVC}.
+#' @return Integer value of the number of occurrences of a specific kinship
+#'         value seen for a pair of individuals in one or more simulated
+#'         pedigrees.
+#'
 #' @noRd
 addKinshipValueCount <- function(cKVC,
                                  kValues,

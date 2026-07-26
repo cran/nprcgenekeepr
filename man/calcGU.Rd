@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcGU.R
 \name{calcGU}
 \alias{calcGU}
-\title{Calculates genome uniqueness for each ID that is part of the population.}
+\title{Calculate genome uniqueness for each population ID}
 \usage{
 calcGU(alleles, threshold = 1L, byID = FALSE, pop = NULL)
 }
@@ -12,12 +12,12 @@ table of allele information produced by \code{geneDrop()}.
 An AlleleTable contains information about alleles an ego has inherited.
 It contains the following columns:
 \itemize{
-\item \{id\} \{--- A character vector of IDs for a set of animals.\}
-\item \{parent\} \{--- A factor with levels of sire and dam.\}
-\item \{V1\} \{--- Unnamed integer column representing allele 1.\}
-\item \{V2\} \{--- Unnamed integer column representing allele 2.\}
-\item \{...\} \{--- Unnamed integer columns representing alleles.\}
-\item \{Vn\} \{--- Unnamed integer column representing the nth column.\}
+\item \code{V1} --- Unnamed integer column representing allele 1.
+\item \code{V2} --- Unnamed integer column representing allele 2.
+\item \code{...} --- Unnamed integer columns representing alleles.
+\item \code{Vn} --- Unnamed integer column representing the nth column.
+\item \code{id} --- A character vector of IDs for a set of animals.
+\item \code{parent} --- A factor with levels of sire and dam.
 }}
 
 \item{threshold}{an integer indicating the maximum number of copies of an
@@ -39,11 +39,9 @@ A single-column table of genome uniqueness values as percentages.
 Rownames are set to 'id' values that are part of the population.
 }
 \description{
-\{Genome Uniqueness Functions\}\{\}
+Part of Genetic Value Analysis
 }
 \details{
-Part of Genetic Value Analysis
-
 The following functions calculate genome uniqueness according to the equation
 described in Ballou & Lacy.
 
@@ -72,6 +70,12 @@ slightly higher for non-founders than what this function will calculate.
 The estimates of genome uniqueness for founders within the population
 calculated by this function should match the "founder genome uniqueness"
 measure calculated by Pedscope.
+
+Note that \code{calcGU} computes this statistic for every animal and still
+includes living founders' alleles; it is unchanged. The genetic value report
+(\code{\link{reportGV}}) separately applies a colony decline-to-credit policy
+that reports genome uniqueness as 0 for unknown-origin both-unknown
+("Undetermined") animals.
 }
 \examples{
 library(nprcgenekeepr)
@@ -89,4 +93,21 @@ individuals for management of genetic variation in pedigreed populations,
 p 77-111. In: Ballou JD, Gilpin M, Foose TJ, editors.
 Population management for survival and recovery. New York (NY):
 Columbia University Press.
+
+MacCluer JW, et al. 1986. Pedigree analysis by computer
+simulation. Zoo Biology 5:147-160.
 }
+\seealso{
+Other genetic value analysis:
+\code{\link[=calcA]{calcA()}},
+\code{\link[=calcFE]{calcFE()}},
+\code{\link[=calcFEFG]{calcFEFG()}},
+\code{\link[=calcFG]{calcFG()}},
+\code{\link[=calcFGSE]{calcFGSE()}},
+\code{\link[=calcGUSE]{calcGUSE()}},
+\code{\link[=calcGeneDiversity]{calcGeneDiversity()}},
+\code{\link[=calcNeSexRatio]{calcNeSexRatio()}},
+\code{\link[=calcNeVariance]{calcNeVariance()}},
+\code{\link[=calcRetention]{calcRetention()}}
+}
+\concept{genetic value analysis}

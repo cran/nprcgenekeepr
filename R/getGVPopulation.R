@@ -1,16 +1,17 @@
-#' Get the population of interest for the Genetic Value analysis.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Get the population of interest for the Genetic Value analysis
+#'
 #' If user has limited the population of interest by defining \code{pop},
 #' that information is incorporated via the \code{ped$population} column.
 #'
+#' @inheritParams reportGV
+#' @param pop character vector with animal IDs to consider as the population of
+#' interest. The default is NULL.
 #' @return A logical vector corresponding to the IDs in the vector of
 #' animal IDs provided to the function in \code{pop}.
 #'
-#' @param ped the pedigree information in datatable format
-#' @param pop character vector with animal IDs to consider as the population of
-#' interest. The default is NULL.
 #' @export
 #' @examples
 #' ## Example from Analysis of Founder Representation in Pedigrees: Founder

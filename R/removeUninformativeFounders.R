@@ -1,15 +1,15 @@
-#' Remove uninformative founders.
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Remove uninformative founders
+#'
 #' Founders (having unknown sire and dam) that appear only one time in a
 #' pedigree are uninformative and can be removed from a pedigree without loss
 #' of information.
 #'
+#' @inheritParams trimPedigree
 #' @return A reduced pedigree.
 #'
-#' @param ped datatable that is the `Pedigree`. It contains pedigree
-#' information. The fields \code{sire} and \code{dam} are required.
 #' @export
 #' @examples
 #' examplePedigree <- nprcgenekeepr::examplePedigree
@@ -37,7 +37,7 @@ removeUninformativeFounders <- function(ped) {
   }
 
   repeat {
-    founders <- ped$id[is.na(ped$sire) & is.na(ped$dam)]
+    founders <- getFounders(ped)
 
     sires <- as.data.frame(table(ped$sire[ped$sire %in% founders]))
     dams <- as.data.frame(table(ped$dam[ped$dam %in% founders]))

@@ -19,9 +19,9 @@ estimate how frequently an animal will possess founder alleles not present in
 other members of the focal population, or present in a specified number or fewer.
 
 The gene-drop simulation used by the web application is a vectorized version
-and is shown in the figure below. In an un-vectorized version, if 5000 gene-drop
+and is shown in the figure below. In an un-vectorized version, if 1000 gene-drop
 simulations are desired for the estimation process, the population had to be
-iterated over 5000 times. Since each iteration of the gene-drop is independent,
+iterated over 1000 times. Since each iteration of the gene-drop is independent,
 the process can be vectorized so that each element of a vector represents 1 iteration
 of the gene-drop simulation.  In the vectorized version, the population is iterated
 over once, regardless of the number of simulations desired. This drastically reduces
@@ -82,3 +82,6 @@ being considered (2 * number of simulations).
 
 
 ![Generation of a vector of five gametes from one parent. Showing how the transmission vectors (row 2) determine which alleles are passed from the parental alleles or haplotypes (row 1) to form complementary vectors (row 3) that are combined by adding corresponding elements to form the final vector of transmitted alleles (row 4).](../man/figures/GeneDrop.png)
+
+Genome uniqueness is calculated according to MacCluer JW, et al. (1986) and
+Ballou JD, Lacy RC. (1995).

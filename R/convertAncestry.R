@@ -1,16 +1,17 @@
-#' Converts the ancestry information to a standardized code
-#'
-## Copyright(c) 2017-2024 R. Mark Sharp
+## Copyright(c) 2017-2026 R. Mark Sharp
 ## This file is part of nprcgenekeepr
+
+#' Convert ancestry information to a standard code
+#'
 #' Part of Pedigree Curation
 #'
 #'
+#' @param ancestry character vector or NA with free-form text providing
+#' information about the geographic population of origin.
 #' @return A factor vector of standardized designators specifying if an animal
 #' is a Chinese rhesus, Indian rhesus, Chinese-Indian hybrid rhesus, or
 #' Japanese macaque. Levels: CHINESE, INDIAN, HYBRID, JAPANESE, OTHER, UNKNOWN.
 #'
-#' @param ancestry character vector or NA with free-form text providing
-#' information about the geographic population of origin.
 #' @export
 #' @examples
 #' original <- c("china", "india", "hybridized", NA, "human", "gorilla")

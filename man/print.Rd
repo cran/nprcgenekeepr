@@ -3,7 +3,7 @@
 \name{print.summary.nprcgenekeeprErr}
 \alias{print.summary.nprcgenekeeprErr}
 \alias{print.summary.nprcgenekeeprGV}
-\title{print.summary.nprcgenekeepr print.summary.nprcgenekeeprGV}
+\title{Print an nprcgenekeepr summary object}
 \usage{
 \method{print}{summary.nprcgenekeeprErr}(x, ...)
 
@@ -12,7 +12,8 @@
 \arguments{
 \item{x}{object of class summary.nprcgenekeeprErr and class list}
 
-\item{...}{additional arguments for the \code{summary.default} statement}
+\item{...}{further arguments passed to the \code{print()} call for the
+suspicious-parents table (and ignored by the GV method)}
 }
 \value{
 An object to send to the generic print function
@@ -20,7 +21,7 @@ An object to send to the generic print function
 object to send to generic print function
 }
 \description{
-print.summary.nprcgenekeepr print.summary.nprcgenekeeprGV
+Print an nprcgenekeepr summary object
 }
 \examples{
 library(nprcgenekeepr)

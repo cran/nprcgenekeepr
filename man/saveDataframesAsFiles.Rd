@@ -2,18 +2,17 @@
 % Please edit documentation in R/saveDataframesAsFiles.R
 \name{saveDataframesAsFiles}
 \alias{saveDataframesAsFiles}
-\title{Write copy of dataframes to either CSV, TXT, or Excel file.}
+\title{Write copy of dataframes to either CSV, TXT, or Excel file}
 \usage{
 saveDataframesAsFiles(dfList, baseDir, fileType = "csv")
 }
 \arguments{
-\item{dfList}{list of dataframes to be stored as files.
-\code{"txt"}, \code{"csv"}, or \code{"xlsx"}. Default value is \code{"csv"}.}
+\item{dfList}{list of dataframes to be stored as files.}
 
 \item{baseDir}{character vector of length on with the directory path.}
 
 \item{fileType}{character vector of length one with possible values of
-\code{"txt"}, \code{"csv"}, or \code{"xlsx"}. Default value is \code{"csv"}.}
+\code{"txt"}, \code{"csv"}, or \code{"excel"}. Default value is \code{"csv"}.}
 }
 \value{
 Full path name of files saved.
@@ -21,4 +20,16 @@ Full path name of files saved.
 \description{
 Takes a list of dataframes and creates a file based on the list name of
 the dataframe and the extension for the file type.
+}
+\examples{
+library(nprcgenekeepr)
+dfList <- list(
+  lacy1989Ped = nprcgenekeepr::lacy1989Ped,
+  pedGood = nprcgenekeepr::pedGood
+)
+## Write each data frame to a CSV file under a temporary directory.
+files <- saveDataframesAsFiles(dfList,
+  baseDir = tempdir(), fileType = "csv"
+)
+basename(files)
 }
